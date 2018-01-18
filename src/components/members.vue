@@ -1,11 +1,11 @@
 <template>
     <div id="members-list">
-      <contact v-if="contacting"></contact>
       <h6 class="text-center" id="membersHeading">All Members</h6>
       <p style="font-weight:normal; font-style: italic; margin-bottom:20px;" class="text-center" id="subHeading">(active members in bold)</p>
       <p style="font-weight:normal; font-style: italic; margin-bottom:20px;" class="text-center" id="subHeading">(click to message)</p>
+      <contact v-if="contacting" :name='memberName'></contact>
       <ul>
-        <li v-for="member in orderedMembers" :key="member.username"><p class="memberName text-center" @click="contactMember(member._id, member.active)" :class="{setBold: member.active === true}">
+        <li v-for="member in orderedMembers" :key="member.username"><p class="memberName text-center" @click="contactMember(member.name, member.active)" :class="{setBold: member.active === true}">
           {{ member.username }}</p></li>
       </ul>
 
@@ -17,13 +17,15 @@
   import contact from '../components/contact.vue'
   export default {
       name: 'members',
+      props: [ 'name' ],
       data() {
         return {
-          contacting: false
+          contacting: false,
+          memberName: ''
         }
       },
       methods: {
-        contactMember(id, status) {
+        contactMember(name, status) {
           // Called when member is selected
           if(!this.$store.getters.getLoggedStatus) {
             this.contacting = false;
@@ -31,9 +33,10 @@
           } else {
             if(status === false) {
               this.contacting = false;
-              alert('Member must be logged in to receive messages');
+              alert(`this.name must be logged in to receive messages`);
             }else {
               this.contacting = true;
+              this.memberName = name;
 
 
 

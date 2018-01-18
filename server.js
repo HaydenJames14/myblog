@@ -44,6 +44,8 @@ io.on('connection', function(socket) {
             }
         })
     });
+
+    socket.broadcast.to(socketid).emit('message', message);
 })
 io.on('disconnnnected', function() {
     User.findOneAndUpdate({ username: data }, { $set: { active: false } }, function(err, res) {
