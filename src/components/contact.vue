@@ -1,7 +1,7 @@
 <template>
 <div v-if="messenging">
   <div class="container-fluid text-center" id="messageBox" v-if="messenging">
-    <input type="text" id="messageText" placeholder="type message.." autofocus v-model="message">
+    <input type="text" id="messageText" placeholder="type message to.." autofocus v-model="message">
     <button type="submit" class="btn btn-success" id="submit_message" @click.prevent="submitMessage">Send</button>
   </div>
   <div v-if="messageReceived" id="receivedMessageBox">
@@ -27,7 +27,7 @@
     },
     methods: {
       submitMessage() {
-        if(message) {
+        if(this.message) {
           this.$socket.emit('message', this.message);
 
           this.message = '';
