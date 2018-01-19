@@ -30,6 +30,7 @@ app.use(Routes);
 io.on('connection', function(socket) {
     // Tell clients someone signed in
     socket.on('signedIn', (data) => {
+        socket.join(data);
         User.findOneAndUpdate({ username: data }, { $set: { active: true } }, function(err, res) {
             if (res) {
                 socket.broadcast.emit('joined', data);
@@ -39,25 +40,32 @@ io.on('connection', function(socket) {
     // Tell clients someone signed out
     socket.on('signedOut', (data) => {
         User.findOneAndUpdate({ username: data }, { $set: { active: false } }, function(err, res) {
+            if (err) res.send(err);
             if (res) {
                 socket.broadcast.emit('left', data);
             }
-        })
+        });
+        socket.leave(data);
     });
+
+    // Send message to logged in user
     socket.on('message', (data) => {
-        console.log('received message from: ' + data);
-        //socket.broadcast.to(socketid).emit('message', message);
+        console.log('sent message to: ' + data.recipient);
+        console.log('message: ' + data.message);
+        socket.broadcast.to(data.recipient).emit('messageReceived', { message: data.message, sender: data.sender });
+        //socket.emit('messageReceived', { message: data.message, sender: data.sender });
+        //socket.broadcast.emit('messageReceived', { message: data.message, sender: data.sender });
     });
 
-})
-io.on('disconnnnected', function() {
-    User.findOneAndUpdate({ username: data }, { $set: { active: false } }, function(err, res) {
-        if (res) {
-            socket.emit('left', data);
-        }
-    })
-})
-
-http.listen(PORT, function() {
-    console.log(`Server running on port ${PORT}`)
+    io.on('disconnnnected', function() {
+        User.findOneAndUpdate({ username: data }, { $set: { active: false } }, function(err, res) {
+            if (res) {
+                socket.emit('left', data);
+            }
+        });
+    });
 });
+
+http.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`)
+})

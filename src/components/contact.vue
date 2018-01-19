@@ -1,11 +1,11 @@
 <template>
-<div v-if="messenging">
+<div>
   <div class="container-fluid text-center" id="messageBox" v-if="messenging">
     <input type="text" id="messageText" placeholder="type message to.." autofocus v-model="message">
     <button type="submit" class="btn btn-success" id="submit_message" @click.prevent="submitMessage">Send</button>
   </div>
-  <div v-if="messageReceived" id="receivedMessageBox">
-    <p id="receivedText">Message received from {{ name }}</p>
+  <div id="receivedMessageBox" v-if="messageReceived">
+    <p id="receivedText">Message received from {{ receivedFrom }}</p>
     <input type="text" id="receivedMessageText" style="margin-bottom:5px;" v-model="receivedMessage">
     <button type="submit" class="btn btn-success" id="reply_message" @click.prevent="replyToMessage">Reply</button>
   </div>
@@ -15,11 +15,11 @@
 <script>
   export default {
     name: 'contact',
-    props: [ 'name' ],
+    props: [ 'name', 'messageReceived' ],
     data() {
       return {
-        messageReceived: true,
         messenging: true,
+        receivedFrom: '',
         placeholderText: `type reply to ${name}`,
         receivedMessage: '',
         message: ''
@@ -28,17 +28,13 @@
     methods: {
       submitMessage() {
         if(this.message) {
-          this.$socket.emit('message', this.message);
-
+          let sender = this.$store.getters.getUsername;
+          this.$socket.emit('message', { message: this.message, recipient: this.name, sender: sender });
           this.message = '';
+          this.messenging = false;
         }
       },
       replyToMessage() {
-
-      }
-    },
-    sockets: {
-      messageReceived() {
 
       }
     }

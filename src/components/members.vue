@@ -3,9 +3,9 @@
       <h6 class="text-center" id="membersHeading">All Members</h6>
       <p style="font-weight:normal; font-style: italic; margin-bottom:20px;" class="text-center" id="subHeading">(active members in bold)</p>
       <p style="font-weight:normal; font-style: italic; margin-bottom:20px;" class="text-center" id="subHeading">(click to message)</p>
-      <contact v-if="contacting" :name='memberName'></contact>
+      <contact v-if="contacting" :name='memberName' :msgReceived="messageReceived"></contact>
       <ul>
-        <li v-for="member in orderedMembers" :key="member.username"><p class="memberName text-center" @click="contactMember(member.name, member.active)" :class="{setBold: member.active === true}">
+        <li v-for="member in orderedMembers" :key="member.username"><p class="memberName text-center" @click="contactMember(member.username, member.active)" :class="{setBold: member.active === true}">
           {{ member.username }}</p></li>
       </ul>
 
@@ -21,11 +21,14 @@
       data() {
         return {
           contacting: false,
-          memberName: ''
+          memberName: '',
+          receivedMessage: '',
+          receivedFrom: '',
+          messageReceived: false
         }
       },
       methods: {
-        contactMember(name, status) {
+        contactMember(recipientName, status) {
           // Called when member is selected
           if(!this.$store.getters.getLoggedStatus) {
             this.contacting = false;
@@ -33,12 +36,10 @@
           } else {
             if(status === false) {
               this.contacting = false;
-              alert(`this.name must be logged in to receive messages`);
+              alert(`${recipientName} must be logged in to receive messages`);
             }else {
               this.contacting = true;
-              this.memberName = name;
-
-
+              this.memberName = recipientName;
 
             }
           }
@@ -48,18 +49,6 @@
         orderedMembers() {
           return this.$lodash.orderBy(this.$store.getters.getAllMembers, ['username']);
         }
-      },
-      created() {
-        /*this.$http.get("http://localhost:5000/allMembers").then(response => {
-              if(response) {
-                this.$store.dispatch('setAllMembers', response.data);
-              } else {
-                console.log('No Current Active Members');
-              }
-          }).catch(err => {
-              console.log(err);
-              console.log('could not retrieve members')
-          }) */
       },
       mounted() {
           this.$http.get("http://localhost:5000/allMembers").then(response => {
@@ -71,6 +60,15 @@
           }).catch(err => {
               console.log('Error: '+ err + ' Could not retrieve members')
           })
+      },
+      sockets: {
+        messageReceived(data) {
+        console.log('1message: '+ data.message);
+        console.log('1Message Received from: '+ data.sender);
+        this.receivedMessage = data.message;
+        this.receivedFrom = data.sender;
+        this.messageReceived = true;
+      }
       },
       components: {
         contact
