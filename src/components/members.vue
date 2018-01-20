@@ -1,7 +1,7 @@
 <template>
     <div id="members-list">
       <h6 class="text-center" id="membersHeading">All Members</h6>
-      <p style="font-weight:normal; font-style: italic; margin-bottom:20px;" class="text-center" id="subHeading">(active members in bold)</p>
+      <p style="font-weight:normal; font-style: italic; margin-bottom:20px;" class="text-center" id="membersHeading">(active members in bold)</p>
       <p style="font-weight:normal; font-style: italic; margin-bottom:20px;" class="text-center" id="subHeading">(click to message)</p>
       <contact v-if="contacting" :name='memberName' :msgReceived="messageReceived"></contact>
       <ul>
@@ -32,14 +32,15 @@
           // Called when member is selected
           if(!this.$store.getters.getLoggedStatus) {
             this.contacting = false;
-            alert('Please log in/register to contact members');
+            alert('Please log in to contact other members');
           } else {
             if(status === false) {
               this.contacting = false;
               alert(`${recipientName} must be logged in to receive messages`);
             }else {
-              this.contacting = true;
               this.memberName = recipientName;
+              this.contacting = true;
+
 
             }
           }
@@ -63,12 +64,16 @@
       },
       sockets: {
         messageReceived(data) {
-        console.log('1message: '+ data.message);
-        console.log('1Message Received from: '+ data.sender);
-        this.receivedMessage = data.message;
-        this.receivedFrom = data.sender;
-        this.messageReceived = true;
-      }
+          console.log('1message: '+ data.message);
+          console.log('1Message Received from: '+ data.sender);
+          /*this.receivedMessage = data.message;
+          this.receivedFrom = data.sender; */
+          let incomingMessage = {
+            message: data.message,
+            sender: data.sender
+          }
+          this.$store.commit('setReceivedMessage', incomingMessage);
+        }
       },
       components: {
         contact

@@ -23,7 +23,11 @@ export const store = new Vuex.Store({
         threadPosts: [],
         filteredData: [],
         searchText: '',
-        searchType: 'threads'
+        searchType: 'threads',
+        receivedMessage: {
+            message: '',
+            sender: ''
+        }
     },
     getters: {
         getuser(state) {
@@ -82,6 +86,9 @@ export const store = new Vuex.Store({
         },
         getSearchType(state) {
             return state.searchType;
+        },
+        getReceivedMessage(state) {
+            return state.receivedMessage;
         }
     },
     mutations: {
@@ -167,6 +174,10 @@ export const store = new Vuex.Store({
                 m.username === payload ? {...m, active: false } : m
             )
             store.dispatch('setAllMembers', members);
+        },
+        setReceivedMessage(state, payload) {
+            state.receivedMessage.message = payload.message;
+            state.receivedMessage.sender = payload.sender;
         }
     },
     actions: {
