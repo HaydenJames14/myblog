@@ -4,10 +4,10 @@
     <input type="text" id="messageText" :placeholder='placeholderText' autofocus v-model="message">
     <button type="submit" class="btn btn-success" id="submit_message" @click.prevent="submitMessage">Send</button>
   </div>
-  <div id="receivedMessageBox">  <!--   v-if="messageReceived" -->
-    <p id="receivedText">Message received from {{ receivedFrom }}</p>
-    <input type="text" id="receivedMessageText" style="margin-bottom:5px;" v-model="receivedMessage">
-    <button type="submit" class="btn btn-success" id="reply_message" @click.prevent="replyToMessage">Reply</button>
+  <div id="receivedMessageBox" v-if="msgReceived">
+    <p id="receivedText">Message received from {{ msgReceived.sender }}</p>
+    <input type="text" id="receivedMessageText" style="margin-bottom:5px;" v-model="msgReceived.message">
+    <button type="submit" class="btn btn-success" id="reply_message" @click.prevent="submitMessage">Reply</button>
   </div>
 </div>
 </template>
@@ -15,7 +15,7 @@
 <script>
   export default {
     name: 'contact',
-    props: [ 'name', 'messageReceived' ],
+    props: [ 'name', 'msgReceived' ],
     data() {
       return {
         messenging: true,
@@ -29,15 +29,12 @@
       submitMessage() {
         if(this.message) {
           let sender = this.$store.getters.getUsername;
-          this.$socket.emit('message', { message: this.message, recipient: this.name, sender: sender });
-          this.message = '';
-          this.messenging = false;
-        }
-      },
-      replyToMessage() {
-        if(this.message) {
-          let sender = this.$store.getters.getUsername;
-          this.$socket.emit('message', { message: this.message, recipient: this.name, sender: sender });  // reverse recipient and sender values?
+          let messageData = {
+            sender: this.$store.getters.getUsername,
+            message: this.message
+          }
+          this.$store.commit('setReceivedMessage', messageData );
+          this.$socket.emit('message', { message: this.message, recipient: this.name, sender: this.$store.getters.getUsername });
           this.message = '';
           this.messenging = false;
         }

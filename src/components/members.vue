@@ -3,7 +3,7 @@
       <h6 class="text-center" id="membersHeading">All Members</h6>
       <p style="font-weight:normal; font-style: italic; margin-bottom:20px;" class="text-center" id="membersHeading">(active members in bold)</p>
       <p style="font-weight:normal; font-style: italic; margin-bottom:20px;" class="text-center" id="subHeading">(click to message)</p>
-      <contact v-if="contacting" :name='memberName' :msgReceived="messageReceived"></contact>
+      <contact v-if="contacting" :name='memberName' :msgReceived="incomingMessage"></contact>
       <ul>
         <li v-for="member in orderedMembers" :key="member.username"><p class="memberName text-center" @click="contactMember(member.username, member.active)" :class="{setBold: member.active === true}">
           {{ member.username }}</p></li>
@@ -24,7 +24,8 @@
           memberName: '',
           receivedMessage: '',
           receivedFrom: '',
-          messageReceived: false
+          messageReceived: false,
+          incomingMessage: {}
         }
       },
       methods: {
@@ -64,10 +65,8 @@
       },
       sockets: {
         messageReceived(data) {
-          console.log('1message: '+ data.message);
-          console.log('1Message Received from: '+ data.sender);
-          /*this.receivedMessage = data.message;
-          this.receivedFrom = data.sender; */
+          console.log('message: '+ data.message);
+          console.log('Message Received from: '+ data.sender);
           let incomingMessage = {
             message: data.message,
             sender: data.sender
