@@ -44,14 +44,6 @@
         return title.toUpperCase();
       }
     },
-    created() { /*  duplicate code in mounted event!!
-      this.$http.get("http://localhost:5000/latestThreads").then(response => {
-        this.$store.dispatch('setThreads', response.data);
-        this.threads = this.$store.getters.getThreads;
-      }).catch(err => {
-        console.log('Error retrieving threads');
-      }); */
-    },
     mounted() {
       if(this.$store.getThreads) {
         this.threads = this.$store.getters.getThreads;
@@ -59,13 +51,13 @@
         this.$http.get("http://localhost:5000/latestThreads").then(response => {
         this.$store.dispatch('setThreads', response.data);
         this.threads = this.$store.getters.getThreads;
-        }).then(posts => {
+        })/*.then(posts => {
           this.$http.get("http://localhost:5000/latestPosts").then(response => {
           this.$store.dispatch('setPosts', response.data);
           }).catch(err => {
             console.log('Error retrieving data');
           });
-        })
+        }) */
       }
     }
 

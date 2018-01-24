@@ -53,6 +53,8 @@
         }
       },
       mounted() {
+        this.$socket.emit('memberList');
+        /*
           this.$http.get("http://localhost:5000/allMembers").then(response => {
               if(response) {
                   this.$store.dispatch('setAllMembers', response.data);
@@ -61,17 +63,20 @@
               }
           }).catch(err => {
               console.log('Error: '+ err + ' Could not retrieve members')
-          })
+          }) */
       },
       sockets: {
         messageReceived(data) {
           console.log('message: '+ data.message);
           console.log('Message Received from: '+ data.sender);
-          let incomingMessage = {
+          this.incomingMessage = {
             message: data.message,
             sender: data.sender
           }
-          this.$store.commit('setReceivedMessage', incomingMessage);
+          this.$store.commit('setReceivedMessage', this.incomingMessage);
+        },
+        loadmembers(data) {
+          this.$store.dispatch('setAllMembers', data);
         }
       },
       components: {

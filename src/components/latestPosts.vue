@@ -40,6 +40,13 @@
           return title.toUpperCase();
         }
       },
+      mounted() {
+        this.$http.get("http://localhost:5000/latestPosts").then(response => {
+          this.$store.dispatch('setPosts', response.data);
+          }).catch(err => {
+            console.log('Error retrieving data');
+          });
+      },
       computed: {
         orderedPosts: function() {
           let posts = this.$store.getters.getPosts;

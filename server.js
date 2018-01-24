@@ -45,7 +45,7 @@ io.on('connection', function(socket) {
                 socket.broadcast.emit('left', data);
             }
         });
-        socket.leave(data);
+        //socket.leave(data);
     });
 
     // Send message to logged in user
@@ -55,6 +55,17 @@ io.on('connection', function(socket) {
         socket.broadcast.to(data.recipient).emit('messageReceived', { message: data.message, sender: data.sender });
         //socket.emit('messageReceived', { message: data.message, sender: data.sender });
         //socket.broadcast.emit('messageReceived', { message: data.message, sender: data.sender });
+    });
+
+    socket.on('memberList', () => {
+        User.find({}, { username: 1 }, function(err, data) {
+            if (err) {
+                //res.status(401).send('No data');
+                return;
+            }
+            //res.send(data);
+            socket.emit('loadmembers', data);
+        });
     });
 
     io.on('disconnnnected', function() {

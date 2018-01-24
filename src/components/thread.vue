@@ -14,7 +14,7 @@
             <div class="row">
               <div class="col-md-12">
                 <div class="col-md-12">
-                  <h6 id="uploadText" style="display:inline-block;">Upload Image: </h6>
+                  <h6 id="uploadText" style="display:inline-block; color:black;">Upload Image: </h6>
                   <input type="file" name="postImage" accept="image/*" class="form-control" id="imageUploader" ref="imageUpload"/>
                   <button type="submit" class="btn btn-primary form-control flex-item" id="submit-btn" style="display:block;">Submit</button>
                 </div>
@@ -268,10 +268,11 @@ strong {
 }
 
 #submit-btn {
-  width:50%;
-  height:35px;
+  width:40%;
+  height:30px;
   margin:auto;
   margin-top:10px;
+  margin-bottom:5px;
   background-color: green;
   color:white;
   font-family:sans-serif,cursive;

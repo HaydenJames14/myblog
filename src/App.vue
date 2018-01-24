@@ -40,7 +40,7 @@ export default {
         //console.log('Client logged out event fired');
         if(user) {
           this.$store.commit('SOCKET_SET_MEMBER_NOT_ACTIVE', user);
-          //console.log('user left');
+
         }
       }
   },
@@ -48,12 +48,14 @@ export default {
     navbar, latestPosts, latestThreads, myPosts, myThreads, members, thread, addPost, filtered
   },
   mounted() {
-    window.addEventListener('onunload', this.befourDestroy);
+    window.addEventListener('onbeforeunload', this.befoureUnload);
   },
-  beforeDestroy() {
+  beforeUnload() {
+    alert('closing');
     sessionStorage.removeItem("accessToken");
+    alert('Closing 1');
     this.$socket.emit('signedOut', this.$store.getters.getUsername);
-    return "Do you really want to close?" /*
+     /*
     if(this.$store.getters.getUsername) {
       this.$http.post('http://localhost:5000/logout', { username: this.$store.getters.getUsername }).then(response => {
       this.$store.commit('setUserNone');
@@ -62,10 +64,6 @@ export default {
       console.log(err)
     });
     } */
-  },
-  destroyed() {
-    this.$socket.emit('signedOut', this.$store.getters.getUsername);
-    console.log('destroyed')
   }
 
 }

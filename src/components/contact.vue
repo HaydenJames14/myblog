@@ -1,6 +1,6 @@
 <template>
 <div>
-  <div class="container-fluid text-center" id="sendMessageBox" v-if="messenging">
+  <div class="container-fluid text-center" id="sendMessageBox">  <!-- v-if="messenging" -->
     <input type="text" id="messageText" :placeholder='placeholderText' autofocus v-model="message">
     <button type="submit" class="btn btn-success" id="submit_message" @click.prevent="submitMessage">Send</button>
   </div>
@@ -22,7 +22,7 @@
         receivedMessage: this.$store.getters.getReceivedMessage.message,
         receivedFrom: this.$store.getters.getReceivedMessage.sender,
         message: '',
-        placeholderText: `type reply to ${name}`
+        placeholderText: 'type reply to '+ this.msgReceived.sender
       }
     },
     methods: {
