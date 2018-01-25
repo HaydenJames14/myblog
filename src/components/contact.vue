@@ -1,13 +1,14 @@
 <template>
-<div>
+<div v-if="this.$store.getters.getLoggedStatus">
   <div class="container-fluid text-center" id="sendMessageBox">  <!-- v-if="messenging" -->
     <input type="text" id="messageText" :placeholder='placeholderText' autofocus v-model="message">
     <button type="submit" class="btn btn-success" id="submit_message" @click.prevent="submitMessage">Send</button>
   </div>
   <div id="receivedMessageBox" v-if="msgReceived">
-    <p id="receivedText">Message received from {{ msgReceived.sender }}</p>
-    <input type="text" id="receivedMessageText" style="margin-bottom:5px;" v-model="msgReceived.message">
-    <button type="submit" class="btn btn-success" id="reply_message" @click.prevent="submitMessage">Reply</button>
+    <p id="receivedTextNotice">Message received from {{ msgReceived.sender }}</p>
+    <!-- <input type="text" id="receivedMessageText" style="margin-bottom:5px;" v-model="msgReceived.message"> -->
+    <p id="receivedMessageText" style="margin-bottom:5px; color:red;">{{ msgReceived.message }}</p>
+    <!--<button type="submit" class="btn btn-success" id="reply_message" @click.prevent="submitMessage">Reply</button> -->
   </div>
 </div>
 </template>
@@ -22,7 +23,7 @@
         receivedMessage: this.$store.getters.getReceivedMessage.message,
         receivedFrom: this.$store.getters.getReceivedMessage.sender,
         message: '',
-        placeholderText: 'type reply to '+ this.msgReceived.sender
+        placeholderText: 'type message..'
       }
     },
     methods: {
@@ -67,10 +68,18 @@
   margin-right:2px;
 }
 
-#receivedText {
+#receivedMessageText {
+  color:red;
+  margin:5px;
+  text-align: center;
+  word-wrap: break-word;
+}
+
+#receivedTextNotice {
   color:red;
   font-size:0.8rem;
   text-align:center;
   margin:5px;
+  text-decoration: underline;
 }
 </style>
