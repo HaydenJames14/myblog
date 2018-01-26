@@ -4,7 +4,7 @@
     <input type="text" id="messageText" :placeholder='placeholderText' autofocus v-model="message">
     <button type="submit" class="btn btn-success" id="submit_message" @click.prevent="submitMessage">Send</button>
   </div>
-  <div id="receivedMessageBox" v-if="msgReceived">
+  <div id="receivedMessageBox">
     <p id="receivedTextNotice">Message received from {{ msgReceived.sender }}</p>
     <!-- <input type="text" id="receivedMessageText" style="margin-bottom:5px;" v-model="msgReceived.message"> -->
     <p id="receivedMessageText" style="margin-bottom:5px; color:red;">{{ msgReceived.message }}</p>
@@ -19,11 +19,12 @@
     props: [ 'name', 'msgReceived' ],
     data() {
       return {
-        messenging: true,
-        receivedMessage: this.$store.getters.getReceivedMessage.message,
-        receivedFrom: this.$store.getters.getReceivedMessage.sender,
+        //messenging: true,
+        receivedMessage: false, //this.$store.getters.getReceivedMessage.message,
+        receivedFrom: '', //this.$store.getters.getReceivedMessage.sender,
         message: '',
-        placeholderText: 'type message..'
+        placeholderText: 'type message...',
+
       }
     },
     methods: {
@@ -34,10 +35,10 @@
             sender: this.$store.getters.getUsername,
             message: this.message
           }
-          this.$store.commit('setReceivedMessage', messageData );
+          //this.$store.commit('setReceivedMessage', messageData );
           this.$socket.emit('message', { message: this.message, recipient: this.name, sender: this.$store.getters.getUsername });
           this.message = '';
-          this.messenging = false;
+          //this.messenging = false;
         }
       }
     }
