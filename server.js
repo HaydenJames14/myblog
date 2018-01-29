@@ -53,12 +53,10 @@ io.on('connection', function(socket) {
         console.log('sent message to: ' + data.recipient);
         console.log('message: ' + data.message);
         socket.broadcast.to(data.recipient).emit('messageReceived', { message: data.message, sender: data.sender });
-        //socket.emit('messageReceived', { message: data.message, sender: data.sender });
-        //socket.broadcast.emit('messageReceived', { message: data.message, sender: data.sender });
     });
 
     socket.on('memberList', () => {
-        User.find({}, { username: 1 }, function(err, data) {
+        User.find({}, function(err, data) {
             if (err) {
                 //res.status(401).send('No data');
                 return;

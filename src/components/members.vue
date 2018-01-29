@@ -3,7 +3,7 @@
       <h6 class="text-center" id="membersHeading">All Members</h6>
       <p style="font-weight:normal; font-style: italic; margin-bottom:20px;" class="text-center" id="membersHeading">(active members in bold)</p>
       <p style="font-weight:normal; font-style: italic; margin-bottom:20px;" class="text-center" id="subHeading">(click to message)</p>
-      <contact v-if="contacting" :name='memberName' :msgReceived="incomingMessage"></contact>
+      <contact v-if="contacting" :name='memberName' :msgReceived="incomingMessage" :displayMessage="receivedMessage"></contact>
       <ul>
         <li v-for="member in orderedMembers" :key="member.username"><p class="memberName text-center" @click="contactMember(member.username, member.active)" :class="{setBold: member.active === true}">
           {{ member.username }}</p></li>
@@ -22,15 +22,17 @@
         return {
           contacting: false,
           memberName: '',
-          receivedMessage: '',
+          receivedMessage: false,
           receivedFrom: '',
           messageReceived: false,
+          name_selected: false,
           incomingMessage: {}
         }
       },
       methods: {
         contactMember(recipientName, status) {
           // Called when member is selected
+          if(this.name_selected === true) { return; }
           if(!this.$store.getters.getLoggedStatus) {
             this.contacting = false;
             alert('Please log in to contact other members');
@@ -41,6 +43,7 @@
             }else {
               this.memberName = recipientName;
               this.contacting = true;
+              this.name_selected = true;
 
 
             }
@@ -73,7 +76,7 @@
             message: data.message,
             sender: data.sender
           }
-          this.$store.commit('setReceivedMessage', this.incomingMessage);
+          this.receivedMessage = true;
         },
         loadmembers(data) {
           this.$store.dispatch('setAllMembers', data);
