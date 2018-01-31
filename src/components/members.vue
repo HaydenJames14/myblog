@@ -72,6 +72,7 @@
         messageReceived(data) {
           console.log('message: '+ data.message);
           console.log('Message Received from: '+ data.sender);
+          console.log('message receieved');
           this.incomingMessage = {
             message: data.message,
             sender: data.sender

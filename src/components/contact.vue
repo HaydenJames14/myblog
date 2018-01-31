@@ -1,5 +1,5 @@
 <template>
-<div v-if="this.$store.getters.getLoggedStatus">
+<div v-if="this.$store.getters.getLoggedStatus"  v-show="displayMessage">
   <div class="container-fluid text-center" id="sendMessageBox">
     <div class="row">
       <div class="col-md-12">
@@ -13,7 +13,8 @@
       </div>
     </div>
   </div>
-  <div id="receivedMessageBox" v-if="msgReceived.sender || displayMessage">
+  <!-- message received notification box -->
+  <div id="receivedMessageBox">  <!-- msgReceived.sender -->
     <p id="receivedTextNotice">Message received from {{ msgReceived.sender }}</p>
     <p id="receivedMessageText" style="margin-bottom:5px; color:red;">{{ msgReceived.message }}</p>
   </div>
@@ -63,8 +64,6 @@
   width:95%;
   border:2px solid rgb(57, 90, 57);
   padding:2px;
-  /*display: flex;
-  justify-content: space-around; */
   margin-top:5px;
 }
 

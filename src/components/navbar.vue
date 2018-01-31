@@ -220,8 +220,8 @@ export default {
           //console.log('user joined');
         }
       },
-      left(user) {
-        //console.log('Client logged out event fired');
+      userLeft(user) {
+        console.log('Client logged out event fired');
         if(user) {
           this.$store.commit('SOCKET_SET_MEMBER_NOT_ACTIVE', user);
           //console.log('user left');

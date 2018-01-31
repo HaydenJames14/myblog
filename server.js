@@ -42,7 +42,7 @@ io.on('connection', function(socket) {
         User.findOneAndUpdate({ username: data }, { $set: { active: false } }, function(err, res) {
             if (err) res.send(err);
             if (res) {
-                socket.broadcast.emit('left', data);
+                socket.emit('userLeft', res); // broadcast.
             }
         });
         //socket.leave(data);
@@ -69,7 +69,7 @@ io.on('connection', function(socket) {
     io.on('disconnnnected', function() {
         User.findOneAndUpdate({ username: data }, { $set: { active: false } }, function(err, res) {
             if (res) {
-                socket.emit('left', data);
+                socket.emit('left', res);
             }
         });
     });

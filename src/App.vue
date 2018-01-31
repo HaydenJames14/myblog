@@ -35,15 +35,6 @@ export default {
 
     }
   },
-  sockets: {
-    left(user) {
-        //console.log('Client logged out event fired');
-        if(user) {
-          this.$store.commit('SOCKET_SET_MEMBER_NOT_ACTIVE', user);
-
-        }
-      }
-  },
   components: {
     navbar, latestPosts, latestThreads, myPosts, myThreads, members, thread, addPost, filtered
   },
