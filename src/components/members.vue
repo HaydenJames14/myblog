@@ -1,9 +1,9 @@
 <template>
     <div id="members-list">
-      <h6 class="text-center" id="membersHeading">All Members</h6>
+      <h6 class="text-center" id="membersHeading">Members List</h6>
       <p style="font-weight:normal; font-style: italic; margin-bottom:20px;" class="text-center" id="membersHeading">(active members in bold)</p>
       <p style="font-weight:normal; font-style: italic; margin-bottom:20px;" class="text-center" id="subHeading">(click to message)</p>
-      <contact v-if="contacting" :name='memberName' :msgReceived="incomingMessage" :displayMessage="receivedMessage"></contact>
+      <contact v-if="contacting" :name='memberName' :msgReceived="incomingMessage"></contact>
       <ul>
         <li v-for="member in orderedMembers" :key="member.username"><p class="memberName text-center" @click="contactMember(member.username, member.active)" :class="{setBold: member.active === true}">
           {{ member.username }}</p></li>
@@ -24,7 +24,6 @@
           memberName: '',
           receivedMessage: false,
           receivedFrom: '',
-          messageReceived: false,
           name_selected: false,
           incomingMessage: {}
         }
@@ -44,8 +43,6 @@
               this.memberName = recipientName;
               this.contacting = true;
               this.name_selected = true;
-
-
             }
           }
         },
@@ -72,11 +69,12 @@
         messageReceived(data) {
           console.log('message: '+ data.message);
           console.log('Message Received from: '+ data.sender);
-          console.log('message receieved');
           this.incomingMessage = {
             message: data.message,
-            sender: data.sender
+            sender: data.sender,
+            created: Date.now()
           }
+          this.$store.commit('setMessages', this.incomingMessage);
           this.receivedMessage = true;
         },
         loadmembers(data) {

@@ -1,5 +1,5 @@
 <template>
-<div v-if="this.$store.getters.getLoggedStatus"  v-show="displayMessage">
+<div v-if="this.$store.getters.getLoggedStatus || msgReceived.message">
   <div class="container-fluid text-center" id="sendMessageBox">
     <div class="row">
       <div class="col-md-12">
@@ -14,7 +14,7 @@
     </div>
   </div>
   <!-- message received notification box -->
-  <div id="receivedMessageBox">  <!-- msgReceived.sender -->
+  <div id="receivedMessageBox" v-if="msgReceived.message">
     <p id="receivedTextNotice">Message received from {{ msgReceived.sender }}</p>
     <p id="receivedMessageText" style="margin-bottom:5px; color:red;">{{ msgReceived.message }}</p>
   </div>
@@ -24,12 +24,10 @@
 <script>
   export default {
     name: 'contact',
-    props: [ 'name', 'msgReceived', 'displayMessage' ],
+    props: [ 'name', 'msgReceived' ],
     data() {
       return {
-        //messenging: true,
-        receivedMessage: false, //this.$store.getters.getReceivedMessage.message,
-        receivedFrom: '', //this.$store.getters.getReceivedMessage.sender,
+        //receivedMessage: false,
         message: '',
         placeholderText: 'type message to ' + this.name,
 
@@ -38,14 +36,9 @@
     methods: {
       submitMessage() {
         if(this.message) {
-          let sender = this.$store.getters.getUsername;
-          let messageData = {
-            sender: this.$store.getters.getUsername,
-            message: this.message
-          }
-          //this.$store.commit('setReceivedMessage', messageData );
           this.$socket.emit('message', { message: this.message, recipient: this.name, sender: this.$store.getters.getUsername });
           this.message = '';
+          alert(`Message sent to ${this.name}`);
         }
       },
       cancelMessage() {
@@ -88,7 +81,7 @@
 }
 
 #receivedTextNotice {
-  color:red;
+  color:rgb(112, 31, 31);
   font-size:0.8rem;
   text-align:center;
   margin:5px;
@@ -96,8 +89,8 @@
 }
 
 #cancelMessage, #submitMessage {
-  width:50px;
-  height:30px;
-
+  margin:auto;
 }
+
+
 </style>
