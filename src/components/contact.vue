@@ -1,5 +1,5 @@
 <template>
-<div v-if="this.$store.getters.getLoggedStatus || msgReceived.message">
+<div v-if="this.$store.getters.getLoggedStatus">
   <div class="container-fluid text-center" id="sendMessageBox">
     <div class="row">
       <div class="col-md-12">
@@ -39,6 +39,7 @@
           this.$socket.emit('message', { message: this.message, recipient: this.name, sender: this.$store.getters.getUsername });
           this.message = '';
           alert(`Message sent to ${this.name}`);
+          this.$emit('messageSent');
         }
       },
       cancelMessage() {

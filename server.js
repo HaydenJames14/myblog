@@ -66,7 +66,7 @@ io.on('connection', function(socket) {
         });
     });
 
-    io.on('disconnnnected', function() {
+    io.on('disconnnnected', function(data) {
         User.findOneAndUpdate({ username: data }, { $set: { active: false } }, function(err, res) {
             if (res) {
                 socket.emit('left', res);

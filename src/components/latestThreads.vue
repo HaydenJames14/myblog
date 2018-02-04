@@ -117,7 +117,7 @@ strong {
 }
 
 .slide-up-enter-active, .fade-leave-active {
-  transition: opacity 1.5s
+  transition: opacity 2.5s
 }
 .slide-up-enter, .fade-leave-to {
   opacity: 0

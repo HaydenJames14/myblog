@@ -24,11 +24,7 @@ export const store = new Vuex.Store({
         filteredData: [],
         searchText: '',
         searchType: 'threads',
-        messages: [],
-        receivedMessage: {
-            message: '',
-            sender: ''
-        }
+        messages: []
     },
     getters: {
         getuser(state) {

@@ -3,7 +3,7 @@
       <h6 class="text-center" id="membersHeading">Members List</h6>
       <p style="font-weight:normal; font-style: italic; margin-bottom:20px;" class="text-center" id="membersHeading">(active members in bold)</p>
       <p style="font-weight:normal; font-style: italic; margin-bottom:20px;" class="text-center" id="subHeading">(click to message)</p>
-      <contact v-if="contacting" :name='memberName' :msgReceived="incomingMessage"></contact>
+      <contact v-if="contacting" :name='memberName' :msgReceived="incomingMessage" @messageSent="contacting = false"></contact>  <!-- :contacting="contacting" -->
       <ul>
         <li v-for="member in orderedMembers" :key="member.username"><p class="memberName text-center" @click="contactMember(member.username, member.active)" :class="{setBold: member.active === true}">
           {{ member.username }}</p></li>
@@ -22,7 +22,7 @@
         return {
           contacting: false,
           memberName: '',
-          receivedMessage: false,
+          //receivedMessage: false,
           receivedFrom: '',
           name_selected: false,
           incomingMessage: {}
@@ -75,7 +75,7 @@
             created: Date.now()
           }
           this.$store.commit('setMessages', this.incomingMessage);
-          this.receivedMessage = true;
+          //this.receivedMessage = true;
         },
         loadmembers(data) {
           this.$store.dispatch('setAllMembers', data);

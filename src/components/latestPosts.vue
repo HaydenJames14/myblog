@@ -2,7 +2,7 @@
   <div class="container-fluid" id="postList">
     <h5 class="list-title">Latest Posts</h5>
     <ul>
-      <li  v-for="post in orderedPosts" :key="post._id">
+      <li  v-for="post in orderedPosts" :key="post._id" class="latestPostsList">
         <div class="card card-body">
           <h6 class="title flex-item"><strong>{{ post.title }}</strong></h6>
           <img class="" :src="post.image">
@@ -65,14 +65,14 @@ ul {
   padding:0;
   overflow-y:scroll;
   height:120vh;
-
 }
 
 li {
   list-style: none;
-  margin-bottom:8px;
+  margin-bottom:0px;
   margin-right:10px;
   padding:5px;
+  margin-top:2px;
 }
 
 .title {
@@ -87,11 +87,15 @@ li {
   font-size: 1rem;
 }
 
+.latestPostsList {
+  margin-bottom:-10px;
+}
 .enhance {
   color: rgb(197, 45, 45);
   font-size:0.9rem;
   font-style: italic;
   font-family: 'Times New Roman', Times, serif;
+  padding-bottom:2px;
 }
 
 .view-btn {
@@ -101,5 +105,7 @@ li {
 
 .thread-footer {
   font-size:0.9rem;
+  padding-bottom:4px;
+  margin:0;
 }
 </style>
