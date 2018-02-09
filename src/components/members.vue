@@ -1,15 +1,14 @@
 <template>
     <div id="members-list">
       <h6 class="text-center" id="membersHeading">Members List</h6>
-      <p style="font-weight:normal; font-style: italic; margin-bottom:20px;" class="text-center" id="membersHeading">(active members in bold)</p>
-      <p style="font-weight:normal; font-style: italic; margin-bottom:20px;" class="text-center" id="subHeading">(click to message)</p>
+      <p style="font-weight:normal; font-style: italic; margin-bottom:20px;" class="text-center" id="membersSubHeading">(active members in bold)</p>
+      <p style="font-weight:normal; font-style: italic; margin-bottom:20px; line-height:0.8" class="text-center" id="subHeading">(click to message)</p>
       <contact v-if="contacting" :name='memberName' :msgReceived="incomingMessage" @messageSent="contacting = false"></contact>  <!-- :contacting="contacting" -->
       <ul>
-        <li v-for="member in orderedMembers" :key="member.username"><p class="memberName text-center" @click="contactMember(member.username, member.active)" :class="{setBold: member.active === true}">
-          {{ member.username }}</p></li>
+        <li v-for="member in orderedMembers" :key="member.username"><p v-if="member.username != $store.getters.getUsername" class="memberName text-center" @click="contactMember(member.username, member.active)" :class="{setBold: member.active === true}">
+         {{ member.username }}</p>
+        </li>
       </ul>
-
-
     </div>
 </template>
 
@@ -53,17 +52,7 @@
         }
       },
       mounted() {
-        this.$socket.emit('memberList');
-        /*
-          this.$http.get("http://localhost:5000/allMembers").then(response => {
-              if(response) {
-                  this.$store.dispatch('setAllMembers', response.data);
-              } else {
-                  console.log('could not retrieve members');
-              }
-          }).catch(err => {
-              console.log('Error: '+ err + ' Could not retrieve members')
-          }) */
+        this.$socket.emit('membersList');
       },
       sockets: {
         messageReceived(data) {
@@ -77,7 +66,8 @@
           this.$store.commit('setMessages', this.incomingMessage);
           //this.receivedMessage = true;
         },
-        loadmembers(data) {
+        loadMembers(data) {
+          console.log('In loadMembers socket method in members.vue. Value of data = '+data);
           this.$store.dispatch('setAllMembers', data);
         }
       },
@@ -88,22 +78,35 @@
 </script>
 
 <style scoped>
+
+
   #membersHeading {
     color:green;
     margin-top:20px;
+    font-size:1.8rem;
+    font-weight:bold;
+  }
+
+  #membersSubHeading {
+    color:green;
+    font-size:1.2rem;
+    font-weight:bold;
   }
 
   #subHeading {
     color: rgb(23, 134, 23);
+    font-size:1rem;
   }
 
   #members-list {
       margin:20px;
       background-color: lightblue;
-      border:3px ridge navy;
+      border:10px solid deepskyblue;
       border-radius: 6px;
       overflow: auto;
       height: 100%;
+      font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+
   }
 
   .memberName {
@@ -114,6 +117,7 @@
       font-size:1rem;
       cursor: pointer;
       color: navy;
+      font-size:1.4rem;
   }
 
   .memberName:hover {

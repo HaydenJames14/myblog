@@ -8,7 +8,8 @@ export const store = new Vuex.Store({
         user: {
             username: '',
             email: '',
-            userId: ''
+            userId: '',
+            active: false
         },
         threads: [],
         posts: [],
@@ -61,10 +62,10 @@ export const store = new Vuex.Store({
             return state.myPosts
         },
         getAllMembers(state) {
-            return state.allMembers.filter(function(member) {
-                return member.username != state.user.username;
-            });
-            //return state.allMembers;
+            /*var members = state.allMembers.filter(function(m) {
+                return m.username != state.user.username;
+            }); */
+            return state.allMembers;
         },
         getThreadName(state) {
             return state.threadName;
@@ -101,15 +102,15 @@ export const store = new Vuex.Store({
             state.user.username = payload.username;
             state.user.email = payload.email;
             state.user.userId = payload.userId;
+            state.user.active = true;
             sessionStorage.setItem('accessToken', token);
             state.loggedStatus = true;
-            //store.commit('SET_MEMBER_ACTIVE', payload.username);
         },
         setUserNone(state) {
-            //store.commit('SOCKET_SET_MEMBER_NOT_ACTIVE', store.getters.getUsername);
             state.user.username = '';
             state.user.email = '';
             state.user.userId = '';
+            state.user.active = false;
             sessionStorage.removeItem("accessToken");
             state.loggedStatus = false;
         },
@@ -169,21 +170,30 @@ export const store = new Vuex.Store({
             state.loggedStatus = payload;
         },
         SOCKET_SET_MEMBER_ACTIVE(state, payload) {
-            let members = state.allMembers.map(m =>
-                m.username === payload ? {...m, active: true } : m
-            )
-            store.dispatch('setAllMembers', members);
+            let members = state.allMembers.map(function(m) {
+                if (m.username === payload) { return m.active = true }
+            });
+
+            for (let i = 0; state.allMembers.length; i++) {
+                if (state.allMembers.username === payload) {
+                    state.allMembers.active = true
+                }
+            }
+
+            console.log('In setAllMembers. Value of members is ' + members);
+            console.log('In socket_set_member_active');
+            store.commit('setAllMembers', members);
         },
         SOCKET_SET_MEMBER_NOT_ACTIVE(state, payload) {
-            let members = state.allMembers.map(m =>
-                m.username === payload ? {...m, active: false } : m
-            )
+            let members = state.allMembers.map(function(m) {
+                if (m.username === payload) {
+                    return m.active = false
+                }
+            })
             store.dispatch('setAllMembers', members);
+            console.log('In socket_set_member_not_active');
+            store.commit('setAllMembers', members);
         },
-        // setReceivedMessage(state, payload) {
-        //     state.receivedMessage.message = payload.message;
-        //     state.receivedMessage.sender = payload.sender;
-        // },
         setMessages(state, payload) {
             state.messages.push(payload);
         }

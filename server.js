@@ -29,23 +29,25 @@ app.use(Routes);
 
 io.on('connection', function(socket) {
     // Tell clients someone signed in
-    socket.on('signedIn', (data) => {
-        socket.join(data);
-        User.findOneAndUpdate({ username: data }, { $set: { active: true } }, function(err, res) {
+    socket.on('signedIn', (name) => {
+        User.findOneAndUpdate({ username: name }, { $set: { active: true } }, function(err, res) {
             if (res) {
-                socket.broadcast.emit('joined', data);
+                socket.join(name);
+                socket.broadcast.emit('joined', name);
             }
         });
     });
     // Tell clients someone signed out
-    socket.on('signedOut', (data) => {
-        User.findOneAndUpdate({ username: data }, { $set: { active: false } }, function(err, res) {
+    socket.on('signedOut', (name) => {
+        User.findOneAndUpdate({ username: name }, { $set: { active: false } }, function(err, res) {
             if (err) res.send(err);
             if (res) {
-                socket.emit('userLeft', res); // broadcast.
+                //User.find({}, function(err, response) {
+                socket.emit('userLeft', res);
+                //console.log('res from socket on signedOut = ' + res);
+                socket.leave(name);
             }
         });
-        //socket.leave(data);
     });
 
     // Send message to logged in user
@@ -55,14 +57,13 @@ io.on('connection', function(socket) {
         socket.broadcast.to(data.recipient).emit('messageReceived', { message: data.message, sender: data.sender });
     });
 
-    socket.on('memberList', () => {
+    socket.on('membersList', () => {
+        console.log('In membersList socket event_ server.js');
         User.find({}, function(err, data) {
             if (err) {
-                //res.status(401).send('No data');
                 return;
             }
-            //res.send(data);
-            socket.emit('loadmembers', data);
+            socket.emit('loadMembers', data);
         });
     });
 

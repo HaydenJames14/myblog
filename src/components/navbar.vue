@@ -184,7 +184,7 @@ export default {
             email: response.body.email,
             userId: response.body.userId
           }
-          localStorage.setItem('therightvoice_user', user);
+          //localStorage.setItem('therightvoice_user', user);
           sessionStorage.setItem("accessToken", response.body.token);
           this.$store.commit('setUser', response.body);
           this.$socket.emit('signedIn', user.username);
@@ -214,17 +214,16 @@ export default {
   },
   sockets: {
       joined(user) {
-        //console.log('Client logged in event fired with: '+user);
+        console.log('Client logged in event fired with: '+user);
         if(user){
-          this.$store.commit('SOCKET_SET_MEMBER_ACTIVE', user);
-          //console.log('user joined');
+          //this.$store.commit('SOCKET_SET_MEMBER_ACTIVE', user);
         }
+        this.$socket.emit('membersList');
       },
       userLeft(user) {
         console.log('Client logged out event fired');
         if(user) {
-          this.$store.commit('SOCKET_SET_MEMBER_NOT_ACTIVE', user);
-          //console.log('user left');
+          //this.$store.commit('SOCKET_SET_MEMBER_NOT_ACTIVE', user);
         }
       }
   }

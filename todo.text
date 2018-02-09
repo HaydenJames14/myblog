@@ -5,3 +5,9 @@ items to add to improve application
 3. Add transitions to lists and possibly more.
 4. Add socket.io functuality to members list and new posts.
 5. Replace using duplicate filters with mixins if possible.
+
+
+
+NOTES
+
+1. active status of member not updated on client but is on server on log out
