@@ -212,7 +212,6 @@ Router.get('/allMembers', function(req, res) {
 }); */
 
 const postImageStorage = multer.diskStorage({
-    //destination: './public/images/postImages/',
     destination: (req, file, cb) => {
         cb(null, './public/images/postImages/');
     },

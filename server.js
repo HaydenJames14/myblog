@@ -42,9 +42,7 @@ io.on('connection', function(socket) {
         User.findOneAndUpdate({ username: name }, { $set: { active: false } }, function(err, res) {
             if (err) res.send(err);
             if (res) {
-                //User.find({}, function(err, response) {
                 socket.emit('userLeft', res);
-                //console.log('res from socket on signedOut = ' + res);
                 socket.leave(name);
             }
         });

@@ -170,29 +170,37 @@ export const store = new Vuex.Store({
             state.loggedStatus = payload;
         },
         SOCKET_SET_MEMBER_ACTIVE(state, payload) {
-            let members = state.allMembers.map(function(m) {
+            /*let members = state.allMembers.map(function(m) {
                 if (m.username === payload) { return m.active = true }
-            });
+            }); */
 
-            for (let i = 0; state.allMembers.length; i++) {
+            for (let i = 0; i < state.allMembers.length; i++) {
                 if (state.allMembers.username === payload) {
                     state.allMembers.active = true
                 }
             }
-
-            console.log('In setAllMembers. Value of members is ' + members);
             console.log('In socket_set_member_active');
-            store.commit('setAllMembers', members);
+            store.commit('setAllMembers', state.allMembers);
         },
         SOCKET_SET_MEMBER_NOT_ACTIVE(state, payload) {
             let members = state.allMembers.map(function(m) {
+                console.log('username: ' + m.username)
                 if (m.username === payload) {
-                    return m.active = false
+                    m.active = false;
+                    console.log('In map.. value of m: ' + m);
+                    return m
+                } else {
+                    return m
                 }
             })
-            store.dispatch('setAllMembers', members);
-            console.log('In socket_set_member_not_active');
             store.commit('setAllMembers', members);
+            /*for (let i = 0; i < state.allMembers.length; i++) {
+                if (state.allMembers[i].username === payload) {
+                    state.allMembers[i].active = false
+                }
+            } */
+            console.log('In socket_set_member_not_active');
+            store.commit('setAllMembers', state.allMembers);
         },
         setMessages(state, payload) {
             state.messages.push(payload);

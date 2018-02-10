@@ -61,13 +61,13 @@
           this.incomingMessage = {
             message: data.message,
             sender: data.sender,
-            created: Date.now()
+            //created: Date.now().toLocaleString()
           }
           this.$store.commit('setMessages', this.incomingMessage);
           //this.receivedMessage = true;
         },
         loadMembers(data) {
-          console.log('In loadMembers socket method in members.vue. Value of data = '+data);
+          //console.log('In loadMembers socket method in members.vue. Value of data = '+data);
           this.$store.dispatch('setAllMembers', data);
         }
       },
