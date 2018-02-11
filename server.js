@@ -33,7 +33,9 @@ io.on('connection', function(socket) {
         User.findOneAndUpdate({ username: name }, { $set: { active: true } }, function(err, res) {
             if (res) {
                 socket.join(name);
-                socket.broadcast.emit('joined', name);
+                User.find({}, function(err, members) {
+                    socket.broadcast.emit('loadMembers', members);
+                });
             }
         });
     });
@@ -42,8 +44,10 @@ io.on('connection', function(socket) {
         User.findOneAndUpdate({ username: name }, { $set: { active: false } }, function(err, res) {
             if (err) res.send(err);
             if (res) {
-                socket.emit('userLeft', res);
                 socket.leave(name);
+                User.find({}, function(err, members) {
+                    socket.broadcast.emit('loadMembers', members);
+                });
             }
         });
     });

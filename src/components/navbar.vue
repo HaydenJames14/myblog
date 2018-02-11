@@ -213,17 +213,18 @@ export default {
     }
   },
   sockets: {
-      joined(user) {
+      joined(members) {
         console.log('Client logged in event fired with: '+user);
-        if(user){
+        if(members){
           //this.$store.commit('SOCKET_SET_MEMBER_ACTIVE', user);
         }
         this.$socket.emit('membersList');
       },
-      userLeft(user) {
+      userLeft(members) {
         console.log('Client logged out event fired');
-        if(user) {
-          this.$store.commit('SOCKET_SET_MEMBER_NOT_ACTIVE', user);
+        if(members) {
+          //this.$store.commit('SOCKET_SET_MEMBER_NOT_ACTIVE', user);
+
         }
       }
   }

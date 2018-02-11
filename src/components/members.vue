@@ -66,9 +66,9 @@
           this.$store.commit('setMessages', this.incomingMessage);
           //this.receivedMessage = true;
         },
-        loadMembers(data) {
-          //console.log('In loadMembers socket method in members.vue. Value of data = '+data);
-          this.$store.dispatch('setAllMembers', data);
+        loadMembers(members) {
+          console.log('In loadMembers socket method in members.vue. Value of data = '+members);
+          this.$store.dispatch('setAllMembers', members);
         }
       },
       components: {

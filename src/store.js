@@ -9,7 +9,7 @@ export const store = new Vuex.Store({
             username: '',
             email: '',
             userId: '',
-            active: false
+            active: undefined
         },
         threads: [],
         posts: [],
@@ -170,15 +170,15 @@ export const store = new Vuex.Store({
             state.loggedStatus = payload;
         },
         SOCKET_SET_MEMBER_ACTIVE(state, payload) {
-            /*let members = state.allMembers.map(function(m) {
+            let members = state.allMembers.map(function(m) {
                 if (m.username === payload) { return m.active = true }
-            }); */
-
-            for (let i = 0; i < state.allMembers.length; i++) {
-                if (state.allMembers.username === payload) {
-                    state.allMembers.active = true
-                }
-            }
+            });
+            /*
+                        for (let i = 0; i < state.allMembers.length; i++) {
+                            if (state.allMembers.username === payload) {
+                                state.allMembers.active = true
+                            }
+                        } */
             console.log('In socket_set_member_active');
             store.commit('setAllMembers', state.allMembers);
         },
