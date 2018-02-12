@@ -67,7 +67,7 @@
           //this.receivedMessage = true;
         },
         loadMembers(members) {
-          console.log('In loadMembers socket method in members.vue. Value of data = '+members);
+          //console.log('In loadMembers socket method in members.vue. Value of data = '+members);
           this.$store.dispatch('setAllMembers', members);
         }
       },

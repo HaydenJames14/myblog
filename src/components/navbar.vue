@@ -197,6 +197,7 @@ export default {
     logOut() {
       sessionStorage.removeItem("accessToken");
       this.$socket.emit('signedOut', this.$store.getters.getUsername);
+      this.$store.commit('SOCKET_SET_MEMBER_NOT_ACTIVE', this.$store.getters.getUsername);
       this.$store.commit('setUserNone');
       this.$router.push('/latestThreads');
     },
