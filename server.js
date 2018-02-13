@@ -60,7 +60,7 @@ io.on('connection', function(socket) {
     });
 
     socket.on('membersList', () => {
-        console.log('In membersList socket event_ server.js');
+        //console.log('In membersList socket event_ server.js');
         User.find({}, function(err, data) {
             if (err) {
                 return;

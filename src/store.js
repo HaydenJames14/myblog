@@ -62,9 +62,6 @@ export const store = new Vuex.Store({
             return state.myPosts
         },
         getAllMembers(state) {
-            /*var members = state.allMembers.filter(function(m) {
-                return m.username != state.user.username;
-            }); */
             return state.allMembers;
         },
         getThreadName(state) {
@@ -184,7 +181,6 @@ export const store = new Vuex.Store({
         },
         SOCKET_SET_MEMBER_NOT_ACTIVE(state, payload) {
             let members = state.allMembers.map(function(m) {
-                console.log('username: ' + m.username)
                 if (m.username === payload) {
                     m.active = false;
                     console.log('In map.. value of m: ' + m);
@@ -194,11 +190,6 @@ export const store = new Vuex.Store({
                 }
             })
             store.commit('setAllMembers', members);
-            /*for (let i = 0; i < state.allMembers.length; i++) {
-                if (state.allMembers[i].username === payload) {
-                    state.allMembers[i].active = false
-                }
-            } */
             console.log('In socket_set_member_not_active');
             store.commit('setAllMembers', state.allMembers);
         },

@@ -10,4 +10,6 @@ items to add to improve application
 
 NOTES
 
-1. active status of member not updated on client on log out
+contact form:
+part 1: send message - to show on clicking logged in members name if user also logged in
+part 2: received message - to automatically show, with part 1, when new message received

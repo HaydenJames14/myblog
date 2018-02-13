@@ -3,9 +3,11 @@
       <h6 class="text-center" id="membersHeading">Members List</h6>
       <p style="font-weight:normal; font-style: italic; margin-bottom:20px;" class="text-center" id="membersSubHeading">(active members in bold)</p>
       <p style="font-weight:normal; font-style: italic; margin-bottom:20px; line-height:0.8" class="text-center" id="subHeading">(click to message)</p>
-      <contact v-if="contacting" :name='memberName' :msgReceived="incomingMessage" @messageSent="contacting = false"></contact>  <!-- :contacting="contacting" -->
+      <contact v-if="contacting || incomingMessage.message" :receivedMessage='incomingMessage' :name="memberName" :contacting="contacting" @messageSent="contacting = false" v-on:messageSent="messageSent"></contact>
       <ul>
-        <li v-for="member in orderedMembers" :key="member.username"><p v-if="member.username != $store.getters.getUsername" class="memberName text-center" @click="contactMember(member.username, member.active)" :class="{setBold: member.active === true}">
+        <li v-for="member in orderedMembers" :key="member.username"><p v-if="member.username != $store.getters.getUsername" class="memberName text-center"
+           @click="contactMember(member.username, member.active)"
+           :class="{setBold: member.active === true}">
          {{ member.username }}</p>
         </li>
       </ul>
@@ -16,13 +18,11 @@
   import contact from '../components/contact.vue'
   export default {
       name: 'members',
-      props: [ 'name' ],
+      props: [ 'receivedMessage' ],
       data() {
         return {
           contacting: false,
           memberName: '',
-          //receivedMessage: false,
-          receivedFrom: '',
           name_selected: false,
           incomingMessage: {}
         }
@@ -41,10 +41,13 @@
             }else {
               this.memberName = recipientName;
               this.contacting = true;
-              this.name_selected = true;
+            //this.name_selected = true;
             }
           }
         },
+        messageSent() {
+          this.contacting = false;
+        }
       },
       computed: {
         orderedMembers() {
@@ -64,7 +67,9 @@
             //created: Date.now().toLocaleString()
           }
           this.$store.commit('setMessages', this.incomingMessage);
-          //this.receivedMessage = true;
+          this.contacting = true;
+          this.membername = data.sender;
+
         },
         loadMembers(members) {
           //console.log('In loadMembers socket method in members.vue. Value of data = '+members);
@@ -138,3 +143,9 @@
     color:green;
   }
 </style>
+
+
+/*
+@messageSent="contacting = false"
+
+*/
