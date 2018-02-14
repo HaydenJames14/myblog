@@ -3,7 +3,8 @@
       <h6 class="text-center" id="membersHeading">Members List</h6>
       <p style="font-weight:normal; font-style: italic; margin-bottom:20px;" class="text-center" id="membersSubHeading">(active members in bold)</p>
       <p style="font-weight:normal; font-style: italic; margin-bottom:20px; line-height:0.8" class="text-center" id="subHeading">(click to message)</p>
-      <contact v-if="contacting || incomingMessage.message" :receivedMessage='incomingMessage' :name="memberName" :contacting="contacting" @messageSent="contacting = false" v-on:messageSent="messageSent"></contact>
+      <contact v-if="contacting || incomingMessage.message" :receivedMessage='incomingMessage' :name="membersName" :contacting='contacting'
+          @messageSent='contacting = false' v-on:messageSent="messageSent"></contact>
       <ul>
         <li v-for="member in orderedMembers" :key="member.username"><p v-if="member.username != $store.getters.getUsername" class="memberName text-center"
            @click="contactMember(member.username, member.active)"
@@ -18,18 +19,18 @@
   import contact from '../components/contact.vue'
   export default {
       name: 'members',
-      props: [ 'receivedMessage' ],
+      //props: [ 'receivedMessage' ],
       data() {
         return {
           contacting: false,
-          memberName: '',
+          membersName: '',
           name_selected: false,
           incomingMessage: {}
         }
       },
       methods: {
         contactMember(recipientName, status) {
-          // Called when member is selected
+          // Called when member is selected and opens up contact window
           if(this.name_selected === true) { return; }
           if(!this.$store.getters.getLoggedStatus) {
             this.contacting = false;
@@ -39,14 +40,18 @@
               this.contacting = false;
               alert(`${recipientName} must be logged in to receive messages`);
             }else {
-              this.memberName = recipientName;
+              this.membersName = recipientName;
+              this.$store.commit('setMessageRecipient', recipientName);
+              console.log('memberName: '+this.membersName);
               this.contacting = true;
             //this.name_selected = true;
             }
           }
         },
         messageSent() {
-          this.contacting = false;
+          //this.contacting = false;
+          console.log('message sent method')
+          this.membersName = ''
         }
       },
       computed: {
@@ -64,15 +69,12 @@
           this.incomingMessage = {
             message: data.message,
             sender: data.sender,
-            //created: Date.now().toLocaleString()
           }
-          this.$store.commit('setMessages', this.incomingMessage);
           this.contacting = true;
-          this.membername = data.sender;
 
+          //this.membername = data.sender;
         },
         loadMembers(members) {
-          //console.log('In loadMembers socket method in members.vue. Value of data = '+members);
           this.$store.dispatch('setAllMembers', members);
         }
       },

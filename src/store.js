@@ -16,7 +16,6 @@ export const store = new Vuex.Store({
         threadId: '',
         filteredThread: [],
         allMembers: [],
-        msg: '',
         threadName: '',
         loggedStatus: false,
         myThreads: [],
@@ -25,7 +24,7 @@ export const store = new Vuex.Store({
         filteredData: [],
         searchText: '',
         searchType: 'threads',
-        messages: []
+        messageRecipient: ''
     },
     getters: {
         getuser(state) {
@@ -67,9 +66,6 @@ export const store = new Vuex.Store({
         getThreadName(state) {
             return state.threadName;
         },
-        getMsg(state) {
-            return state.msg;
-        },
         getLoggedStatus(state) {
             return state.loggedStatus;
         },
@@ -82,16 +78,8 @@ export const store = new Vuex.Store({
         getSearchType(state) {
             return state.searchType;
         },
-        getReceivedMessage(state) {
-            return state.receivedMessage;
-        },
-        getAllMessages(state) {
-            return state.messages;
-        },
-        getConversation(state, payload) {
-            return state.messages.filter(function(message) {
-                return message.sender === payload.sender
-            })
+        getMessageRecipient(state) {
+            return state.messageRecipient;
         }
     },
     mutations: {
@@ -166,6 +154,9 @@ export const store = new Vuex.Store({
         setLoggedStatus(state, payload) {
             state.loggedStatus = payload;
         },
+        setMessageRecipient(state, payload) {
+            state.messageRecipient = payload;
+        },
         SOCKET_SET_MEMBER_ACTIVE(state, payload) {
             let members = state.allMembers.map(function(m) {
                 if (m.username === payload) { return m.active = true }
@@ -176,14 +167,13 @@ export const store = new Vuex.Store({
                                 state.allMembers.active = true
                             }
                         } */
-            console.log('In socket_set_member_active');
+            //console.log('In socket_set_member_active');
             store.commit('setAllMembers', state.allMembers);
         },
         SOCKET_SET_MEMBER_NOT_ACTIVE(state, payload) {
             let members = state.allMembers.map(function(m) {
                 if (m.username === payload) {
                     m.active = false;
-                    console.log('In map.. value of m: ' + m);
                     return m
                 } else {
                     return m
@@ -192,9 +182,6 @@ export const store = new Vuex.Store({
             store.commit('setAllMembers', members);
             console.log('In socket_set_member_not_active');
             store.commit('setAllMembers', state.allMembers);
-        },
-        setMessages(state, payload) {
-            state.messages.push(payload);
         }
     },
     actions: {

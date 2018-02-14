@@ -1,11 +1,11 @@
 <template>
-<div id="contactBox">
-  <!-- message received notification box -->
-  <div id="receivedMessageBox"  v-if="receivedMessage.sender">
+<div id="contactBox" v-show="this.$store.getters.getLoggedStatus">
+  <!-- message received notification window -->
+  <div id="receivedMessageBox"  v-show="receivedMessage.sender">
     <p id="receivedTextNotice">Message received from {{ receivedMessage.sender }}</p>
     <p id="receivedMessageText" style="margin-bottom:5px; color:red;">{{ receivedMessage.message }}</p>
   </div>
-  <div class="container-fluid text-center" id="sendMessageBox" v-if="receivedMessage || contacting">
+  <div class="container-fluid text-center" id="sendMessageBox" v-if="receivedMessage.sender || contacting">
     <div class="row">
       <div class="col-md-12">
         <input type="text" id="messageText" :placeholder='placeholderText' autofocus v-model="message">
@@ -24,28 +24,39 @@
 <script>
   export default {
     name: 'contact',
+    /* name stores initial clicked members name for placeholder text, receivedMessage stores received message text and sender,
+      contacting true or false to show/hide contact window, set to true on clicking members name, false on closing contact window */
     props: ['receivedMessage', 'name', 'contacting'],
     data() {
       return {
-        //receivedMessage: false,
         message: '',
-        placeholderText: 'type message to ' + this.name,
+        placeholderText: this.setPlaceholderText()
       }
     },
     methods: {
       submitMessage() {
-        if(this.message) {                      /* error below getters.getusername and receivedMessage.sender not working  */
-          this.$socket.emit('message', { message: this.message, recipient: this.name, sender: this.$store.getters.getUsername }); //
-          this.message = '';
-          //alert(`Message sent to ${this.name}`);
+        if(this.message) {
+          console.log('message text: '+this.message);
+          console.log('message recipient: '+this.$store.getters.getMessageRecipient);
+          console.log('message sender: '+this.$store.getters.getUsername);
+          this.$socket.emit('message', { message: this.message, recipient: this.$store.getters.getMessageRecipient, sender: this.$store.getters.getUsername });
           this.$emit('messageSent');
+          this.message = '';
 
+          //alert(`Message sent to ${this.name}`);
+        }
+      },
+      setPlaceholderText() {
+        if(this.name) {
+          return 'type message to '+ this.name
+        } else {
+          return 'type message to '+ this.receivedMessage.sender
         }
       },
       cancelMessage() {
         $('#contactBox').css('display', 'none');
-
       }
+
     }
 
   }
