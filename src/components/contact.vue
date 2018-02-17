@@ -13,8 +13,8 @@
     </div>
     <div class="row">
       <div class="col-md-12" id="btnContact">
-        <button type="close" class="btn btn-warning" style="margin-right:20px;" id="cancel_message" @click.prevent="cancelMessage">Cancel</button>
-        <button type="submit" class="btn btn-success" id="submit_message" @click.prevent="submitMessage">Send</button>
+        <button type="close" class="btn btn-warning" style="margin-right:20px height:40px; width:60px; padding:5px" id="cancel_message" @click.prevent="cancelMessage">Cancel</button>
+        <button type="submit" class="btn btn-success" id="submit_message" style="height:40px; width:60px; padding:5px;" @click.prevent="submitMessage">Send</button>
       </div>
     </div>
   </div>
@@ -71,15 +71,6 @@
   margin-top:5px;
 }
 
-#btnContact {
-  display:fles;
-  justify-content:space-between;
-
-}
-
-#btnContact > btn {
-  margin-right:20px;
-}
 #receivedMessageBox {
   flex-direction: column;
   justify-content: center;

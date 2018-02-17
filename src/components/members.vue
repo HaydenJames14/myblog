@@ -71,6 +71,7 @@
             sender: data.sender,
           }
           this.contacting = true;
+          this.$store.commit('setMessageRecipient', data.sender);
 
           //this.membername = data.sender;
         },

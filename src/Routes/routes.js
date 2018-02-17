@@ -199,17 +199,6 @@ Router.get('/allMembers', function(req, res) {
 });
 
 // SET UP MULTER
-/*const postImageStorage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, './public/images/postImages/');
-    },
-    filename: (req, file, cd) => {
-        cd(null, `${file.originalname}_${Date.now()}`);
-        const ext = path.extname(file.originalname);
-        imagePath = postImagePath + '/' + file.filename + ext;
-        console.log('imagePath: ' + imagePath);
-    }
-}); */
 
 const postImageStorage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -265,21 +254,23 @@ Router.post('/newPost', function(req, res) {
                 if (err) {
                     res.status(500).send(err);
                 } else {
-                    let imageFile = '';
                     if (req.file) {
-                        imageFile = fs.readFileSync(req.file, (err, image) => {
-
-                        })
+                        let file = req.file.path;
+                        console.log('dirname:' + __dirname);
+                        console.log('File name: ' + file.filename);
+                        fs.readFile(file, (err, image) => {
+                                const postData = {
+                                    postedBy: post.postedBy,
+                                    posterId: post.posterId,
+                                    threadID: post.threadId,
+                                    threadName: post.threadName,
+                                    title: post.postText,
+                                    image: image
+                                };
+                            })
+                            //console.log('Post data Image: ' + postData.image);
                     }
-                    const postData = {
-                        postedBy: post.postedBy,
-                        posterId: post.posterId,
-                        threadID: post.threadId,
-                        threadName: post.threadName,
-                        title: post.postText,
-                        image: imageFile
-                    };
-                    console.log(path.file);
+                    console.log(req.file);
                     console.log('two');
                     res.writeHead(200, { 'Content-Type': 'application/json' });
                     //res.status(200).json(postData);
@@ -346,3 +337,20 @@ Router.post('/updateProfile', function(req, res) {
 });
 
 module.exports = Router;
+
+
+
+
+
+
+/*const postImageStorage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, './public/images/postImages/');
+    },
+    filename: (req, file, cd) => {
+        cd(null, `${file.originalname}_${Date.now()}`);
+        const ext = path.extname(file.originalname);
+        imagePath = postImagePath + '/' + file.filename + ext;
+        console.log('imagePath: ' + imagePath);
+    }
+}); */
