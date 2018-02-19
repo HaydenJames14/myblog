@@ -78,7 +78,6 @@ export default {
         return;
       }
       let postImage = this.$refs.imageUpload.files[0];
-      //console.log('postImage: '+ postImage);
 
       if(this.postText === '' && !postImage) {
         return;
@@ -92,14 +91,10 @@ export default {
       }
       else {
         this.$store.commit('setMsg','');
-        var formData = new FormData();
+
         // Set up form data
+        var formData = new FormData();
         formData.append('postedBy', this.$store.getters.getUsername);
-        /*console.log('username: '+this.$store.getters.getUsername);
-        console.log('userId: '+this.$store.getters.getUserId);
-        console.log('postText: '+this.postText);
-        console.log('threadId: '+this.$store.getters.getThreadId);
-        console.log('threadName: '+this.$store.getters.getThreadName); */
         formData.append('posterId', this.$store.getters.getUserId);
         formData.append('postText', this.postText);
         formData.append('threadId', this.$store.getters.getThreadId);
@@ -107,7 +102,7 @@ export default {
         if(postImage) {
           formData.append('image', postImage)
         } else {
-          formData.append('image', {})
+          formData.append('image', null)
         }
         formData.append('token', sessionStorage.getItem('accessToken'));
         $.ajax({
@@ -119,7 +114,8 @@ export default {
           enctype: 'multipart/form-data',
           processData: false,
           success: function(response) {
-            this.posts.push(response.body);
+            store.commit('setNewPost', response)
+
           },
           error: function(err){
             console.log(err)

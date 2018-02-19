@@ -16,7 +16,14 @@ let path = require('path');
 let multer = require('multer');
 const postImagePath = 'public/images/postImages/';
 const avatarImagePath = 'public/images/avatars/';
-var imagePath = '';
+const postData = {
+    postedBy: '',
+    posterId: '',
+    threadID: '',
+    threadName: '',
+    title: '',
+    image: null
+};
 app.use(multer);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -245,36 +252,36 @@ Router.post('/newPost', function(req, res) {
             } else {
                 imageName = '';
             }
-
-            console.log('postedBy: ' + postedBy);
-
             // read image file here
 
             Posts.create({ postedBy: postedBy, posterId: posterId, threadID: threadId, threadName: threadName, title: postText, imageUrl: imageName }, function(err, post) {
                 if (err) {
                     res.status(500).send(err);
                 } else {
-                    if (req.file) {
-                        let file = req.file.path;
-                        console.log('dirname:' + __dirname);
-                        console.log('File name: ' + file.filename);
-                        fs.readFile(file, (err, image) => {
-                                const postData = {
-                                    postedBy: post.postedBy,
-                                    posterId: post.posterId,
-                                    threadID: post.threadId,
-                                    threadName: post.threadName,
-                                    title: post.postText,
-                                    image: image
-                                };
-                            })
-                            //console.log('Post data Image: ' + postData.image);
-                    }
-                    console.log(req.file);
-                    console.log('two');
-                    res.writeHead(200, { 'Content-Type': 'application/json' });
-                    //res.status(200).json(postData);
+                    console.log('one');
+                    let file = req.file.path;
+                    console.log('File path: ' + req.file.path);
+                    fs.readFile(file, (err, image) => {
+                            postData.postedBy = post.postedBy;
+                            postData.posterId = post.posterId;
+                            postData.threadID = post.threadId;
+                            postData.threadName = post.threadName;
+                            postData.title = post.title;
+                            postData.image = post.image || null;
+                            /*postData = {
+                                postedBy: post.postedBy,
+                                posterId: post.posterId,
+                                threadID: post.threadId,
+                                threadName: post.threadName,
+                                title: post.postText,
+                                image: image
+                            }; */
+                        })
+                        //console.log('Post data Image: ' + postData.image);
                 }
+                //console.log(req.file);
+                //res.writeHead(200, { 'Content-Type': 'application/json' });
+                res.status(200).json(postData);
             })
         }
     })
@@ -282,28 +289,30 @@ Router.post('/newPost', function(req, res) {
 
 // Logged in users threads
 Router.get('/myThreads/:id', function(req, res) {
-    let id = req.params.id;
-    Thread.find({ creatorId: id }, function(err, data) {
-        if (err) {
-            res.status(500).send('Error retrieving your threads');
-            return;
-        } else {
-            res.send(data);
-        }
-    });
+    if (req.params.id) {
+        Thread.find({ creatorId: req.params.id }, function(err, data) {
+            if (err) {
+                res.status(500).send('Error retrieving your threads');
+                return;
+            } else {
+                res.send(data);
+            }
+        });
+    }
 });
 
 // Logged in users posts
 Router.get('/myPosts/:id', function(req, res) {
-    let id = req.params.id;
-    Posts.find({ posterId: id }, function(err, data) {
-        if (err) {
-            res.status(500).send('Error retrieving your posts');
-            return;
-        } else {
-            res.send(data);
-        }
-    });
+    if (req.params.id) {
+        Posts.find({ posterId: req.params.id }, function(err, data) {
+            if (err) {
+                res.status(500).send('Error retrieving your posts');
+                return;
+            } else {
+                res.send(data);
+            }
+        });
+    }
 });
 
 // Upvote post

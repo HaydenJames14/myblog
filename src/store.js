@@ -102,6 +102,9 @@ export const store = new Vuex.Store({
         setPosts(state, payload) {
             state.posts = payload;
         },
+        setNewPost(state, payload) {
+            state.posts.push(payload)
+        },
         setThreads(state, payload) {
             state.threads = payload;
         },
