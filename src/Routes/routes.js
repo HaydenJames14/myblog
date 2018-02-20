@@ -262,26 +262,19 @@ Router.post('/newPost', function(req, res) {
                     let file = req.file.path;
                     console.log('File path: ' + req.file.path);
                     fs.readFile(file, (err, image) => {
-                            postData.postedBy = post.postedBy;
-                            postData.posterId = post.posterId;
-                            postData.threadID = post.threadId;
-                            postData.threadName = post.threadName;
-                            postData.title = post.title;
-                            postData.image = post.image || null;
-                            /*postData = {
-                                postedBy: post.postedBy,
-                                posterId: post.posterId,
-                                threadID: post.threadId,
-                                threadName: post.threadName,
-                                title: post.postText,
-                                image: image
-                            }; */
-                        })
-                        //console.log('Post data Image: ' + postData.image);
+                        postData.postedBy = post.postedBy;
+                        postData.posterId = post.posterId;
+                        postData.threadID = post.threadId;
+                        postData.threadName = post.threadName;
+                        postData.title = post.title;
+                        postData.image = post.image || null;
+                    })
+                    res.status(200).json(postData);
+                    //console.log('Post data Image: ' + postData.image);
                 }
                 //console.log(req.file);
                 //res.writeHead(200, { 'Content-Type': 'application/json' });
-                res.status(200).json(postData);
+
             })
         }
     })

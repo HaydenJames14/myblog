@@ -113,9 +113,8 @@ export default {
           cache: false,
           enctype: 'multipart/form-data',
           processData: false,
-          success: function(response) {
-            store.commit('setNewPost', response)
-
+          success: (response) => {
+            this.$store.commit('setNewPost', response)
           },
           error: function(err){
             console.log(err)

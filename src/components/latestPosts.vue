@@ -5,7 +5,7 @@
       <li  v-for="post in orderedPosts" :key="post._id" class="latestPostsList">
         <div class="card card-body">
           <h6 class="title flex-item"><strong>{{ post.title }}</strong></h6>
-          <img class="" :src="post.image">
+          <img class="postImage img-fluid" :src="post.image">
           <router-link v-bind:to="'/thread/'+ post.threadID"><span class="link-span" @click="view(post.threadID, post.threadName)">open</span></router-link>
         </div>
         <div class="card-footer">
@@ -107,5 +107,10 @@ li {
   font-size:0.9rem;
   padding-bottom:4px;
   margin:0;
+}
+
+.postImage {
+  margin: auto auto;
+  border:1px solid grey;
 }
 </style>
