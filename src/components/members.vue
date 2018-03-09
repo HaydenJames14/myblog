@@ -1,7 +1,7 @@
 <template>
     <div id="members-list">
       <h6 class="text-center" id="membersHeading">Members List</h6>
-      <p style="font-weight:normal; font-style: italic; margin-bottom:20px;" class="text-center" id="membersSubHeading">(active members in bold)</p>
+      <p style="font-weight:normal; font-style: italic; margin-bottom:15px;" class="text-center" id="membersSubHeading">(active members in bold)</p>
       <p style="font-weight:normal; font-style: italic; margin-bottom:20px; line-height:0.8" class="text-center" id="subHeading">(click to message)</p>
       <contact v-if="contacting || incomingMessage.message" :receivedMessage='incomingMessage' :name="membersName" :contacting='contacting'
           @messageSent='contacting = false' v-on:messageSent="messageSent"></contact>

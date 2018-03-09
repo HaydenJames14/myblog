@@ -39,12 +39,17 @@ io.on('connection', function(socket) {
             }
         });
     });
+
     // Tell clients someone signed out
     socket.on('signedOut', (name) => {
         User.findOneAndUpdate({ username: name }, { $set: { active: false } }, function(err, res) {
-            if (err) res.send(err);
+            if (err) {
+                console.log(err);
+                res.send(err);
+            }
             if (res) {
                 socket.leave(name);
+                console.log(name + ' left 1');
                 User.find({}, function(err, members) {
                     socket.broadcast.emit('loadMembers', members);
                 });
@@ -60,7 +65,6 @@ io.on('connection', function(socket) {
     });
 
     socket.on('membersList', () => {
-        //console.log('In membersList socket event_ server.js');
         User.find({}, function(err, data) {
             if (err) {
                 return;
@@ -69,10 +73,16 @@ io.on('connection', function(socket) {
         });
     });
 
-    io.on('disconnnnected', function(data) {
-        User.findOneAndUpdate({ username: data }, { $set: { active: false } }, function(err, res) {
+    io.on('disconnnnected', function(username) {
+        User.findOneAndUpdate({ username: username }, { $set: { active: false } }, function(err, res) {
+            console.log('user left');
+            if (err) {
+                socket.leave(username)
+            }
             if (res) {
                 socket.emit('left', res);
+                socket.leave(username);
+                console.log(username + ' left 2');
             }
         });
     });

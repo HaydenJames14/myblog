@@ -4,8 +4,8 @@
     <ul>
       <li  v-for="post in orderedPosts" :key="post._id" class="latestPostsList">
         <div class="card card-body">
-          <h6 class="title flex-item"><strong>{{ post.title }}</strong></h6>
-          <img class="postImage img-fluid" :src="post.image">
+          <h6 class="title flex-item"><strong>{{ post.title }}</strong></h6><br>
+          <img class="postImage img-fluid" v-if="post.imageUrl" src="'data:image/jpg;base64,'+ post.imageUrl" />
           <router-link v-bind:to="'/thread/'+ post.threadID"><span class="link-span" @click="view(post.threadID, post.threadName)">open</span></router-link>
         </div>
         <div class="card-footer">
@@ -21,11 +21,6 @@
     import moment from 'moment'
     export default {
       name: 'latestPosts',
-      data() {
-        return {
-          posts: {}
-        }
-      },
       methods: {
         view(id,threadname) {
           this.$store.commit('setThreadId', id );
@@ -41,16 +36,18 @@
         }
       },
       mounted() {
-        this.$http.get("http://localhost:5000/latestPosts").then(response => {
-          this.$store.dispatch('setPosts', response.data);
+        this.$http.get("http://localhost:5000/latestPosts").then(res => {
+          this.$store.dispatch('setPosts', res.data);
           }).catch(err => {
-            console.log('Error retrieving data');
+            console.log('Error retrieving data: '+ err);
           });
       },
       computed: {
         orderedPosts: function() {
-          let posts = this.$store.getters.getPosts;
-          return this.$lodash.orderBy(posts,['postedOn'], ['desc']);
+          //console.log('posts2: '+this.posts);
+          if(this.$store.getters.getPosts.length > 0) {
+            return this.$lodash.orderBy(this.$store.getters.getPosts,['postedOn'], ['desc']);
+          }
         }
       },
       sockets: {
@@ -110,7 +107,13 @@ li {
 }
 
 .postImage {
+  display:block;
   margin: auto auto;
   border:1px solid grey;
+  min-width:200px;
+  min-height:200px;
+  max-width:100%;
+  max-height:100vh;
+  align-self: left;
 }
 </style>

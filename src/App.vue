@@ -39,25 +39,36 @@ export default {
     navbar, latestPosts, latestThreads, myPosts, myThreads, members, thread, addPost, filtered
   },
   mounted() {
-    window.addEventListener('onbeforeunload', this.befoureUnload);
+    window.addEventListener('beforeunload', this.beforeUnload);
   },
+  beforeDestroy() {
+    confirm('Log out?', function() {
+      if(true) {
+        this.$socket.emit('signedOut', this.$store.getters.getUsername);
+        sessionStorage.removeItem("accessToken");
+      } else return false
+    })
+  }/*,
   beforeUnload() {
-    alert('closing');
-    sessionStorage.removeItem("accessToken");
-    alert('Closing 1');
-    this.$socket.emit('signedOut', this.$store.getters.getUsername);
+    confirm('Log out2?', function() {
+      if(true) {
+        this.$socket.emit('signedOut', this.$store.getters.getUsername);
+        this.$store.commit('setUserNone');
+      } else return false
+    })
+  } */
+
      /*
     if(this.$store.getters.getUsername) {
       this.$http.post('http://localhost:5000/logout', { username: this.$store.getters.getUsername }).then(response => {
       this.$store.commit('setUserNone');
-      this.$store.commit('setLoggedStatus', false);
     }).catch(err => {
       console.log(err)
     });
     } */
-  }
-
 }
+
+
 </script>
 
 <style scoped>

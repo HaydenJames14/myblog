@@ -14,6 +14,7 @@ let bodyParser = require('body-parser');
 let fs = require('fs');
 let path = require('path');
 let multer = require('multer');
+let btoa = require('btoa');
 const postImagePath = 'public/images/postImages/';
 const avatarImagePath = 'public/images/avatars/';
 const postData = {
@@ -162,14 +163,38 @@ Router.get('/latestThreads', function(req, res) {
 });
 
 // GET ALL POSTS
-Router.get('/latestPosts', function(req, res) {
-    Posts.find({}, function(err, response) {
+Router.get('/latestPosts', function(req, response) {
+    var posts = [];
+    var postData = {};
+
+    Posts.find({}, function(err, res) {
         if (err) {
-            response.status(401).send(err);
-            return;
+            res.status(401).send(err);
+        } else {
+            // read imageUrl to obtain actual image for post
+            for (var i = 0; i < res.length; i++) {
+                if (res[i].imageUrl) {
+                    var image = fs.readFile(path + res[i].imageUrl, (err, image) => {
+                        if (err) {
+                            postData.image = null;
+                        } else {
+                            postData.image = btoa(image);
+                        }
+                    })
+                }
+                /*postData.postedBy = res[i].postedBy;
+                postData.posterId = res[i].posterId;
+                postData.threadID = res[i].threadId;
+                postData.threadName = res[i].threadName;
+                postData.title = res[i].title;
+                posts.push(postData); */
+                posts[i] = res[i];
+            }
+            console.log('Posts: ' + posts);
+            response.set({ 'content-type': 'application/json' });
+            response.json(posts);
         }
-        res.json(response);
-    });
+    })
 });
 
 // get single thread from post
@@ -267,13 +292,12 @@ Router.post('/newPost', function(req, res) {
                         postData.threadID = post.threadId;
                         postData.threadName = post.threadName;
                         postData.title = post.title;
-                        postData.image = post.image || null;
+                        postData.image = image || null;
                     })
-                    res.status(200).json(postData);
-                    //console.log('Post data Image: ' + postData.image);
+                    res.set({ 'content-type': 'application/json' });
+                    res.json(postData);
                 }
-                //console.log(req.file);
-                //res.writeHead(200, { 'Content-Type': 'application/json' });
+
 
             })
         }
@@ -339,20 +363,3 @@ Router.post('/updateProfile', function(req, res) {
 });
 
 module.exports = Router;
-
-
-
-
-
-
-/*const postImageStorage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, './public/images/postImages/');
-    },
-    filename: (req, file, cd) => {
-        cd(null, `${file.originalname}_${Date.now()}`);
-        const ext = path.extname(file.originalname);
-        imagePath = postImagePath + '/' + file.filename + ext;
-        console.log('imagePath: ' + imagePath);
-    }
-}); */

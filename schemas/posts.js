@@ -1,6 +1,6 @@
 let mongoose = require('mongoose');
 let schema = mongoose.Schema;
-var passportLocalMongoose = require('passport-local-mongoose');
+//let passportLocalMongoose = require('passport-local-mongoose');
 
 
 let postSchema = new schema({
