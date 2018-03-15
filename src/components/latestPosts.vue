@@ -4,13 +4,25 @@
     <ul>
       <li  v-for="post in orderedPosts" :key="post._id" class="latestPostsList">
         <div class="card card-body">
-          <h6 class="title flex-item"><strong>{{ post.title }}</strong></h6><br>
-          <img class="postImage img-fluid" v-if="post.imageUrl" src="'data:image/jpg;base64,'+ post.imageUrl" />
-          <router-link v-bind:to="'/thread/'+ post.threadID"><span class="link-span" @click="view(post.threadID, post.threadName)">open</span></router-link>
+          <div class="content">
+            <router-link  v-bind:to="'/thread/'+ post.threadID" @click="view(post.threadID, post.threadName)">
+              <h6 class="title flex-item"><strong>{{ post.title }}</strong></h6><br>
+              <img class="postImage img-fluid" v-if="post.image" :src="'data:image/*;base64,'+ post.image" alt="No Image" />
+            </router-link>
+          </div>
+          <div>
+            <router-link v-bind:to="'/thread/'+ post.threadID"><span class="link-span" @click="view(post.threadID, post.threadName)">open</span></router-link>
+          </div>
         </div>
-        <div class="card-footer">
-          <p class="thread-footer">thread: <span class="enhance">{{ post.threadName }}</span></p>
-          <p class="thread-footer">created by: <strong class="postedByText">{{ post.postedBy }}</strong>   on: <strong>{{ post.postedOn | moment }}</strong></p>
+        <div class="container-fluid card-footer hidden-sm hidden-xs">
+          <div class="row post-footer">
+            <div class="col-sm-12 col-md-6">
+              <p class="thread-footer">thread: <span class="enhance">{{ post.threadName }}</span></p>
+            </div>
+            <div class="col-sm-12 col-md-6">
+              <p class="thread-footer">created by: <strong class="postedByText">{{ post.postedBy }}</strong>   on: <strong>{{ post.postedOn | moment }}</strong></p>
+            </div>
+          </div>
         </div>
       </li>
     </ul>
@@ -21,6 +33,11 @@
     import moment from 'moment'
     export default {
       name: 'latestPosts',
+      data() {
+        return {
+          contentType: ''
+        }
+      },
       methods: {
         view(id,threadname) {
           this.$store.commit('setThreadId', id );
@@ -36,15 +53,15 @@
         }
       },
       mounted() {
-        this.$http.get("http://localhost:5000/latestPosts").then(res => {
-          this.$store.dispatch('setPosts', res.data);
+        this.$http.get("http://localhost:5000/latestPosts").then(posts => {
+          this.$store.dispatch('setPosts', posts.data);
+          //this.contentType = posts.data.image.content-type;
           }).catch(err => {
             console.log('Error retrieving data: '+ err);
           });
       },
       computed: {
         orderedPosts: function() {
-          //console.log('posts2: '+this.posts);
           if(this.$store.getters.getPosts.length > 0) {
             return this.$lodash.orderBy(this.$store.getters.getPosts,['postedOn'], ['desc']);
           }
@@ -62,6 +79,16 @@ ul {
   padding:0;
   overflow-y:scroll;
   height:120vh;
+}
+
+.card-body {
+  display:flex;
+}
+
+.post-footer p {
+  display:flex;
+  padding-bottom: 3px;
+  justify-content: space-between
 }
 
 li {
@@ -104,16 +131,23 @@ li {
   font-size:0.9rem;
   padding-bottom:4px;
   margin:0;
+  justify-content: space-between;
+}
+
+.content {
+  display:flex;
+  flex-direction: column;
+  justify-content: flex-start;
 }
 
 .postImage {
   display:block;
-  margin: auto auto;
+  margin: 20px 0;
   border:1px solid grey;
-  min-width:200px;
-  min-height:200px;
+  min-width:100px;
+  min-height:100px;
   max-width:100%;
   max-height:100vh;
-  align-self: left;
+
 }
 </style>

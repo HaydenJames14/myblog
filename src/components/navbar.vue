@@ -1,6 +1,6 @@
 <template>
 <div class="container-fluid">
-  <nav class="navbar navbar-expand-lg">
+  <nav class="navbar navbar-expand-md navbar-dark">
   <div class="flex-item">
     <a class="navbar-brand" href="#"><span style="font-size:1.0rem; color:orange; font-style:italic">the</span><span style="font-size:1.8rem; color:red;">Right</span><span style="font-size:1.8rem; color:green;">Voice</span></a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -241,6 +241,10 @@ export default {
   background-color: transparent;
   display:flex;
   margin-bottom: 30px;
+}
+
+.navbar-toggler {
+  float:right;
 }
 
 h1, h2 {

@@ -1,5 +1,4 @@
 let express = require('express');
-//let mongoose = require('mongoose');
 let User = require('../../schemas/users');
 let Thread = require('../../schemas/threads');
 let Posts = require('../../schemas/Posts');
@@ -17,14 +16,7 @@ let multer = require('multer');
 let btoa = require('btoa');
 const postImagePath = 'public/images/postImages/';
 const avatarImagePath = 'public/images/avatars/';
-const postData = {
-    postedBy: '',
-    posterId: '',
-    threadID: '',
-    threadName: '',
-    title: '',
-    image: null
-};
+
 app.use(multer);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -165,36 +157,32 @@ Router.get('/latestThreads', function(req, res) {
 // GET ALL POSTS
 Router.get('/latestPosts', function(req, response) {
     var posts = [];
-    var postData = {};
 
     Posts.find({}, function(err, res) {
         if (err) {
             res.status(401).send(err);
         } else {
-            // read imageUrl to obtain actual image for post
             for (var i = 0; i < res.length; i++) {
-                if (res[i].imageUrl) {
-                    var image = fs.readFile(path + res[i].imageUrl, (err, image) => {
-                        if (err) {
-                            postData.image = null;
-                        } else {
-                            postData.image = btoa(image);
-                        }
-                    })
+                // read imageUrl to obtain actual image for post
+                if (!res[i].image == '') {
+                    var image = fs.readFileSync('./public/images/postImages/' + res[i].image);
+                    var imageData = new Buffer(image).toString('base64');
+                    if (err || !image) {
+                        console.log(err)
+                        posts[i] = res[i];
+                    } else {
+                        posts[i] = res[i];
+                        posts[i].image = imageData;
+                    }
+                } else {
+                    posts[i] = res[i];
                 }
-                /*postData.postedBy = res[i].postedBy;
-                postData.posterId = res[i].posterId;
-                postData.threadID = res[i].threadId;
-                postData.threadName = res[i].threadName;
-                postData.title = res[i].title;
-                posts.push(postData); */
-                posts[i] = res[i];
             }
-            console.log('Posts: ' + posts);
-            response.set({ 'content-type': 'application/json' });
-            response.json(posts);
         }
+        response.set({ 'content-type': 'application/json' });
+        response.send(posts);
     })
+
 });
 
 // get single thread from post
@@ -228,8 +216,7 @@ Router.get('/allMembers', function(req, res) {
         }
         res.send(data);
     });
-});
-
+});;
 // SET UP MULTER
 
 const postImageStorage = multer.diskStorage({
@@ -265,40 +252,46 @@ Router.post('/newPost', function(req, res) {
         res.status(501).send('No data');
         return;
     }
+    var postData = {};
     upload(req, res, (err) => {
         if (err) {
             return;
         } else {
-            console.log('req.file: ' + req.file);
+            //console.log('req.file: ' + req.file);
             var imageName = '';
             const { postedBy, posterId, postText, threadId, threadName } = req.body;
             if (req.file) {
-                imageName = req.file.originalname;
+                imageName = req.file.filename;
             } else {
                 imageName = '';
             }
-            // read image file here
 
-            Posts.create({ postedBy: postedBy, posterId: posterId, threadID: threadId, threadName: threadName, title: postText, imageUrl: imageName }, function(err, post) {
+            Posts.create({ postedBy: postedBy, posterId: posterId, threadID: threadId, threadName: threadName, title: postText, image: imageName }, function(err, post) {
                 if (err) {
                     res.status(500).send(err);
                 } else {
-                    console.log('one');
-                    let file = req.file.path;
-                    console.log('File path: ' + req.file.path);
-                    fs.readFile(file, (err, image) => {
+                    if (req.file.path) {
+                        let file = req.file.path;
+                        // read image file
+                        fs.readFile(file, (err, image) => {
+                            postData.postedBy = post.postedBy;
+                            postData.posterId = post.posterId;
+                            postData.threadID = post.threadId;
+                            postData.threadName = post.threadName;
+                            postData.title = post.title;
+                            postData.image = image; //btoa(image);
+                        })
+                    } else {
                         postData.postedBy = post.postedBy;
                         postData.posterId = post.posterId;
                         postData.threadID = post.threadId;
                         postData.threadName = post.threadName;
                         postData.title = post.title;
-                        postData.image = image || null;
-                    })
+                        postData.image = null;
+                    }
                     res.set({ 'content-type': 'application/json' });
                     res.json(postData);
                 }
-
-
             })
         }
     })
@@ -363,3 +356,26 @@ Router.post('/updateProfile', function(req, res) {
 });
 
 module.exports = Router;
+
+
+
+/*var image = fs.readFile(path + res[i].imageUrl, (err, image) => {
+												postData.image = image;
+												postData.postedBy = res[i].postedBy;
+												postData.posterId = res[i].posterId;
+												postData.threadID = res[i].threadId;
+												postData.threadName = res[i].threadName;
+												postData.postedOn = res[i].postedOn;
+												postData.title = res[i].title;
+												posts[i] = postData;
+												console.log('post with image: ' + posts[i]);
+										}) */
+
+/*console.log(res);
+				postData.postedBy = res[i].postedBy;
+				postData.posterId = res[i].posterId;
+				postData.threadID = res[i].threadId;
+				postData.threadName = res[i].threadName;
+				postData.postedOn = res[i].postedOn;
+				postData.title = res[i].title;
+				postData.image = image; */

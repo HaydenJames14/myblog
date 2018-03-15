@@ -24,7 +24,6 @@
         </form>
       </div>
     </section>
-
     <section id="body-section">
       <div class="row">
         <div class="col-md-12">
@@ -33,7 +32,7 @@
             <li v-for="post in orderedPosts" :key="post._id">
               <div class="card card-body">
                 <h6 class="title flex-item" style="padding:5px; height:auto; min-height:35px; overflox-x:auto"><strong>{{ post.title }}</strong></h6>
-                <img :src='post.image' class=".img-fluid">
+                <img v-if="post.image" :src="'data:image/jpg;base64,'+ post.image" class="img-fluid">
               </div>
               <div class="card card-footer">
                 <p><i class="fa fa-thumbs-o-up" @click="voteUp(post._id), post.likes += 1" aria-hidden="true"> {{ post.likes }}</i> <i class="fa fa-thumbs-o-down" @click="voteDown(post._id), post.dislikes += 1" aria-hidden="true"> {{ post.dislikes }}</i></p>
@@ -234,6 +233,7 @@ strong {
   font-size: 0.8rem;
   font-style: italic;
   margin:0;
+  padding-bottom:3px;
 }
 
 .fa {
@@ -283,40 +283,3 @@ strong {
 
 </style>
 
-<!-- <div class="col-md-3">
-  <vue-clip :options="options" class="uploader">
-    <template slot="clip-uploader-action">
-      <div class="uploader-action">
-        <div class="dz-message">
-          <h6>Drag & Drop image file here or click to browse</h6>
-        </div>
-      </div>
-    </template>
-    <template slot="clip-uploader-body" scope="props">
-      <div class="uploader-files">
-        <div class="uploader-file">
-          <div class="file-avatar">
-            <img v-bind:src="props.files.dataUrl" v-model="imageFile">
-          </div>
-        </div>
-      </div>
-      <div class="file-progress" v-if="props.files.status !== 'error' && props.files.status !== 'success'">
-        <span class="progress-indicator" v-bind:style="{width: props.files.progress + '%'}"></span>
-      </div>
-    </template>
-  </vue-clip>
-
-</div> -->
-
-
-
-<!--options: {
-  url: 'http://localhost:5000/newPost/',
-  paramName: 'file',
-  uploadMultiple: false,
-  acceptedFiles: {
-    extensions: ['image/*'],
-    message: 'Image files only!'
-  },
-  maxFiles: 1
-} -->

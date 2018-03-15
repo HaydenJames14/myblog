@@ -114,7 +114,6 @@
       overflow: auto;
       height: 100%;
       font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
-
   }
 
   .memberName {
@@ -144,6 +143,14 @@
   .setBold {
     font-weight:bolder;
     color:green;
+  }
+
+  @media screen and (max-width:768px) {
+    #membersList {
+      margin:0;
+      padding:5px;
+      border: none;
+    }
   }
 </style>
 

@@ -5,10 +5,10 @@
     <div class="container-fluid">
     <h5 id="errorMsg">{{ $store.getters.getMsg }}</h5>
       <div class="row">
-        <div class="col-sm-12 col-md-9">
+        <div class="col-sm-12 col-md-7 col-lg-9">
           <router-view></router-view>
         </div>
-        <div class="col-sm-12 col-md-3">
+        <div class="col-sm-12 col-md-5 col-lg-3" id="membersList">
           <members></members>
         </div>
       </div>
@@ -165,6 +165,7 @@ li {
   color: red;
   font-weight: bold;
 }
+
 
 </style>
 
