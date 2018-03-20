@@ -24,7 +24,6 @@ mongoose.connect('mongodb://localhost:27017/myBlogs', function(err) {
         console.log("Database Connected")
     }
 });
-
 app.use(Routes);
 
 io.on('connection', function(socket) {

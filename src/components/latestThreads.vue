@@ -6,7 +6,7 @@
         <li v-for="thread in orderedThreads" :key="thread._id">
           <div class="card card-body">
             <h6 class="title flex-item"><strong>{{ thread.title }}</strong></h6>
-            <router-link v-bind:to="'/thread/'+ thread._id"><span class="link-span" @click="view(thread._id, thread.title)">view</span></router-link>  <!-- + thread._id   -->
+            <router-link v-bind:to="'/thread/'+ thread._id"><span class="link-span" @click="view(thread._id, thread.title)">view</span></router-link>
           </div>
           <div class="card card-footer">
             <p class="single-thread-footer">created by: <strong class="postByText">{{ thread.creatorName }}</strong>   on: <strong>{{ thread.createdOn | moment }}</strong></p>

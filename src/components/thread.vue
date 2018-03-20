@@ -1,44 +1,41 @@
 <template>
   <div class="container-fluid">
-    <section id="newPost" v-if="this.$store.getters.getLoggedStatus">
-      <div class="col-md-12">
-        <form id="addPost_form" class="form-group" enctype="multipart/form-data" @submit.prevent="addPost">
-          <div class="container">
-            <div class="row">
-              <div class="col-md-12">
-                <textarea id="noteText" class="form-control flex-item" placeholder="add post" autofocus rows="4" v-model="postText"></textarea>
-              </div>
-            </div>
+    <section class="row">
+      <form id="addPost_form" class="col-sm-12 col-md-8 col-md-offset-2" method="POST" enctype="multipart/form-data">
+        <div class="form-group col-md-6 col-xs-12">
+          <div id="new-post-text">
+            <textarea id="noteText" class="form-control flex-item" placeholder="add post" autofocus rows="4" v-model="postText"></textarea>
           </div>
-          <div class="container" id="uploader">
-            <div class="row">
-              <div class="col-md-12">
-                <div class="col-md-12">
-                  <h6 id="uploadText" style="display:inline-block; color:black;">Upload Image: </h6>
-                  <input type="file" name="postImage" accept="image/*" class="form-control" id="imageUploader" ref="imageUpload"/>
-                  <button type="submit" class="btn btn-primary form-control flex-item" id="submit-btn" style="display:block;">Submit</button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </form>
-      </div>
+        </div>
+        <div class="form-group col-md-6 col-xs-12">
+          <h6 id="uploadText">Upload Image: </h6>
+          <input type="file" name="postImage" accept="image/*" class="form-control" ref="imageUpload"/>
+          <button type="submit" class="btn btn-primary form-control flex-item" id="submit-btn" style="display:block;"  @click="addPost">Submit</button>
+        </div>
+      </form>
     </section>
+
     <section id="body-section">
       <div class="row">
         <div class="col-md-12">
           <h6 class="list-title" id="title">{{ this.$store.getters.getThreadName }}</h6>
           <ul>
-            <li v-for="post in orderedPosts" :key="post._id">
-              <div class="card card-body">
-                <h6 class="title flex-item" style="padding:5px; height:auto; min-height:35px; overflox-x:auto"><strong>{{ post.title }}</strong></h6>
-                <img v-if="post.image" :src="'data:image/jpg;base64,'+ post.image" class="img-fluid">
+            <transition-group tag='li' name='slide-up'>
+              <li v-for="post in orderedPosts" :key="post._id">
+              <div class="row">
+                <div class="card card-body">
+                  <h6 class="title flex-item" style="padding:5px; height:auto; min-height:35px; overflox-x:auto"><strong>{{ post.title }}</strong></h6>
+                  <img v-if="post.image" :src="'data:image/jpg;base64,'+ post.image" class="img-fluid post-image">
+                </div>
               </div>
-              <div class="card card-footer">
-                <p><i class="fa fa-thumbs-o-up" @click="voteUp(post._id), post.likes += 1" aria-hidden="true"> {{ post.likes }}</i> <i class="fa fa-thumbs-o-down" @click="voteDown(post._id), post.dislikes += 1" aria-hidden="true"> {{ post.dislikes }}</i></p>
-                <p class="post-footer">posted by: <strong class="postedByText">{{ post.postedBy | toUpperCase }}</strong>on: <strong>{{ post.postedOn | moment }}</strong></p>
+              <div class="row">
+                <div class="card card-footer col-xs-12">
+                  <p class="post-footer"><i class="fa fa-thumbs-o-up" @click="voteUp(post._id), post.likes += 1" aria-hidden="true"> {{ post.likes }}</i> <i class="fa fa-thumbs-o-down" @click="voteDown(post._id), post.dislikes += 1" aria-hidden="true"> {{ post.dislikes }}</i></p>
+                  <p class="post-footer">posted by: <strong class="postedByText">{{ post.postedBy | toUpperCase }} : {{ post.postedOn | moment }}</strong></p>
+                </div>
               </div>
-            </li>
+              </li>
+            </transition-group>
           </ul>
         </div>
       </div>
@@ -72,6 +69,7 @@ export default {
   },
   methods: {
     addPost(e) {
+      e.preventDefault();
       if(!sessionStorage.getItem('accessToken')) {
         console.log('Please log in');
         return;
@@ -184,8 +182,7 @@ ul {
 li {
   list-style: none;
   margin-bottom:10px;
-  margin-right:10px;
-  border-bottom: 2px solid navy;
+  margin-right:6px;
 }
 
 .btn-addPost {
@@ -201,30 +198,40 @@ strong {
 }
 
 #addPost_form {
-  width:70%;
-  height:140px;
-  display:flex;
-  justify-content: center;
-  background-color:lightblue;
   margin:auto;
-  padding:10px 20px;
+  background-color:lightblue;
+  padding-top:20px;
   border-radius:5px;
-  border:2px solid darkblue;
-
+  overflow:hidden;
+  width:100%;
+  display:flex;
+  justify-content:center;
+  align-content: center;;
+  margin-bottom:20px;
 }
 
 #noteText {
   overflow-y: auto;
   height:120px;
   width:100%;
+  margin:2px;
 }
 
 #newPost {
   display:flex;
   justify-content:center;
-  width:100%;
+  width:100% !important;
   align-content: center;
-  margin-bottom:40px;
+  margin-left: 1px;
+  margin-right: 1px;
+  margin-bottom:15px;
+  background-color:lightblue;
+}
+
+.card-body {
+  display:flex;
+  flex-direction: column;
+  justify-content: flex-start;
 }
 
 .card-footer {
@@ -234,6 +241,16 @@ strong {
   font-style: italic;
   margin:0;
   padding-bottom:3px;
+}
+
+.post-image {
+  display:block;
+  margin: 20px 0;
+  border:1px solid grey;
+  min-width:100px;
+  min-height:100px;
+  max-width:50%;
+  max-height:100vh;
 }
 
 .fa {
@@ -250,9 +267,13 @@ strong {
 
 #uploadText {
   padding:0;
-  margin: 10px 10px 10px 0;
+  margin: 4px 10px 10px 0;
+  font-size:1rem;
   font-weight:bold;
   text-align:left;
+  display:inline-block;
+  padding-left:2px;
+  color:green;
 }
 
 #imageUploader {
@@ -263,23 +284,138 @@ strong {
 }
 
 #submit-btn {
-  width:40%;
-  height:30px;
-  margin:auto;
-  margin-top:10px;
-  margin-bottom:5px;
+  display:block;
+  margin-top:11px;
   background-color: green;
   color:white;
-  font-family:sans-serif,cursive;
+  font-family: 'Times New Roman', Times, serif;
   border:none;
 }
 
 #submit-btn:hover {
   cursor:pointer;
   color:red;
-  font-family:sans-serif;
 }
 
+/*****************************************************************************/
+@media screen and (max-width: 768px) {
+  *{
+    margin:0;
+    padding:0;
+  }
+
+  #addPost_form {
+    flex-direction: column;
+    margin:0;
+    margin:20px 0;
+  }
+  #noteText {
+    height:100px;
+    padding:3px;
+    width:90%;
+    margin:auto;
+
+  }
+
+  ul > li {
+    margin:0;
+  }
+
+  #title {
+    margin-bottom:10px;
+  }
+  #submit-btn {
+    display:block;
+    margin:auto;
+    margin-top:20px;
+    margin-bottom:15px;
+    width:80%;
+  }
+
+  #imageUploader {
+    font-size:0.7rem;
+    margin-left:5px;
+  }
+
+  #uploadText {
+    padding:0;
+    margin-left:8px;
+    font-size:0.8rem;
+    font-weight:bold;
+    text-align:left;
+    display:inline-block;
+    padding-left:2px;
+    color:green;
+  }
+
+  .body-section {
+    margin:0;
+    width:100%;
+  }
+
+  .card-body {
+    width:100%;
+    margin:0;
+  }
+
+  .card-footer {
+    margin-bottom:13px;
+    display:flex;
+    justify-content: flex-start;
+    flex-direction: row;
+    width:100%;
+  }
+
+  .post-footer {
+    text-align:left;
+    font-size:0.6rem;
+    margin-left:1px;
+    padding-top:2px;
+  }
+
+  .post-image {
+    display:block;
+    margin: 5px 5px;
+    min-width:250px;
+    min-height:250px;
+    max-width:100%;
+    max-height:100vh;
+}
+
+  .fa {
+    margin:0 3px;
+    padding-top:3px;
+    font-size:0.7rem;
+  }
+
+
+}
 
 </style>
 
+
+
+
+<!--
+
+<div class="row">
+        <div class="col-md-12">
+          <h6 class="list-title" id="title">{{ this.$store.getters.getThreadName }}</h6>
+          <ul>
+            <transition-group tag='li' name='slide-up'>
+              <li v-for="post in orderedPosts" :key="post._id">
+                <div class="card card-body">
+                  <h6 class="title flex-item" style="padding:5px; height:auto; min-height:35px; overflox-x:auto"><strong>{{ post.title }}</strong></h6>
+                  <img v-if="post.image" :src="'data:image/jpg;base64,'+ post.image" class="img-fluid post-image">
+                </div>
+                <div class="card card-footer">
+                  <p><i class="fa fa-thumbs-o-up" @click="voteUp(post._id), post.likes += 1" aria-hidden="true"> {{ post.likes }}</i> <i class="fa fa-thumbs-o-down" @click="voteDown(post._id), post.dislikes += 1" aria-hidden="true"> {{ post.dislikes }}</i></p>
+                  <p class="post-footer">posted by: <strong class="postedByText">{{ post.postedBy | toUpperCase }}</strong>on: <strong>{{ post.postedOn | moment }}</strong></p>
+                </div>
+              </li>
+            </transition-group>
+          </ul>
+        </div>
+      </div>
+
+-->

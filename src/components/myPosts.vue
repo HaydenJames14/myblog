@@ -1,19 +1,19 @@
 <template>
   <div class="container-fluid">
     <div class="row">
-      <div class="col-md-12">
+      <div class="col-sm-12">
         <h5 class="list-title">My Posts</h5>
         <ul>
           <li v-for="post in orderedPosts" :key="post.id">
             <div class="card card-body">
               <h6 class="title flex-item"><strong>{{ post.title }}</strong></h6>
+              <img class="postImage img-fluid flex-item" v-if="post.image" :src="'data:image/*;base64,'+ post.image" alt="Error: can not display Image" />
               <router-link v-bind:to="'/thread/'+ post.threadID"><span class="link-span" @click="view(post.threadID, post.threadName)">open</span></router-link>
             </div>
             <div class="card card-footer">
               <p class="thread-footer">thread: <span class="enhance">{{ post.threadName }}</span></p>
               <p class="thread-footer">created on: <strong class="postedByText">{{ post.createdOn | moment }}</strong></p>
             </div>
-
           </li>
         </ul>
       </div>
@@ -101,7 +101,22 @@
   font-family: 'Times New Roman', Times, serif;
 }
 
+.card-body {
+  display:flex;
+}
 
+.postImage {
+  display:flex;
+  justify-content: flex-start;
+  flex-direction: column;
+  margin: 20px 0;
+  border:1px solid grey;
+  min-width:100px;
+  min-height:100px;
+  max-width:100%;
+  max-height:100vh;
+
+}
 
 
 </style>

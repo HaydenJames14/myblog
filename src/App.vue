@@ -80,13 +80,19 @@ export default {
   }
 </style>
 
-
-
 // Global styles
 <style>
+* {
+  padding:0px;
+  margin:0px;
+}
+
 body{
   background-color: black;
   color: white;
+  width:100%;
+  min-width:320px;
+  margin:auto auto;
 }
 
 .title {

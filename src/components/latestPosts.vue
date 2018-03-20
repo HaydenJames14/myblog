@@ -2,33 +2,32 @@
   <div class="container-fluid" id="postList">
     <h5 class="list-title">Latest Posts</h5>
     <ul>
-      <li  v-for="post in orderedPosts" :key="post._id" class="latestPostsList">
-        <div class="card card-body">
-          <div class="content">
-            <router-link  v-bind:to="'/thread/'+ post.threadID" @click="view(post.threadID, post.threadName)">
-              <h6 class="title flex-item"><strong>{{ post.title }}</strong></h6><br>
-              <img class="postImage img-fluid" v-if="post.image" :src="'data:image/*;base64,'+ post.image" alt="No Image" />
-            </router-link>
-          </div>
-          <div>
-            <router-link v-bind:to="'/thread/'+ post.threadID"><span class="link-span" @click="view(post.threadID, post.threadName)">open</span></router-link>
-          </div>
-        </div>
-        <div class="container-fluid card-footer hidden-sm hidden-xs">
-          <div class="row post-footer">
-            <div class="col-sm-12 col-md-6">
-              <p class="thread-footer">thread: <span class="enhance">{{ post.threadName }}</span></p>
+      <transition-group tag='li' name='slide-up'>
+        <li  v-for="post in orderedPosts" :key="post._id" class="latestPostsList">
+          <div class="card card-body">
+            <div class="content" @click="view(post.threadID, post.threadName)" title="Click to view">
+                <h6 class="title flex-item"><strong>{{ post.title }}</strong></h6>
+                <img class="postImage img-fluid" v-if="post.image" :src="'data:image/*;base64,'+ post.image" alt="No Image" />
             </div>
-            <div class="col-sm-12 col-md-6">
-              <p class="thread-footer">created by: <strong class="postedByText">{{ post.postedBy }}</strong>   on: <strong>{{ post.postedOn | moment }}</strong></p>
+            <div class="d-none d-md-block">
+              <router-link v-bind:to="'/thread/'+ post.threadID"><span class="link-span" @click="view(post.threadID, post.threadName)">open</span></router-link>
             </div>
           </div>
-        </div>
-      </li>
+          <div class="container-fluid card-footer">
+            <div class="row post-footer">
+              <div class="col-sm-12 col-md-6">
+                <p class="thread-footer">thread:<span class="enhance">{{ post.threadName }}</span></p>
+              </div>
+              <div class="d-none col-sm-12 col-md-6 d-md-block">
+                <p class="thread-footer">posted by: <strong class="postedByText">{{ post.postedBy }}</strong>   on: <strong>{{ post.postedOn | moment }}</strong></p>
+              </div>
+            </div>
+          </div>
+        </li>
+      </transition-group>
     </ul>
   </div>
 </template>
-
 <script>
     import moment from 'moment'
     export default {
@@ -42,6 +41,7 @@
         view(id,threadname) {
           this.$store.commit('setThreadId', id );
           this.$store.commit('setThreadName', threadname );
+          this.$router.push('/thread/'+id);
         }
       },
       filters: {
@@ -85,6 +85,11 @@ ul {
   display:flex;
 }
 
+.card-footer {
+  display:flex;
+  justify-content:space-between;
+}
+
 .post-footer p {
   display:flex;
   padding-bottom: 3px;
@@ -114,6 +119,7 @@ li {
 .latestPostsList {
   margin-bottom:-10px;
 }
+
 .enhance {
   color: rgb(197, 45, 45);
   font-size:0.9rem;
@@ -140,6 +146,10 @@ li {
   justify-content: flex-start;
 }
 
+.content:hover {
+  cursor:pointer;
+}
+
 .postImage {
   display:block;
   margin: 20px 0;
@@ -149,5 +159,9 @@ li {
   max-width:100%;
   max-height:100vh;
 
+}
+
+router-link:hover {
+  text-decoration-style: none;
 }
 </style>

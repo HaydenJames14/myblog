@@ -2,7 +2,7 @@
 <div class="container-fluid">
   <nav class="navbar navbar-expand-md navbar-dark">
   <div class="flex-item">
-    <a class="navbar-brand" href="#"><span style="font-size:1.0rem; color:orange; font-style:italic">the</span><span style="font-size:1.8rem; color:red;">Right</span><span style="font-size:1.8rem; color:green;">Voice</span></a>
+    <a class="navbar-brand" href="#"><span id="span1">the</span><span id="span2">Right</span><span id="span3">Voice</span></a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -21,6 +21,14 @@
       <li class="nav-item" v-if='this.$store.getters.getLoggedStatus'>
         <router-link to="/myThreads" class="nav-link"><i class="fa fa-folder-open" aria-hidden="true"></i> My Threads</router-link>
       </li>
+      <li class="nav-item d-block d-sm-block d-md-none d-lg-none d-xl-none" v-if='this.$store.getters.getLoggedStatus'>
+        <i class="fa fa-sign-out" aria-hidden="true"></i>
+        <button type="button" id="logout-Btn" @click.prevent="logOut">Sign Out</button>
+      </li>
+      <li v-else class="nav-item d-block d-sm-block d-md-none d-lg-none d-xl-none">
+        <i class="fa fa-sign-in" aria-hidden="true"></i>
+        <button type="button" id="logout-Btn" @click.prevent="login">Log in</button>
+      </li>
     </ul>
     <form class="form-inline navbar-right searchForm flex-item" @click.prevent="search">
       <select class="form-control" id="searchOptions" v-model="searchType">
@@ -29,10 +37,10 @@
         <option value="member">search members</option>
       </select>
       <input class="form-control mr-sm-2" type="text" aria-label="Search"  id="searchBox" v-model="searchText">
-      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+      <button class="btn btn-outline-success my-2" type="submit">Search</button>
     </form>
   </div>
-    <ul class="nav navbar-nav navbar-right">
+    <ul class="nav navbar-nav navbar-right d-none d-sm-none d-md-block d-lg-block">
       <!-- Login & registration controls -->
       <li v-if="!this.$store.getters.getLoggedStatus" style="width:140px;"><a href="#Modal" data-toggle="modal"><i class="fa fa-sign-in" aria-hidden="true"></i> Sign In/Register</a></li>
       <li v-else style="width:140px;"><i class="fa fa-sign-out" aria-hidden="true"></i><a href="#" @click.prevent="logOut"> Sign Out</a></li>
@@ -184,7 +192,6 @@ export default {
             email: response.body.email,
             userId: response.body.userId
           }
-          //localStorage.setItem('therightvoice_user', user);
           sessionStorage.setItem("accessToken", response.body.token);
           this.$store.commit('setUser', response.body);
           this.$socket.emit('signedIn', user.username);
@@ -215,17 +222,14 @@ export default {
   },
   sockets: {
       joined(members) {
-        console.log('Client logged in event fired with: '+user);
         if(members){
           //this.$store.commit('SOCKET_SET_MEMBER_ACTIVE', user);
         }
         this.$socket.emit('membersList');
       },
       userLeft(members) {
-        console.log('Client logged out event fired');
         if(members) {
           //this.$store.commit('SOCKET_SET_MEMBER_NOT_ACTIVE', user);
-
         }
       }
   }
@@ -235,6 +239,64 @@ export default {
 
 
 <style scoped>
+
+@media screen and (max-width: 768px) {
+  .container-fluid {
+    margin:0;
+    padding:0;
+  }
+
+  #searchTerm {
+    margin-bottom:10px;
+  }
+
+  #searchOptions {
+    margin-bottom:10px;
+    width:100%;
+  }
+
+  #searchBox {
+    width:100%;
+  }
+
+  .navbar-brand {
+    margin-left:0;
+    font-size:0.8rem;
+  }
+
+  #span1 {
+    font-size:1rem;
+    color:orange;
+    font-style:italic;
+    margin-left:10px;
+  }
+
+  #span2 {
+    font-size:1.3rem;
+    color:red;
+  }
+
+  #span3 {
+    font-size:1.3rem;
+    color: green;
+  }
+
+  .navbar-collapse {
+    margin-top:20px;
+  }
+
+  .navbar-toggler {
+    margin-right:20px;
+  }
+
+  #logout-Btn {
+    color:red;
+    background-color: transparent;
+    border:none;
+    margin-bottom:15px;
+  }
+}
+/************************************************************/
 .navbar {
   margin:0;
   width:100%;
@@ -299,9 +361,6 @@ a {
   width:47%;
   margin:5px;
 }
-#searchTerm {
-  margin:0;
-}
 
 .fa fa-users .fa fa-user-circle {
   background-color:red;
@@ -333,4 +392,22 @@ a {
   color:grey;
   font-size:1rem;
 }
+
+#span1 {
+  font-size:1.2rem;
+  color:orange;
+  font-style:italic
+}
+
+#span2 {
+  font-size:1.8rem;
+  color:red;
+}
+
+#span3 {
+  font-size:1.8rem;
+  color: green;
+}
+
+
 </style>
