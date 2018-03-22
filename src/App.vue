@@ -37,35 +37,7 @@ export default {
   },
   components: {
     navbar, latestPosts, latestThreads, myPosts, myThreads, members, thread, addPost, filtered
-  },
-  mounted() {
-    window.addEventListener('beforeunload', this.beforeUnload);
-  },
-  beforeDestroy() {
-    confirm('Log out?', function() {
-      if(true) {
-        this.$socket.emit('signedOut', this.$store.getters.getUsername);
-        sessionStorage.removeItem("accessToken");
-      } else return false
-    })
-  }/*,
-  beforeUnload() {
-    confirm('Log out2?', function() {
-      if(true) {
-        this.$socket.emit('signedOut', this.$store.getters.getUsername);
-        this.$store.commit('setUserNone');
-      } else return false
-    })
-  } */
-
-     /*
-    if(this.$store.getters.getUsername) {
-      this.$http.post('http://localhost:5000/logout', { username: this.$store.getters.getUsername }).then(response => {
-      this.$store.commit('setUserNone');
-    }).catch(err => {
-      console.log(err)
-    });
-    } */
+  }
 }
 
 
@@ -88,8 +60,10 @@ export default {
 }
 
 body{
-  background-color: black;
-  color: white;
+  /*background-color: black;
+  color: white; */
+  background-color: #003871;
+  color:white;
   width:100%;
   min-width:320px;
   margin:auto auto;
@@ -170,6 +144,15 @@ li {
 .enhance {
   color: red;
   font-weight: bold;
+}
+
+.nav-link {
+  color:green !important;
+  border:none;
+}
+
+.nav-link:hover {
+  color: red !important;
 }
 
 

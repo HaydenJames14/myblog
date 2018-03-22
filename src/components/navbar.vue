@@ -305,6 +305,7 @@ export default {
   background-color: transparent;
   display:flex;
   margin-bottom: 30px;
+  color:green;
 }
 
 .navbar-toggler {
@@ -377,6 +378,7 @@ a {
   color: red;
   text-shadow: 2px 2px navy;
 }
+
 #btn-register {
   color: navy;
   font-weight: bold;

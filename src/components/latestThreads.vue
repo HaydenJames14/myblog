@@ -55,17 +55,7 @@
         this.$http.get("http://localhost:5000/latestThreads").then(response => {
           this.$store.dispatch('setThreads', response.data);
         })
-    },
-    beforeDestroy() {
-    confirm('Log out?', function() {
-      if(true) {
-        this.$socket.emit('signedOut', this.$store.getters.getUsername);
-        sessionStorage.removeItem("accessToken");
-      } else return false
-    })
-
     }
-
   }
 
 </script>

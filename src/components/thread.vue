@@ -29,7 +29,7 @@
                   </div>
                 </div>
                 <div class="row">
-                  <div class="card card-footer col-xs-12">
+                  <div class="card card-footer col-sm-12">
                     <p class="post-footer"><i class="fa fa-thumbs-o-up" @click="voteUp(post._id), post.likes += 1" aria-hidden="true"> {{ post.likes }}</i> <i class="fa fa-thumbs-o-down" @click="voteDown(post._id), post.dislikes += 1" aria-hidden="true"> {{ post.dislikes }}</i></p>
                     <p class="post-footer">posted by: <strong class="postedByText">{{ post.postedBy | toUpperCase }} : {{ post.postedOn | moment }}</strong></p>
                   </div>
