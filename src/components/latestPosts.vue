@@ -164,4 +164,18 @@ li {
 router-link:hover {
   text-decoration-style: none;
 }
+
+
+
+
+</style>
+
+<style>
+.slide-up-enter-active, .fade-leave-active {
+  transition: opacity 2.5s
+}
+
+.slide-up-enter, .fade-leave-to {
+  opacity: 0
+}
 </style>

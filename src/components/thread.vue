@@ -22,18 +22,18 @@
           <ul>
             <transition-group tag='li' name='slide-up'>
               <li v-for="post in orderedPosts" :key="post._id">
-              <div class="row">
-                <div class="card card-body">
-                  <h6 class="title flex-item" style="padding:5px; height:auto; min-height:35px; overflox-x:auto"><strong>{{ post.title }}</strong></h6>
-                  <img v-if="post.image" :src="'data:image/jpg;base64,'+ post.image" class="img-fluid post-image">
+                <div class="row">
+                  <div class="card card-body">
+                    <h6 class="title flex-item" style="padding:5px; height:auto; min-height:35px; overflox-x:auto"><strong>{{ post.title }}</strong></h6>
+                    <img v-if="post.image" :src="'data:image/jpg;base64,'+ post.image" class="img-fluid post-image">
+                  </div>
                 </div>
-              </div>
-              <div class="row">
-                <div class="card card-footer col-xs-12">
-                  <p class="post-footer"><i class="fa fa-thumbs-o-up" @click="voteUp(post._id), post.likes += 1" aria-hidden="true"> {{ post.likes }}</i> <i class="fa fa-thumbs-o-down" @click="voteDown(post._id), post.dislikes += 1" aria-hidden="true"> {{ post.dislikes }}</i></p>
-                  <p class="post-footer">posted by: <strong class="postedByText">{{ post.postedBy | toUpperCase }} : {{ post.postedOn | moment }}</strong></p>
+                <div class="row">
+                  <div class="card card-footer col-xs-12">
+                    <p class="post-footer"><i class="fa fa-thumbs-o-up" @click="voteUp(post._id), post.likes += 1" aria-hidden="true"> {{ post.likes }}</i> <i class="fa fa-thumbs-o-down" @click="voteDown(post._id), post.dislikes += 1" aria-hidden="true"> {{ post.dislikes }}</i></p>
+                    <p class="post-footer">posted by: <strong class="postedByText">{{ post.postedBy | toUpperCase }} : {{ post.postedOn | moment }}</strong></p>
+                  </div>
                 </div>
-              </div>
               </li>
             </transition-group>
           </ul>
@@ -111,7 +111,8 @@ export default {
           enctype: 'multipart/form-data',
           processData: false,
           success: (response) => {
-            this.$store.commit('setNewPost', response)
+            this.$store.commit('setNewPost', response);
+            this.$router.push('/latestPosts');
           },
           error: function(err){
             console.log(err)
@@ -245,7 +246,7 @@ strong {
 
 .post-image {
   display:block;
-  margin: 20px 0;
+  margin: 20px 0 20px 10px;
   border:1px solid grey;
   min-width:100px;
   min-height:100px;

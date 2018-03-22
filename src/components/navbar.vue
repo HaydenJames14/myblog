@@ -217,6 +217,8 @@ export default {
         this.$store.commit('setFilteredData', { text: this.searchText, type: this.searchType });
         // Route to search results page
         this.$router.push('/filtered');
+      } else {
+        this.$router.push('/latestThreads');
       }
     }
   },

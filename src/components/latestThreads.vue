@@ -34,6 +34,10 @@
       view(id, title) {
         this.$store.commit('setThreadId', id);
         this.$store.commit('setThreadName', title);
+      },
+      beforeUnload() {
+        this.$socket.emit('signedOut', this.$store.getters.getUsername);
+        sessionStorage.removeItem("accessToken");
       }
     },
     filters: {
@@ -44,12 +48,25 @@
         return title.toUpperCase();
       }
     },
+    created() {
+      window.addEventListener("beforeunload", this.beforeUnload)
+    },
     mounted() {
         this.$http.get("http://localhost:5000/latestThreads").then(response => {
           this.$store.dispatch('setThreads', response.data);
         })
-      }
+    },
+    beforeDestroy() {
+    confirm('Log out?', function() {
+      if(true) {
+        this.$socket.emit('signedOut', this.$store.getters.getUsername);
+        sessionStorage.removeItem("accessToken");
+      } else return false
+    })
+
     }
+
+  }
 
 </script>
 

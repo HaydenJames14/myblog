@@ -48,7 +48,6 @@ io.on('connection', function(socket) {
             }
             if (res) {
                 socket.leave(name);
-                console.log(name + ' left 1');
                 User.find({}, function(err, members) {
                     socket.broadcast.emit('loadMembers', members);
                 });
@@ -58,8 +57,6 @@ io.on('connection', function(socket) {
 
     // Send message to logged in user
     socket.on('message', (data) => {
-        console.log('sent message to: ' + data.recipient);
-        console.log('message: ' + data.message);
         socket.broadcast.to(data.recipient).emit('messageReceived', { message: data.message, sender: data.sender });
     });
 
@@ -74,14 +71,12 @@ io.on('connection', function(socket) {
 
     io.on('disconnnnected', function(username) {
         User.findOneAndUpdate({ username: username }, { $set: { active: false } }, function(err, res) {
-            console.log('user left');
             if (err) {
                 socket.leave(username)
             }
             if (res) {
                 socket.emit('left', res);
                 socket.leave(username);
-                console.log(username + ' left 2');
             }
         });
     });

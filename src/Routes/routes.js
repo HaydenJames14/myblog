@@ -320,7 +320,6 @@ Router.get('/myThreads/:id', function(req, res) {
         Thread.find({ creatorId: req.params.id }, function(err, data) {
             if (err) {
                 res.status(500).send('Error retrieving your threads');
-                return;
             } else {
                 res.send(data);
             }
@@ -360,7 +359,6 @@ Router.get('/myPosts/:id', function(req, res) {
                     }
                 }
                 res.set({ "content-type": "application/json" });
-                console.log('my posts: ' + posts)
                 res.send(myPosts);
             }
         });
@@ -398,26 +396,3 @@ Router.post('/updateProfile', function(req, res) {
 });
 
 module.exports = Router;
-
-
-
-/*var image = fs.readFile(path + res[i].imageUrl, (err, image) => {
-												postData.image = image;
-												postData.postedBy = res[i].postedBy;
-												postData.posterId = res[i].posterId;
-												postData.threadID = res[i].threadId;
-												postData.threadName = res[i].threadName;
-												postData.postedOn = res[i].postedOn;
-												postData.title = res[i].title;
-												posts[i] = postData;
-												console.log('post with image: ' + posts[i]);
-										}) */
-
-/*console.log(res);
-				postData.postedBy = res[i].postedBy;
-				postData.posterId = res[i].posterId;
-				postData.threadID = res[i].threadId;
-				postData.threadName = res[i].threadName;
-				postData.postedOn = res[i].postedOn;
-				postData.title = res[i].title;
-				postData.image = image; */

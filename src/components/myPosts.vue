@@ -4,17 +4,19 @@
       <div class="col-sm-12">
         <h5 class="list-title">My Posts</h5>
         <ul>
-          <li v-for="post in orderedPosts" :key="post.id">
-            <div class="card card-body">
-              <h6 class="title flex-item"><strong>{{ post.title }}</strong></h6>
-              <img class="postImage img-fluid flex-item" v-if="post.image" :src="'data:image/*;base64,'+ post.image" alt="Error: can not display Image" />
-              <router-link v-bind:to="'/thread/'+ post.threadID"><span class="link-span" @click="view(post.threadID, post.threadName)">open</span></router-link>
-            </div>
-            <div class="card card-footer">
-              <p class="thread-footer">thread: <span class="enhance">{{ post.threadName }}</span></p>
-              <p class="thread-footer">created on: <strong class="postedByText">{{ post.createdOn | moment }}</strong></p>
-            </div>
-          </li>
+          <!--<transition-group tag='li' name='slide-up'> -->
+            <li v-for="post in orderedPosts" v-bind:key="post.id">
+              <div class="card card-body">
+                <h6 class="title flex-item"><strong>{{ post.title }}</strong></h6>
+                <img class="postImage img-fluid flex-item" v-if="post.image" :src="'data:image/*;base64,'+ post.image" alt="Error: can not display Image" />
+                <router-link v-bind:to="'/thread/'+ post.threadID"><span class="link-span" @click="view(post.threadID, post.threadName)">open</span></router-link>
+              </div>
+              <div class="card card-footer">
+                <p class="thread-footer">thread: <span class="enhance">{{ post.threadName }}</span></p>
+                <p class="thread-footer">created on: <strong class="postedByText">{{ post.createdOn | moment }}</strong></p>
+              </div>
+            </li>
+          <!--</transition-group> -->
         </ul>
       </div>
     </div>
@@ -103,20 +105,32 @@
 
 .card-body {
   display:flex;
+  justify-content: flex-start;
+  flex-direction:column;
 }
 
 .postImage {
-  display:flex;
+  display:block;
   justify-content: flex-start;
   flex-direction: column;
-  margin: 20px 0;
+  margin: 20px 10px;
   border:1px solid grey;
   min-width:100px;
   min-height:100px;
-  max-width:100%;
+  max-width:90%;
   max-height:100vh;
-
 }
 
+.slide-up-enter-active, .fade-leave-active {
+  transition: opacity 2s
+}
 
+.slide-up-enter, .fade-leave-to {
+  opacity: 0
+}
+/******************************************************************** */
+@media screen and (min-width: 768px) {
+
+
+}
 </style>

@@ -1,6 +1,7 @@
 <template>
 <div>
     <div v-if="filteredData">
+        <!-- Get list of threads filtered by search term -->
         <ul v-if="$store.getters.getSearchType === 'threads'">
           <h6 class="list-title">Threads found for {{ $store.getters.getSearchText }}</h6>
           <transition-group tag='li' name='slide-up'>
@@ -15,6 +16,7 @@
               </li>
           </transition-group>
         </ul>
+        <!-- Get list of posts filtered by search term -->
         <ul v-if="$store.getters.getSearchType === 'posts'">
           <h6 class="list-title">Posts found for {{ $store.getters.getSearchText }}</h6>
           <transition-group tag='li' name='slide-up'>
@@ -29,8 +31,8 @@
               </li>
           </transition-group>
         </ul>
+        <!-- Get posts by selected member -->
         <ul v-if="$store.getters.getSearchType === 'member'">
-            <!-- Get list posts by selected member -->
             <h6 class="list-title">Posts found for {{ $store.getters.getSearchText }}</h6>
             <transition-group tag='li' name='slide-up'>
                 <li v-for="item in membersPosts" :key="item._id">
