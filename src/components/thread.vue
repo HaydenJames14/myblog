@@ -245,11 +245,6 @@ strong {
 }
 
 .post-image {
-  display:block;
-  margin: 20px 0 20px 10px;
-  border:1px solid grey;
-  min-width:100px;
-  min-height:100px;
   max-width:50%;
   max-height:100vh;
 }

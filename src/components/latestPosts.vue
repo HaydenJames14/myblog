@@ -149,7 +149,7 @@ li {
 .content:hover {
   cursor:pointer;
 }
-
+/*
 .postImage {
   display:block;
   margin: 20px 0;
@@ -158,9 +158,8 @@ li {
   min-height:100px;
   max-width:100%;
   max-height:100vh;
-
 }
-
+*/
 router-link:hover {
   text-decoration-style: none;
 }

@@ -54,6 +54,7 @@ export default {
 
 // Global styles
 <style>
+
 * {
   padding:0px;
   margin:0px;
@@ -62,7 +63,7 @@ export default {
 body{
   /*background-color: black;
   color: white; */
-  background-color: #003871;
+  background-color: #072756;    /*#003871;*/
   color:white;
   width:100%;
   min-width:320px;
@@ -93,7 +94,7 @@ li {
   min-height:40px;
   padding:5px;
   display:flex;
-  flex-direction:row;
+  flex-direction:column;
   flex-flow: nowrap;
   justify-content:space-between;
   text-align:left;
@@ -155,6 +156,15 @@ li {
   color: red !important;
 }
 
+.postImage {
+  display:block;
+  margin: 4px;
+  border:1px solid grey;
+  min-width:100px;
+  min-height:100px;
+  /*max-width:50%;*/
+  max-height:100vh;
+}
 
 </style>
 
