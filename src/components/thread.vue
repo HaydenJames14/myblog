@@ -15,30 +15,23 @@
       </form>
     </section>
 
-    <section id="body-section">
-      <div class="row">
-        <div class="col-md-12">
-          <h6 class="list-title" id="title">{{ this.$store.getters.getThreadName }}</h6>
-          <ul>
-            <transition-group tag='li' name='slide-up'>
-              <li v-for="post in orderedPosts" :key="post._id">
-                <div class="row">
-                  <div class="card card-body">
-                    <h6 class="title flex-item" style="padding:5px; height:auto; min-height:35px; overflox-x:auto"><strong>{{ post.title }}</strong></h6>
-                    <img v-if="post.image" :src="'data:image/jpg;base64,'+ post.image" class="img-fluid post-image">
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="card card-footer col-sm-12">
-                    <p class="post-footer"><i class="fa fa-thumbs-o-up" @click="voteUp(post._id), post.likes += 1" aria-hidden="true"> {{ post.likes }}</i> <i class="fa fa-thumbs-o-down" @click="voteDown(post._id), post.dislikes += 1" aria-hidden="true"> {{ post.dislikes }}</i></p>
-                    <p class="post-footer">posted by: <strong class="postedByText">{{ post.postedBy | toUpperCase }} : {{ post.postedOn | moment }}</strong></p>
-                  </div>
-                </div>
-              </li>
-            </transition-group>
-          </ul>
-        </div>
-      </div>
+    <section id="body-section" class="container-fluid">
+      <h6 class="list-title" id="title">{{ this.$store.getters.getThreadName }}</h6>
+        <ul>
+          <transition-group tag='li' name='slide-up'>
+            <li v-for="post in orderedPosts" :key="post._id">
+              <div class="card card-body">
+                <h6 class="title flex-item" style="padding:5px;"><strong>{{ post.title }}</strong></h6>
+                <img class="img-fluid postImage" v-if="post.image" :src="'data:image/jpg;base64,'+ post.image">
+              </div>
+              <div class="card card-footer">
+                <p class="post-footer"><i class="fa fa-thumbs-o-up" @click="voteUp(post._id), post.likes += 1" aria-hidden="true"> {{ post.likes }}</i> <i class="fa fa-thumbs-o-down" @click="voteDown(post._id), post.dislikes += 1" aria-hidden="true"> {{ post.dislikes }}</i></p>
+                <p class="post-footer">posted by: {{ post.postedBy | toUpperCase }} : {{ post.postedOn | moment }}</p>
+              </div>
+            </li>
+          </transition-group>
+        </ul>
+
     </section>
   </div>
 </template>
@@ -194,10 +187,6 @@ li {
   align-items: stretch;
 }
 
-strong {
-  font-weight:bold;
-}
-
 #addPost_form {
   margin:auto;
   background-color:lightblue;
@@ -227,26 +216,6 @@ strong {
   margin-right: 1px;
   margin-bottom:15px;
   background-color:lightblue;
-}
-
-.card-body {
-  display:flex;
-  flex-direction: column;
-  justify-content: flex-start;
-}
-
-.card-footer {
-  display:flex;
-  justify-content: space-between;
-  font-size: 0.8rem;
-  font-style: italic;
-  margin:0;
-  padding-bottom:3px;
-}
-
-.post-image {
-  max-width:50%;
-  max-height:100vh;
 }
 
 .fa {
@@ -291,6 +260,10 @@ strong {
 #submit-btn:hover {
   cursor:pointer;
   color:red;
+}
+
+.postImage {
+  max-width:400px;
 }
 
 /*****************************************************************************/

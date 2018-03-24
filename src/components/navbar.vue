@@ -36,7 +36,7 @@
         <option value="posts">search posts</option>
         <option value="member">search members</option>
       </select>
-      <input class="form-control mr-sm-2" type="text" aria-label="Search"  id="searchBox" v-model="searchText">
+      <input class="form-control mr-sm-2" type="text" aria-label="Search"  id="searchBox" v-model="searchText" placeholder="search...">
       <button class="btn btn-outline-success my-2" type="submit">Search</button>
     </form>
   </div>
@@ -48,7 +48,7 @@
   </nav>
 
   <!-- Login/register modal -->
-  <div id="Modal" class="modal fade" ref="modalForm">
+  <div id="Modal" class="modal fade container" ref="modalForm">
     <div class="modal-content modal-dialog">
       <div class="modal-header text-center">
           <h4 class="modal-title" id="myModalLabel"><span style="font-size:1.0rem; color:orange; font-style:italic">the</span><span style="font-size:1.8rem; color:red;">Right</span><span style="font-size:1.8rem; color:green;">Voice</span></h4>
@@ -296,6 +296,12 @@ export default {
     background-color: transparent;
     border:none;
     margin-bottom:15px;
+  }
+
+  .model {
+    width:100%;
+    max-width:100%;
+
   }
 }
 /************************************************************/

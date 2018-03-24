@@ -4,9 +4,10 @@
     <ul>
       <transition-group tag='li' name='slide-up'>
         <li v-for="thread in orderedThreads" :key="thread._id">
-          <div class="card card-body">
+          <div class="card card-body" @click="view(thread._id, thread.title)">
+          <router-link :to="'/thread/'+ thread._id">
             <h6 class="title flex-item"><strong>{{ thread.title }}</strong></h6>
-            <router-link v-bind:to="'/thread/'+ thread._id"><span class="link-span" @click="view(thread._id, thread.title)">view</span></router-link>
+          </router-link>
           </div>
           <div class="card card-footer">
             <p class="single-thread-footer">created by: <strong class="postByText">{{ thread.creatorName }}</strong>   on: <strong>{{ thread.createdOn | moment }}</strong></p>
@@ -19,11 +20,6 @@
 <script>
   import moment from 'moment'
   export default {
-    data() {
-      return {
-
-      }
-    },
     computed: {
       orderedThreads() {
         return this.$lodash.orderBy(this.$store.getters.getThreads, ['createdOn'], ['desc']);
@@ -78,7 +74,7 @@ ul {
   overflow-y:scroll;
   height:120vh;
 }
-
+/*
 .card-footer {
   display:flex;
   justify-content: flex-end;
@@ -86,7 +82,7 @@ ul {
   font-style: italic;
   margin:0;
 }
-
+*/
 span {
   color: green;
   margin-right:10px;
@@ -98,6 +94,7 @@ strong {
 
 .single-thread-footer {
   font-size:0.8rem;
+  width:100%;
 }
 
 .view-btn {

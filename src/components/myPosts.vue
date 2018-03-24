@@ -4,36 +4,19 @@
       <div class="col-sm-12">
         <h5 class="list-title">My Posts</h5>
         <ul>
-          <!--<transition-group tag='li' name='slide-up'> -->
-            <li v-for="post in orderedPosts" :key="post.id">
-              <router-link v-bind:to="'/thread/'+ post.threadID">
-                <div class="card card-body" @click="view(post.threadID, post.threadName)">
+          <li v-for="post in orderedPosts" :key="post.id">
+              <div class="card card-body" @click="view(post.threadID, post.threadName)">
+                <router-link v-bind:to="'/thread/'+ post.threadID">
                   <h6 class="title flex-item"><strong>{{ post.title }}</strong></h6>
-                  <img class="postImage img-fluid flex-item" v-if="post.image" :src="'data:image/*;base64,'+ post.image" alt="Error: can not display Image" />
-                </div>
-              </router-link>
-
+                  <img class="postImage img-fluid" v-if="post.image" :src="'data:image/*;base64,'+ post.image" alt="Error: Could not display Image" />
+                </router-link>
+              </div>
               <div class="card card-footer">
                 <p class="thread-footer">thread: <span class="enhance">{{ post.threadName }}</span></p>
-                <p class="thread-footer">created on: <strong class="postedByText">{{ post.createdOn | moment }}</strong></p>
+                <p class="thread-footer">created on: {{ post.createdOn | moment }}</p>
               </div>
             </li>
-          <!--</transition-group> -->
-  <li v-for="post in orderedPosts" :key="post._id">
-                <div class="row">
-                  <div class="card card-body">
-                    <h6 class="title flex-item" style="padding:5px; height:auto; min-height:35px; overflow-x:auto"><strong>{{ post.title }}</strong></h6>
-                    <img v-if="post.image" :src="'data:image/jpg;base64,'+ post.image" class="img-fluid post-image">
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="card card-footer col-sm-12">
-                    <p class="post-footer"><i class="fa fa-thumbs-o-up" @click="voteUp(post._id), post.likes += 1" aria-hidden="true"> {{ post.likes }}</i> <i class="fa fa-thumbs-o-down" @click="voteDown(post._id), post.dislikes += 1" aria-hidden="true"> {{ post.dislikes }}</i></p>
-                    <p class="post-footer">posted by: <strong class="postedByText">{{ post.postedBy | toUpperCase }} : {{ post.postedOn | moment }}</strong></p>
-                  </div>
-                </div>
-              </li>
-
+          <!-- </transition-group> -->
         </ul>
       </div>
     </div>
@@ -125,7 +108,7 @@
   justify-content: flex-start;
   flex-direction:column;
 }
-
+/*
 .postImage {
   min-height:100px;
   max-width:50%;

@@ -5,28 +5,24 @@
         <newThread></newThread>
       </div>
     </div>
-  <!--<div class="row">
-    <div class="col-md-12">
-      <h5 class="title" id="title">My Threads</h5>
-    </div>
-  </div> -->
-  <div class="row">
-    <div class="col-md-12">
-      <h5 class="title" id="title">My Threads</h5>
-      <ul>
-        <li v-for="thread in threads" :key="thread._id">
-          <div class="card card-body">
-            <h6 class="title flex-item"><strong>{{ thread.title }}</strong></h6>
-            <router-link v-bind:to="'/thread/'+ thread._id"><span class="link-span" @click="view(thread._id, thread.title)">view</span></router-link>
-          </div>
-          <div class="card card-footer">
-            <p class="thread-footer">created on: <strong class="postedByText">{{ thread.createdOn | moment }}</strong></p>
-          </div>
+    <div class="row">
+      <div class="col-md-12">
+        <h5 class="list-title">My Threads</h5>
+        <ul>
+          <li v-for="thread in threads" :key="thread._id">
+            <div class="card card-body" @click="view(thread._id, thread.title)">
+              <router-link v-bind:to="'/thread/'+ thread._id">
+                <h6 class="title flex-item"><strong>{{ thread.title }}</strong></h6>
+              </router-link>
+            </div>
+            <div class="card card-footer">
+              <p class="thread-footer">created on: <strong class="postedByText">{{ thread.createdOn | moment }}</strong></p>
+            </div>
 
-        </li>
-      </ul>
+          </li>
+        </ul>
+      </div>
     </div>
-  </div>
 </div>
 </template>
 

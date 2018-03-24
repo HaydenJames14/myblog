@@ -44,7 +44,6 @@ export default {
 </script>
 
 <style scoped>
-
   #errorMsg {
     color:red;
     font-weight:bold;
@@ -61,9 +60,7 @@ export default {
 }
 
 body{
-  /*background-color: black;
-  color: white; */
-  background-color: #072756;    /*#003871;*/
+  background-color: #072756;
   color:white;
   width:100%;
   min-width:320px;
@@ -92,13 +89,15 @@ li {
   color:black;
   height:auto;
   min-height:40px;
-  padding:5px;
   display:flex;
   flex-direction:column;
-  flex-flow: nowrap;
-  justify-content:space-between;
+  flex-wrap: no-wrap;
+  justify-content: flex-start;
   text-align:left;
-
+  width:100%;
+  max-width:100%;
+  padding:10px 5px;
+  border-radius: 5px 5px 0 0;
 }
 
 .card-footer {
@@ -109,10 +108,10 @@ li {
   flex-flow: nowrap;
   justify-content: space-between;
   background-color:deepskyblue;
-  padding: 5px;
+  padding-top:4px;
   font-size:0.9rem;
-  margin-bottom:5px;
   text-align:right;
+  border-radius: 0 0 5px 5px;
 }
 
 .post-footer {
@@ -160,10 +159,18 @@ li {
   display:block;
   margin: 4px;
   border:1px solid grey;
-  min-width:100px;
-  min-height:100px;
-  /*max-width:50%;*/
+  min-width:200px;
+  min-height:200px;
+  max-width:90%;
   max-height:100vh;
+}
+
+.slide-up-enter-active, .fade-leave-active {
+  transition: opacity 2.5s
+}
+
+.slide-up-enter, .fade-leave-to {
+  opacity: 0
 }
 
 </style>
