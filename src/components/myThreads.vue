@@ -85,10 +85,6 @@ export default {
   margin-bottom:15px;
 }
 
-.view-btn {
-  padding:5px;
-}
-
 .title {
   padding:5px;
 }
@@ -98,6 +94,9 @@ export default {
   justify-content: flex-end;
 }
 
+.card-footer {
+  margin-bottom:-4px;
+}
 
 
 </style>

@@ -25,7 +25,7 @@ import myPosts from './components/myPosts.vue'
 import myThreads from './components/myThreads.vue'
 import members from './components/members.vue'
 import thread from './components/thread.vue'
-import addPost from './components/addPost.vue'
+//import addPost from './components/addPost.vue'
 import filtered from './components/filtered.vue'
 
 export default {
@@ -36,7 +36,7 @@ export default {
     }
   },
   components: {
-    navbar, latestPosts, latestThreads, myPosts, myThreads, members, thread, addPost, filtered
+    navbar, latestPosts, latestThreads, myPosts, myThreads, members, thread, filtered
   }
 }
 
@@ -98,6 +98,7 @@ li {
   max-width:100%;
   padding:10px 5px;
   border-radius: 5px 5px 0 0;
+  margin-bottom:0;
 }
 
 .card-footer {
@@ -112,6 +113,7 @@ li {
   font-size:0.9rem;
   text-align:right;
   border-radius: 0 0 5px 5px;
+  margin-bottom:5px;
 }
 
 .post-footer {
@@ -120,11 +122,6 @@ li {
   flex-direction:row;
   flex-flow: nowrap;
   justify-content: space-between;
-}
-
-.postedByText {
-  margin-right:10px;
-  margin-left:5px;
 }
 
 .list-title {
@@ -158,7 +155,7 @@ li {
 .postImage {
   display:block;
   margin: 4px;
-  border:1px solid grey;
+  border: none;
   min-width:200px;
   min-height:200px;
   max-width:90%;

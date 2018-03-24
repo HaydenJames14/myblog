@@ -1,11 +1,11 @@
 <template>
   <div style="margin-bottom:20px;">
-    <form class='form-group' id="newThreadForm" >
+    <form class='form-group' id="newThreadForm" @click.prevent="submit">
         <div class="col-md-12">
             <p class="text-center newThreadHeader">Create New Thread:</p>
             <input type="text" placeholder="New Thread Title" class="form-control flex-item" id="newTitle" v-model="newTitle" required>
             <textarea type="textarea" rows="3" placeholder="First Post (optional)" class="form-control flex-item" id="firstPost" v-model="firstPost"></textarea>
-            <button type="submit" id="newThreadSubmit" class="flex-item btn btn-primary" @click.prevent="submit">Submit</button>
+            <button type="submit" id="newThreadSubmit" class="flex-item btn btn-primary">Submit</button>
         </div>
     </form>
   </div>
@@ -25,7 +25,8 @@
         if(this.newTitle) {
           const id = this.$store.getters.getUserId;
           const name = this.$store.getters.getUsername;
-          this.$http.post('http://localhost:5000/newThread', { title: this.newTitle, Id: id, Name: name, post: this.firstPost })
+          const title =  this.newTitle.charAt(0).toUpperCase() + this.newTitle.slice(1);
+          this.$http.post('http://localhost:5000/newThread', { title: title, Id: id, Name: name, post: this.firstPost })
             .then(function(data) {
                 if(data) {
                   this.$store.dispatch('setThreads', data);
@@ -76,6 +77,7 @@
     color:white;
     background-color:green;
     display: block;
+    width:80%;
     margin:auto;
     margin-top:10px;
   }

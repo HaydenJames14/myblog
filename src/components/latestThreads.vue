@@ -74,15 +74,7 @@ ul {
   overflow-y:scroll;
   height:120vh;
 }
-/*
-.card-footer {
-  display:flex;
-  justify-content: flex-end;
-  font-size: 0.8rem;
-  font-style: italic;
-  margin:0;
-}
-*/
+
 span {
   color: green;
   margin-right:10px;
@@ -103,6 +95,10 @@ strong {
   height:30px;
   padding:4px;
   cursor:pointer;
+}
+
+.card-footer {
+  margin-bottom:-4px;
 }
 
 .slide-up-enter-active, .fade-leave-active {

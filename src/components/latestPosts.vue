@@ -58,9 +58,6 @@
             return this.$lodash.orderBy(this.$store.getters.getPosts,['postedOn'], ['desc']);
           }
         }
-      },
-      sockets: {
-
       }
     }
 </script>
@@ -111,7 +108,6 @@ li {
 }
 
 .card-footer {
-  display:flex;
   justify-content:flex-end;
 }
 

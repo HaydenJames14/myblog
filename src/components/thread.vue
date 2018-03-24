@@ -1,5 +1,6 @@
 <template>
   <div class="container-fluid">
+  <!-- New post form  -->
     <section class="row">
       <form id="addPost_form" class="col-sm-12 col-md-8 col-md-offset-2" method="POST" enctype="multipart/form-data">
         <div class="form-group col-md-6 col-xs-12">
@@ -14,8 +15,7 @@
         </div>
       </form>
     </section>
-
-    <section id="body-section" class="container-fluid">
+    <section class="container-fluid">
       <h6 class="list-title" id="title">{{ this.$store.getters.getThreadName }}</h6>
         <ul>
           <transition-group tag='li' name='slide-up'>
@@ -73,7 +73,7 @@ export default {
         return;
       }
       if(this.postText == '') {
-        this.$store.commit('setMsg','Post missing or too short.');
+        this.$store.commit('setMsg','Post missing');
         return;
       }
       if(!this.$store.getters.getuser) {
@@ -86,7 +86,7 @@ export default {
         var formData = new FormData();
         formData.append('postedBy', this.$store.getters.getUsername);
         formData.append('posterId', this.$store.getters.getUserId);
-        formData.append('postText', this.postText);
+        formData.append('postText', this.postText.charAt(0).toUpperCase() + this.postText.slice(1));
         formData.append('threadId', this.$store.getters.getThreadId);
         formData.append('threadName', this.$store.getters.getThreadName);
         if(postImage) {
@@ -143,9 +143,6 @@ export default {
     toUpperCase: title => {
       return title.toUpperCase();
     }
-  },
-  components: {
-
   }
 }
 </script>
@@ -175,7 +172,7 @@ ul {
 
 li {
   list-style: none;
-  margin-bottom:10px;
+  /*margin-bottom:10px;*/
   margin-right:6px;
 }
 
@@ -207,6 +204,9 @@ li {
   margin:2px;
 }
 
+.card-footer {
+  margin-bottom:-4px;
+}
 #newPost {
   display:flex;
   justify-content:center;

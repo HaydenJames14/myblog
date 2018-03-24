@@ -5,18 +5,17 @@
         <h5 class="list-title">My Posts</h5>
         <ul>
           <li v-for="post in orderedPosts" :key="post.id">
-              <div class="card card-body" @click="view(post.threadID, post.threadName)">
-                <router-link v-bind:to="'/thread/'+ post.threadID">
-                  <h6 class="title flex-item"><strong>{{ post.title }}</strong></h6>
-                  <img class="postImage img-fluid" v-if="post.image" :src="'data:image/*;base64,'+ post.image" alt="Error: Could not display Image" />
-                </router-link>
-              </div>
-              <div class="card card-footer">
-                <p class="thread-footer">thread: <span class="enhance">{{ post.threadName }}</span></p>
-                <p class="thread-footer">created on: {{ post.createdOn | moment }}</p>
-              </div>
-            </li>
-          <!-- </transition-group> -->
+            <div class="card card-body" @click="view(post.threadID, post.threadName)">
+              <router-link v-bind:to="'/thread/'+ post.threadID">
+                <h6 class="title flex-item"><strong>{{ post.title }}</strong></h6>
+                <img class="postImage img-fluid" v-if="post.image" :src="'data:image/*;base64,'+ post.image" alt="Error: Could not display Image" />
+              </router-link>
+            </div>
+            <div class="card card-footer">
+              <p class="thread-footer">thread: <span class="enhance">{{ post.threadName }}</span></p>
+              <p class="thread-footer">created on: {{ post.createdOn | moment }}</p>
+            </div>
+          </li>
         </ul>
       </div>
     </div>
@@ -108,13 +107,11 @@
   justify-content: flex-start;
   flex-direction:column;
 }
-/*
-.postImage {
-  min-height:100px;
-  max-width:50%;
-  max-height:100vh;
+
+.card-footer {
+  margin-bottom:-4px;
 }
-*/
+
 .slide-up-enter-active, .fade-leave-active {
   transition: opacity 2s
 }

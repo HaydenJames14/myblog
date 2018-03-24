@@ -110,7 +110,6 @@ Router.post('/logout', function(req, res) { // Is this needed with socket left?
 
 // NEW THREAD
 Router.post('/newThread', function(req, res) {
-    console.log('In newThread route');
     if (req.body.title) {
         let id = req.body.Id;
         let name = req.body.Name;
@@ -275,7 +274,6 @@ Router.post('/newPost', function(req, res) {
         if (err) {
             return;
         } else {
-            //console.log('req.file: ' + req.file);
             var imageName = '';
             const { postedBy, posterId, postText, threadId, threadName } = req.body;
             if (req.file) {
