@@ -1,19 +1,21 @@
 <template>
   <div class="container-fluid" id="app">
     <navbar></navbar>
-    <p v-if="$store.getters.getUsername" style="text-align: right; margin-right:20px; color:orange;">Welcome back {{ $store.getters.getUsername }}</p>
-    <div class="container-fluid">
-    <h5 id="errorMsg">{{ $store.getters.getMsg }}</h5>
-      <div class="row">
-        <div class="col-sm-12 col-md-7 col-lg-9">
-          <router-view></router-view>
-        </div>
-        <div class="col-sm-12 col-md-5 col-lg-3" id="membersList">
-          <members></members>
-        </div>
-      </div>
+    <p v-if="$store.getters.getUsername" id="welcomeMessage" style="text-align: right; color:orange;">Welcome back {{ $store.getters.getUsername }}</p>
+    <div class="row d-flex flex-sm-column flex-md-row justify-content-sm-center justify-content-md-end">
+      <search></search>
     </div>
-
+    <div>
+        <h5 id="errorMsg">{{ $store.getters.getMsg }}</h5>
+        <div class="row">
+          <div class="col-sm-12 col-md-7 col-lg-9">
+            <router-view></router-view>
+          </div>
+          <div class="col-sm-12 col-md-5 col-lg-3" id="membersList">
+            <members></members>
+          </div>
+        </div>
+    </div>
   </div>
 </template>
 
@@ -25,7 +27,7 @@ import myPosts from './components/myPosts.vue'
 import myThreads from './components/myThreads.vue'
 import members from './components/members.vue'
 import thread from './components/thread.vue'
-//import addPost from './components/addPost.vue'
+import search from './components/search.vue'
 import filtered from './components/filtered.vue'
 
 export default {
@@ -36,7 +38,7 @@ export default {
     }
   },
   components: {
-    navbar, latestPosts, latestThreads, myPosts, myThreads, members, thread, filtered
+    navbar, latestPosts, latestThreads, myPosts, myThreads, members, thread, filtered, search
   }
 }
 
@@ -49,11 +51,15 @@ export default {
     font-weight:bold;
     text-align:center;
   }
+
+  #welcomeMessage {
+    margin-right:30px;
+  }
+
 </style>
-
-// Global styles
+/**************************************************************************/
+/* Global styles */
 <style>
-
 * {
   padding:0px;
   margin:0px;
@@ -82,6 +88,12 @@ li {
   list-style: none;
   padding:5px;
   font-size:1rem;
+}
+
+.card {
+  width:100%;
+  margin: 0;
+  max-width:100%;
 }
 
 .card-body  {
@@ -169,6 +181,33 @@ li {
 .slide-up-enter, .fade-leave-to {
   opacity: 0
 }
+/************************************************************/
+@media screen and (max-width:768px) {
+  .container-fluid {
+    margin: auto auto;
+    width:100%;
+    padding: 0 5px;
+  }
 
+  .card-footer > .single-thread-footer {
+    display:flex;
+    justify-content: flex-start;
+    margin-left:2px;
+    padding:2px;
+    width:100%;
+    max-width:100%;
+    font-size:0.7rem;
+  }
+
+  #welcomeMessage {
+    margin-right:20px !important;
+  }
+
+  .strong {
+    margin:0;
+    font-weight: bold;
+    padding:0 2px;
+  }
+}
 </style>
 

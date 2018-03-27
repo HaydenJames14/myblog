@@ -5,12 +5,12 @@
       <transition-group tag='li' name='slide-up'>
         <li v-for="thread in orderedThreads" :key="thread._id">
           <div class="card card-body" @click="view(thread._id, thread.title)">
-          <router-link :to="'/thread/'+ thread._id">
-            <h6 class="title flex-item"><strong>{{ thread.title }}</strong></h6>
-          </router-link>
+            <router-link :to="'/thread/'+ thread._id">
+              <h6 class="title flex-item"><strong>{{ thread.title }}</strong></h6>
+            </router-link>
           </div>
-          <div class="card card-footer">
-            <p class="single-thread-footer">created by: <strong class="postByText">{{ thread.creatorName }}</strong>   on: <strong>{{ thread.createdOn | moment }}</strong></p>
+          <div class="card card-footer container-fluid">
+            <p class="single-thread-footer">created by: <span class="strong">{{ thread.creatorName }}</span>on: <span class="strong">{{ thread.createdOn | moment }}</span></p>
           </div>
         </li>
       </transition-group>
@@ -38,7 +38,7 @@
     },
     filters: {
       moment: date => {
-        return moment(date).format('MMMM Do YYYY, h:mm a');
+        return moment(date).format('MMMM Do YYYY');
       },
       toUpperCase: title => {
         return title.toUpperCase();
@@ -55,7 +55,6 @@
   }
 
 </script>
-
 <style scoped>
 .header-section {
   display: flex;
@@ -78,10 +77,6 @@ ul {
 span {
   color: green;
   margin-right:10px;
-}
-
-strong {
-  font-size:0.9rem;
 }
 
 .single-thread-footer {
@@ -108,6 +103,27 @@ strong {
   opacity: 0
 }
 
+.list-title {
+  margin-top:10px;
+}
+
+@media screen and (max-width:768px) {
+  .card {
+    width:100%;
+    max-width:100%;
+
+  }
+
+  .list-title {
+    margin:5px 0 3px 13px;
+  }
+
+
+
+
+
+
+}
 </style>
 
 

@@ -44,6 +44,7 @@ io.on('connection', function(socket) {
         User.findOneAndUpdate({ username: name }, { $set: { active: false } }, function(err, res) {
             if (err) {
                 console.log(err);
+                socket.leave(name);
                 res.send(err);
             }
             if (res) {

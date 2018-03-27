@@ -12,7 +12,7 @@
           </div>
           <div>
             <div class="card card-footer">
-              <p class="thread-footer">posted by: {{ post.postedBy }} on: {{ post.postedOn | moment }}</p>
+              <p class="thread-footer" style="padding-bottom;2px;">posted by: {{ post.postedBy }} on: {{ post.postedOn | moment }}</p>
             </div>
           </div>
         </li>
@@ -38,7 +38,7 @@
       },
       filters: {
         moment: date => {
-          return moment(date).format('MMMM Do YYYY, h:mm a');
+          return moment(date).format('MMMM Do YYYY');
         },
         toUpperCase: title => {
           return title.toUpperCase();
@@ -92,6 +92,7 @@ li {
 
 .latestPostsList {
   margin-bottom:-10px;
+  margin:auto;
 }
 
 .enhance {
@@ -125,4 +126,33 @@ router-link:hover {
   text-decoration-style: none;
 }
 
+
+/********************************************************************/
+@media screen and (max-width:768px) {
+  .card-footer > .single-thread-footer {
+    display:flex;
+    justify-content: flex-start;
+    margin-left:2px;
+    padding:2px;
+    width:100%;
+    max-width:100%;
+    font-size:0.7rem;
+  }
+
+  .thread-footer {
+    display:flex;
+    justify-content: flen-start;
+    margin:0;
+    padding:-2px 2px 0 2px;
+    text-align:left;
+  }
+
+  .latestPostsList {
+    margin:auto;
+  }
+
+  .list-title {
+    margin:5px 0 3px 13px;
+  }
+}
 </style>

@@ -19,7 +19,6 @@
   import contact from '../components/contact.vue'
   export default {
       name: 'members',
-      //props: [ 'receivedMessage' ],
       data() {
         return {
           contacting: false,
@@ -44,13 +43,10 @@
               this.$store.commit('setMessageRecipient', recipientName);
               console.log('memberName: '+this.membersName);
               this.contacting = true;
-            //this.name_selected = true;
             }
           }
         },
         messageSent() {
-          //this.contacting = false;
-          console.log('message sent method')
           this.membersName = ''
         }
       },
@@ -72,8 +68,6 @@
           }
           this.contacting = true;
           this.$store.commit('setMessageRecipient', data.sender);
-
-          //this.membername = data.sender;
         },
         loadMembers(members) {
           this.$store.dispatch('setAllMembers', members);
@@ -154,8 +148,3 @@
   }
 </style>
 
-
-/*
-@messageSent="contacting = false"
-
-*/

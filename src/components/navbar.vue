@@ -29,7 +29,7 @@
         <i class="fa fa-sign-in" aria-hidden="true"></i>
         <button type="button" id="logout-Btn" @click.prevent="login">Log in</button>
       </li>
-    </ul>
+    </ul><!--
     <form class="form-inline navbar-right searchForm flex-item" @click.prevent="search">
       <select class="form-control" id="searchOptions" v-model="searchType">
         <option value="threads">search threads</option>
@@ -38,7 +38,7 @@
       </select>
       <input class="form-control mr-sm-2" type="text" aria-label="Search"  id="searchBox" v-model="searchText" placeholder="search...">
       <button class="btn btn-outline-success my-2" type="submit">Search</button>
-    </form>
+    </form> -->
   </div>
     <ul class="nav navbar-nav navbar-right d-none d-sm-none d-md-block d-lg-block">
       <!-- Login & registration controls -->
@@ -207,19 +207,6 @@ export default {
       this.$store.commit('SOCKET_SET_MEMBER_NOT_ACTIVE', this.$store.getters.getUsername);
       this.$store.commit('setUserNone');
       this.$router.push('/latestThreads');
-    },
-    search() {
-      if(this.searchText) {
-        // set and commit search text and type
-        this.$store.commit('setSearchText', this.searchText);
-        this.$store.commit('setSearchType', this.searchType);
-        // commit function to create search list
-        this.$store.commit('setFilteredData', { text: this.searchText, type: this.searchType });
-        // Route to search results page
-        this.$router.push('/filtered');
-      } else {
-        this.$router.push('/latestThreads');
-      }
     }
   },
   sockets: {
@@ -239,26 +226,16 @@ export default {
 
 </script>
 
-
 <style scoped>
-
 @media screen and (max-width: 768px) {
   .container-fluid {
     margin:0;
     padding:0;
   }
 
-  #searchTerm {
-    margin-bottom:10px;
-  }
-
-  #searchOptions {
-    margin-bottom:10px;
-    width:100%;
-  }
-
-  #searchBox {
-    width:100%;
+  .navbar {
+    margin-bottom:0;
+    padding-bottom:0;
   }
 
   .navbar-brand {
@@ -298,11 +275,13 @@ export default {
     margin-bottom:15px;
   }
 
-  .model {
-    width:100%;
-    max-width:100%;
-
+  #modal {
+    /*position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); */
   }
+
 }
 /************************************************************/
 .navbar {
@@ -418,6 +397,8 @@ a {
   font-size:1.8rem;
   color: green;
 }
+
+
 
 
 </style>

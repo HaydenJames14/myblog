@@ -6,12 +6,14 @@
           <h6 class="list-title">Threads found for {{ $store.getters.getSearchText }}</h6>
           <transition-group tag='li' name='slide-up'>
               <li v-for="item in filteredData" :key="item._id">
-                  <div class="card card-body">
+                  <div class="card card-body" @click="view(item._id, item.title)">
+                  <router-link v-bind:to="'/thread/'+ item._id">
                       <h6 class="title flex-item"><strong>{{ item.title }}</strong></h6>
-                      <router-link v-bind:to="'/thread/'+ item._id"><span class="link-span" @click="view(item._id, item.title)">view</span></router-link>
+                  </router-link>
                   </div>
                   <div class="card card-footer">
-                      <p class="single-thread-footer">created by: <strong class="postByText">{{ item.creatorName | toUpperCase }}</strong>   on: <strong>{{ item.createdOn | moment }}</strong></p>
+                    <p class="single-thread-footer">created by: <span class="strong">{{ item.creatorName | toUpperCase }}</span>   on: <span class="strong">{{ item.createdOn | moment }}</span></p>
+
                   </div>
               </li>
           </transition-group>
@@ -21,12 +23,13 @@
           <h6 class="list-title">Posts found for {{ $store.getters.getSearchText }}</h6>
           <transition-group tag='li' name='slide-up'>
               <li v-for="item in filteredData" :key="item._id">
-                  <div class="card card-body">
+                  <div class="card card-body" @click="view(item.threadID, item.threadName)">
+                    <router-link v-bind:to="'/thread/'+ item.threadID">
                       <h6 class="title flex-item"><strong>{{ item.title }}</strong></h6>
-                      <router-link v-bind:to="'/thread/'+ item.threadID"><span class="link-span" @click="view(item.threadID, item.threadName)">view</span></router-link>
+                    </router-link>
                   </div>
                   <div class="card card-footer">
-                      <p class="single-thread-footer">created by: <strong class="postByText">{{ item.postedBy | toUpperCase }}</strong>   on: <strong>{{ item.postedOn | moment }}</strong></p>
+                      <p class="single-thread-footer">created by: <span class="strong">{{ item.postedBy | toUpperCase }}</span>   on: <span class="strong">{{ item.postedOn | moment }}</span></p>
                   </div>
               </li>
           </transition-group>
@@ -36,12 +39,13 @@
             <h6 class="list-title">Posts found for {{ $store.getters.getSearchText }}</h6>
             <transition-group tag='li' name='slide-up'>
                 <li v-for="item in membersPosts" :key="item._id">
-                    <div class="card card-body">
+                    <div class="card card-body" @click="view(item.threadID, item.threadName)">
+                      <router-link v-bind:to="'/thread/'+ item.threadID">
                         <h6 class="title flex-item"><strong>{{ item.title }}</strong></h6>
-                        <router-link v-bind:to="'/thread/'+ item.threadID"><span class="link-span" @click="view(item.threadID, item.threadName)">view</span></router-link>
+                      </router-link>
                     </div>
                     <div class="card-footer">
-                      <p class="thread-footer">thread: <span class="enhance">{{ item.threadName }}</span></p>
+                      <p class="single-members-footer"><span class="strong">{{ item.threadName }}</span></p>
                     </div>
                 </li>
             </transition-group>
@@ -73,7 +77,7 @@
         },
         filters: {
             moment: date => {
-                return moment(date).format('MMMM Do YYYY, h:mm a');
+                return moment(date).format('MMMM Do YYYY');
             },
             toUpperCase: title => {
                 return title.toUpperCase();
@@ -112,8 +116,18 @@ h6 {
   color: lightgreen;
   text-align: left;
   font-size:0.9rem;
-  margin-bottom:10px;
-  margin-left:10px;
+  margin:20px 0 5px 16px;
 }
 
+@media screen and (max-width:768px) {
+  .single-members-footer {
+    display:flex;
+    justify-content: flex-start;
+    margin-left:0;
+    padding:2px;
+    width:100%;
+    max-width:100%;
+    font-size:0.6rem;
+  }
+}
 </style>

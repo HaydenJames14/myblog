@@ -15,7 +15,8 @@
         </div>
       </form>
     </section>
-    <section class="container-fluid">
+
+    <section class="container-fluid thread-list">
       <h6 class="list-title" id="title">{{ this.$store.getters.getThreadName }}</h6>
         <ul>
           <transition-group tag='li' name='slide-up'>
@@ -188,6 +189,7 @@ li {
   margin:auto;
   background-color:lightblue;
   padding-top:20px;
+  border:2px solid green;
   border-radius:5px;
   overflow:hidden;
   width:100%;
@@ -275,9 +277,14 @@ li {
 
   #addPost_form {
     flex-direction: column;
-    margin:0;
-    margin:20px 0;
+    margin:-15px 0 15px 0;
+
   }
+
+  .threadList {
+    margin-top:30px;
+  }
+
   #noteText {
     height:100px;
     padding:3px;
