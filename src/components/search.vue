@@ -51,7 +51,7 @@ export default {
   form > button {
     height:35px;
     width:80%;
-    margin-bottom:15px;
+    margin-bottom:1px;
   }
 
   #searchBox {

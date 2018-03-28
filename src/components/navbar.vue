@@ -27,7 +27,7 @@
       </li>
       <li v-else class="nav-item d-block d-sm-block d-md-none d-lg-none d-xl-none">
         <i class="fa fa-sign-in" aria-hidden="true"></i>
-        <button type="button" id="logout-Btn" @click.prevent="login">Log in</button>
+        <button type="button" id="logout-Btn" @click.prevent="sm_login">Log in/Register</button>
       </li>
     </ul><!--
     <form class="form-inline navbar-right searchForm flex-item" @click.prevent="search">
@@ -207,6 +207,32 @@ export default {
       this.$store.commit('SOCKET_SET_MEMBER_NOT_ACTIVE', this.$store.getters.getUsername);
       this.$store.commit('setUserNone');
       this.$router.push('/latestThreads');
+    },
+    sm_login(e) {
+      if(this.username === '' || this.password === '') {
+        return;
+      }/*
+      this.$http.post('http://localhost:5000/login', { username: this.username, password: this.password }).then(function(response) {
+        if(!response) {
+          this.msg = 'Login details not found';
+          this.$store.commit('setUserNone');
+          console.log('No Data');
+        }
+        else {
+          const user = {
+            username: response.body.username,
+            email: response.body.email,
+            userId: response.body.userId
+          }
+          sessionStorage.setItem("accessToken", response.body.token);
+          this.$store.commit('setUser', response.body);
+          this.$socket.emit('signedIn', user.username);
+          $('#Modal').modal('hide');
+        }
+      }).catch(function(err) {
+        console.log(err)
+      }) */
+
     }
   },
   sockets: {

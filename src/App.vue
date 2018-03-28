@@ -139,8 +139,9 @@ li {
 .list-title {
   color: lightgreen;
   text-align: left;
-  font-size:0.9rem;
+  font-size:1.3rem;
   margin-bottom:10px;
+  margin-top:20px;
   margin-left:10px;
 }
 
@@ -207,6 +208,14 @@ li {
     margin:0;
     font-weight: bold;
     padding:0 2px;
+  }
+
+  .list-title {
+    color: lightgreen;
+    text-align: left;
+    font-size:0.8rem;
+    margin-bottom:6px;
+    margin-left:10px;
   }
 }
 </style>
