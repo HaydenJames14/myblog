@@ -175,6 +175,12 @@ li {
   max-height:100vh;
 }
 
+span {
+  color: black;
+  margin-right:10px;
+  font-weight:bold;
+}
+
 .slide-up-enter-active, .fade-leave-active {
   transition: opacity 2.5s
 }
@@ -182,6 +188,10 @@ li {
 .slide-up-enter, .fade-leave-to {
   opacity: 0
 }
+
+
+
+
 /************************************************************/
 @media screen and (max-width:768px) {
   .container-fluid {

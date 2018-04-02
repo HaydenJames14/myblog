@@ -60,8 +60,6 @@
       },
       sockets: {
         messageReceived(data) {
-          console.log('message: '+ data.message);
-          console.log('Message Received from: '+ data.sender);
           this.incomingMessage = {
             message: data.message,
             sender: data.sender,
@@ -80,8 +78,6 @@
 </script>
 
 <style scoped>
-
-
   #membersHeading {
     color:green;
     margin-top:20px;

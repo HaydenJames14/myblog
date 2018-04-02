@@ -1,7 +1,7 @@
 <template>
   <div class="container-fluid">
     <h5 class="list-title">Threads</h5>
-    <ul>
+    <ul class="list-group">
       <transition-group tag='li' name='slide-up'>
         <li v-for="thread in orderedThreads" :key="thread._id">
           <div class="card card-body" @click="view(thread._id, thread.title)">
@@ -72,11 +72,6 @@ ul {
   padding:0;
   overflow-y:scroll;
   height:120vh;
-}
-
-span {
-  color: green;
-  margin-right:10px;
 }
 
 .single-thread-footer {

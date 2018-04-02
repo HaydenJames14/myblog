@@ -16,7 +16,7 @@
               </router-link>
             </div>
             <div class="card card-footer">
-              <p class="thread-footer">created on: <strong class="postedByText">{{ thread.createdOn | moment }}</strong></p>
+              <p class="single-thread-footer">created on: <strong>{{ thread.createdOn | moment }}</strong></p>
             </div>
 
           </li>
@@ -35,7 +35,7 @@ export default {
   data() {
     return {
       threads: {},
-      id: '' //this.$router.params.userId;
+      id: ''
     }
   },
   beforeMount() {

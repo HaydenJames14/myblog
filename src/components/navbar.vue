@@ -56,13 +56,13 @@
       </div>
       <div class="modal-body">
         <div class="row">
-          <div class="col-md-6" id="loginDiv">
+          <div class="col-sm-12 col-md-6" id="loginDiv">
             <div class="well">
               <form id="loginForm" class="text-center">
                   <div class="form-group">
                     <p class="lead"><span class="text-success">Log In</span></p>
                     <label for="username" class="control-label">Username</label>
-                    <input type="text" class="form-control" id="username" name="username" title="Please enter you username" v-model="username" required autofocus autocomplete="off" >
+                    <input type="text" class="form-control" id="username" name="username" title="Please enter you username" v-model="username" required autofocus autocomplete="off">
                   </div>
                   <div class="form-group">
                     <label for="password" class="control-label">Password</label>
@@ -73,7 +73,7 @@
               </form>
             </div>
           </div>
-          <div class="col-md-6" id="registrationDiv">
+          <div class="col-sm-12 col-md-6" id="registrationDiv">
               <p class="lead">Register now for <span class="text-success">FREE</span></p>
               <ul class="list-unstyled" style="line-height: 2">
                 <li><span class="fa fa-check text-success"></span> Start new blogs</li>
@@ -85,7 +85,7 @@
               <form class="form-group registration-form">
                 <input type="text" placeholder="user name" name="username" v-model="new_username">
                 <input type="text" placeholder="email" name="email" v-model="email">
-                <input type="password" placeholder="password (min 6 characters)" name="password" v-model="new_password" min="6" ref="passwordfield">
+                <input type="password" placeholder="password (min 6)" name="password" v-model="new_password" min="6" ref="passwordfield">
                 <input type="password" placeholder="confirm password" name="confirmPassword" v-model="confirmPassword">
                 <p><a href="*" class="btn btn-info btn-block" id="btn-register" @click="register">Register now!</a></p>
               </form>
@@ -301,12 +301,12 @@ export default {
     margin-bottom:15px;
   }
 
-  #modal {
-    /*position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%); */
+  .registration-form > input {
+    width:100% !important;
+    margin:auto auto;
+
   }
+
 
 }
 /************************************************************/
@@ -362,6 +362,7 @@ a {
 .modal-title {
   margin:auto;
 }
+
 .form-group > input {
   width:80%;
   border-radius:5px;
@@ -370,9 +371,16 @@ a {
   padding:5px;
 
 }
+
+.registration-form > input {
+    width:100% !important;
+    margin:auto auto;
+    margin-bottom:5px;
+}
+
 #registrationDiv loginDiv {
   background-color:#F5F5F5;
-  width:47%;
+  width:100%;
   margin:5px;
 }
 

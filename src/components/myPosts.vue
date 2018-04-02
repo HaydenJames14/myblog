@@ -12,8 +12,8 @@
               </router-link>
             </div>
             <div class="card card-footer">
-              <p class="thread-footer">thread: <span class="enhance">{{ post.threadName }}</span></p>
-              <p class="thread-footer">created on: {{ post.createdOn | moment }}</p>
+              <p class="thread-footer">thread: <span>{{ post.threadName }}</span></p>
+              <p class="thread-footer">created on: <span>{{ post.createdOn | moment }}</span></p>
             </div>
           </li>
         </ul>

@@ -3,6 +3,10 @@
     <div v-if="filteredData">
         <!-- Get list of threads filtered by search term -->
         <ul v-if="$store.getters.getSearchType === 'threads'">
+        <div v-if="filteredData.length < 1">
+          <h6 class="list-title">No threads found for {{ $store.getters.getSearchText }}</h6>
+        </div>
+        <div v-else>
           <h6 class="list-title">Threads found for {{ $store.getters.getSearchText }}</h6>
           <transition-group tag='li' name='slide-up'>
               <li v-for="item in filteredData" :key="item._id">
@@ -17,26 +21,36 @@
                   </div>
               </li>
           </transition-group>
+        </div>
         </ul>
         <!-- Get list of posts filtered by search term -->
         <ul v-if="$store.getters.getSearchType === 'posts'">
-          <h6 class="list-title">Posts found for {{ $store.getters.getSearchText }}</h6>
-          <transition-group tag='li' name='slide-up'>
-              <li v-for="item in filteredData" :key="item._id">
-                  <div class="card card-body" @click="view(item.threadID, item.threadName)">
-                    <router-link v-bind:to="'/thread/'+ item.threadID">
-                      <h6 class="title flex-item"><strong>{{ item.title }}</strong></h6>
-                    </router-link>
-                  </div>
-                  <div class="card card-footer">
-                      <p class="single-thread-footer">created by: <span class="strong">{{ item.postedBy | toUpperCase }}</span>   on: <span class="strong">{{ item.postedOn | moment }}</span></p>
-                  </div>
-              </li>
-          </transition-group>
+          <div v-if="filteredData.length < 1">
+            <h6 class="list-title">No posts found for {{ $store.getters.getSearchText }}</h6>
+          </div>
+          <div v-else>
+            <h6 class="list-title">Posts found for {{ $store.getters.getSearchText }}</h6>
+            <transition-group tag='li' name='slide-up'>
+                <li v-for="item in filteredData" :key="item._id">
+                    <div class="card card-body" @click="view(item.threadID, item.threadName)">
+                      <router-link v-bind:to="'/thread/'+ item.threadID">
+                        <h6 class="title flex-item"><strong>{{ item.title }}</strong></h6>
+                      </router-link>
+                    </div>
+                    <div class="card card-footer">
+                        <p class="single-thread-footer">created by: <span class="strong">{{ item.postedBy | toUpperCase }}</span>   on: <span class="strong">{{ item.postedOn | moment }}</span></p>
+                    </div>
+                </li>
+            </transition-group>
+          </div>
         </ul>
         <!-- Get posts by selected member -->
         <ul v-if="$store.getters.getSearchType === 'member'">
-            <h6 class="list-title">Posts found for {{ $store.getters.getSearchText }}</h6>
+          <div v-if="membersPosts.length < 1">
+            <h6 class="list-title">Member not found</h6>
+          </div>
+          <div v-else>
+            <h6 class="list-title">Posts by {{ $store.getters.getSearchText }}</h6>
             <transition-group tag='li' name='slide-up'>
                 <li v-for="item in membersPosts" :key="item._id">
                     <div class="card card-body" @click="view(item.threadID, item.threadName)">
@@ -49,6 +63,7 @@
                     </div>
                 </li>
             </transition-group>
+          </div>
         </ul>
     </div>
     <div v-else>

@@ -12,7 +12,7 @@
           </div>
           <div>
             <div class="card card-footer">
-              <p class="thread-footer" style="padding-bottom;2px;">posted by: {{ post.postedBy }} on: {{ post.postedOn | moment }}</p>
+              <p class="single-thread-footer">posted by: <span class="strong">{{ post.postedBy }}</span> on: <span class="strong">{{ post.postedOn | moment }}</span></p>
             </div>
           </div>
         </li>
@@ -72,7 +72,7 @@ ul {
 
 li {
   list-style: none;
-  margin-bottom:0px;
+  margin-bottom:-5px;
   margin-right:10px;
   padding:5px;
   margin-top:2px;
@@ -110,6 +110,7 @@ li {
 
 .card-footer {
   justify-content:flex-end;
+  margin-bottom:-3px;
 }
 
 .content {

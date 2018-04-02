@@ -36,14 +36,9 @@
     methods: {
       submitMessage() {
         if(this.message) {
-          console.log('message text: '+this.message);
-          console.log('message recipient: '+this.$store.getters.getMessageRecipient);
-          console.log('message sender: '+this.$store.getters.getUsername);
           this.$socket.emit('message', { message: this.message, recipient: this.$store.getters.getMessageRecipient, sender: this.$store.getters.getUsername });
           this.$emit('messageSent');
           this.message = '';
-
-          //alert(`Message sent to ${this.name}`);
         }
       },
       setPlaceholderText() {
