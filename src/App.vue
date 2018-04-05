@@ -67,10 +67,10 @@ export default {
 
 body{
   background-color: #072756;
+  /*background: linear-gradient(#072756, #0217db);*/
   color:white;
   width:100%;
   min-width:320px;
-  margin:auto auto;
 }
 
 .title {
@@ -139,7 +139,7 @@ li {
 .list-title {
   color: lightgreen;
   text-align: left;
-  font-size:1.3rem;
+  font-size:1.2rem;
   margin-bottom:10px;
   margin-top:20px;
   margin-left:10px;

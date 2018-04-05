@@ -108,7 +108,7 @@
 h6 {
     text-align:left;
     margin-left: 0;
-    color: green;
+    color:black;
     margin-bottom:20px;
 }
 

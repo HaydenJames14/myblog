@@ -15,7 +15,7 @@
         </div>
       </form>
     </section>
-
+  <!-- Posts List -->
     <section class="container-fluid thread-list">
       <h6 class="list-title" id="title">{{ this.$store.getters.getThreadName }}</h6>
         <ul>
@@ -32,7 +32,6 @@
             </li>
           </transition-group>
         </ul>
-
     </section>
   </div>
 </template>
@@ -228,6 +227,10 @@ li {
   color:red;
 }
 
+.fa:hover {
+    cursor: pointer;
+}
+
 #uploader {
   display:flex;
 }
@@ -276,9 +279,9 @@ li {
   }
 
   #addPost_form {
+    width:88%;
     flex-direction: column;
-    margin:-15px 0 15px 0;
-
+    margin:auto auto;
   }
 
   .threadList {
@@ -286,11 +289,16 @@ li {
   }
 
   #noteText {
-    height:100px;
+    height:80px;
     padding:3px;
     width:90%;
     margin:auto;
+  }
 
+  .form-group input {
+    width:90%;
+    margin:auto;
+    border:none;
   }
 
   ul > li {
@@ -330,16 +338,17 @@ li {
   }
 
   .card-body {
-    width:100%;
-    margin:0;
+    width:95%;
+    margin:auto;
   }
 
   .card-footer {
-    margin-bottom:13px;
     display:flex;
     justify-content: flex-start;
     flex-direction: row;
-    width:100%;
+    width:95%;
+    margin:auto;
+    margin-bottom:10px;
   }
 
   .post-footer {
@@ -351,9 +360,10 @@ li {
 
   .post-image {
     display:block;
-    margin: 5px 5px;
-    min-width:250px;
-    min-height:250px;
+    width:95%;
+    margin: auto;
+    min-width:200px;
+    min-height:200px;
     max-width:100%;
     max-height:100vh;
 }
@@ -362,6 +372,14 @@ li {
     margin:0 3px;
     padding-top:3px;
     font-size:0.7rem;
+  }
+
+  .fa:hover {
+    cursor: pointer;
+  }
+
+  #addPost_form {
+    margin-bottom:20px;
   }
 
 
