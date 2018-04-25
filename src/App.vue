@@ -32,11 +32,6 @@ import filtered from './components/filtered.vue'
 
 export default {
   name: 'app',
-  data() {
-    return {
-
-    }
-  },
   components: {
     navbar, latestPosts, latestThreads, myPosts, myThreads, members, thread, filtered, search
   }
