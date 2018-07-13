@@ -164,13 +164,6 @@ export const store = new Vuex.Store({
             let members = state.allMembers.map(function(m) {
                 if (m.username === payload) { return m.active = true }
             });
-            /*
-                        for (let i = 0; i < state.allMembers.length; i++) {
-                            if (state.allMembers.username === payload) {
-                                state.allMembers.active = true
-                            }
-                        } */
-            //console.log('In socket_set_member_active');
             store.commit('setAllMembers', state.allMembers);
         },
         SOCKET_SET_MEMBER_NOT_ACTIVE(state, payload) {

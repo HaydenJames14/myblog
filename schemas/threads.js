@@ -1,7 +1,5 @@
 let mongoose = require('mongoose');
 let schema = mongoose.Schema;
-//var passportLocalMongoose = require('passport-local-mongoose');
-
 
 let threadSchema = new schema({
     title: {
@@ -26,5 +24,3 @@ let threadSchema = new schema({
 
 const Threads = mongoose.model('Threads', threadSchema);
 module.exports = Threads;
-
-//exports = mongoose.model('Threads', threadSchema);
