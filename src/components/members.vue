@@ -40,6 +40,7 @@
               alert(`${recipientName} must be logged in to receive messages`);
             }else {
               this.membersName = recipientName;
+              $('#contactBox').css('display', 'block');
               this.$store.commit('setMessageRecipient', recipientName);
               console.log('memberName: '+this.membersName);
               this.contacting = true;

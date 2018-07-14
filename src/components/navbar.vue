@@ -29,16 +29,7 @@
         <i class="fa fa-sign-in" aria-hidden="true"></i>
         <button type="button" id="logout-Btn" @click.prevent="sm_login">Log in/Register</button>
       </li>
-    </ul><!--
-    <form class="form-inline navbar-right searchForm flex-item" @click.prevent="search">
-      <select class="form-control" id="searchOptions" v-model="searchType">
-        <option value="threads">search threads</option>
-        <option value="posts">search posts</option>
-        <option value="member">search members</option>
-      </select>
-      <input class="form-control mr-sm-2" type="text" aria-label="Search"  id="searchBox" v-model="searchText" placeholder="search...">
-      <button class="btn btn-outline-success my-2" type="submit">Search</button>
-    </form> -->
+    </ul>
   </div>
     <ul class="nav navbar-nav navbar-right d-none d-sm-none d-md-block d-lg-block">
       <!-- Login & registration controls -->
@@ -98,232 +89,211 @@
 </template>
 
 <script>
-
 export default {
-  name: 'nav',
-  data () {
+  name: "nav",
+  data() {
     return {
-      username: '',
-      password: '',
-      new_username: '',
-      new_password: '',
-      confirmPassword: '',
-      email: '',
-      msg: '',
+      username: "",
+      password: "",
+      new_username: "",
+      new_password: "",
+      confirmPassword: "",
+      email: "",
+      msg: "",
       alert: false,
-      searchType: 'threads',
-      searchText: ''
-    }
+      searchType: "threads",
+      searchText: ""
+    };
   },
-  computed: {
-
-  },
+  computed: {},
   methods: {
     register(e) {
       e.preventDefault();
       this.alert = false;
-      this.msg = '';
-      if(!this.new_password || !this.new_username || !this.email) {
-        this.msg ="No username, password or email provided";
+      this.msg = "";
+      if (!this.new_password || !this.new_username || !this.email) {
+        this.msg = "No username, password or email provided";
         this.alert = true;
         return;
       }
-      if(this.new_password != this.confirmPassword) {
+      if (this.new_password != this.confirmPassword) {
         this.msg = "Passwords do not match";
         this.alert = true;
-        this.password = '';
-        this.confirmPassword = '';
+        this.password = "";
+        this.confirmPassword = "";
         this.$refs.passwordfield.focus();
         return;
       }
 
       $.ajax({
-        type: 'POST',
-        url: 'http://localhost:5000/register',
+        type: "POST",
+        url: "http://localhost:5000/register",
         data: {
           username: this.new_username,
           password: this.new_password,
           email: this.email
         },
-        success:
-          function(data) {
-            if(data) {
-              if(data === 'Username not available') {
-                this.msg = 'Username already in use';
-                this.alert = true;
-                console.log('Duplicate username data: '+data);
-                return;
-              }
-              if(data === 'Email already registered. Already have an acccount?') {
-                this.msg = 'Email already registered. Already have an account?';
-                console.log(this.msg);
-                this.alert = true;
-                return;
-              }
-              if(data) {
-                console.log('registered');
-                $('#Modal').modal('hide');
-              }
+        success: function(data) {
+          if (data) {
+            if (data === "Username not available") {
+              this.msg = "Username already in use";
+              this.alert = true;
+              console.log("Duplicate username data: " + data);
+              return;
             }
-
+            if (
+              data === "Email already registered. Already have an acccount?"
+            ) {
+              this.msg = "Email already registered. Already have an account?";
+              console.log(this.msg);
+              this.alert = true;
+              return;
+            }
+            if (data) {
+              console.log("registered");
+              $("#Modal").modal("hide");
+            }
+          }
         },
-        error:
-          function(err) {
-            console.log(err);
-            this.msg = 'No Server Response. Please try again later';
+        error: function(err) {
+          console.log(err);
+          this.msg = "No Server Response. Please try again later";
         }
-
-      })
+      });
     },
     // LOGIN
     login(e) {
-      if(this.username === '' || this.password === '') {
+      if (this.username === "" || this.password === "") {
         return;
       }
-      this.$http.post('http://localhost:5000/login', { username: this.username, password: this.password }).then(function(response) {
-        if(!response) {
-          this.msg = 'Login details not found';
-          this.$store.commit('setUserNone');
-          console.log('No Data');
-        }
-        else {
-          const user = {
-            username: response.body.username,
-            email: response.body.email,
-            userId: response.body.userId
+      this.$http
+        .post("http://localhost:5000/login", {
+          username: this.username,
+          password: this.password
+        })
+        .then(function(response) {
+          if (!response) {
+            this.msg = "Login details not found";
+            this.$store.commit("setUserNone");
+            console.log("No Data");
+          } else {
+            const user = {
+              username: response.body.username,
+              email: response.body.email,
+              userId: response.body.userId
+            };
+            sessionStorage.setItem("accessToken", response.body.token);
+            this.$store.commit("setUser", response.body);
+            this.$socket.emit("signedIn", user.username);
+            $("#Modal").modal("hide");
           }
-          sessionStorage.setItem("accessToken", response.body.token);
-          this.$store.commit('setUser', response.body);
-          this.$socket.emit('signedIn', user.username);
-          $('#Modal').modal('hide');
-        }
-      }).catch(function(err) {
-        console.log(err)
-      })
+        })
+        .catch(function(err) {
+          console.log(err);
+        });
     },
     logOut() {
       sessionStorage.removeItem("accessToken");
-      this.$socket.emit('signedOut', this.$store.getters.getUsername);
-      this.$store.commit('SOCKET_SET_MEMBER_NOT_ACTIVE', this.$store.getters.getUsername);
-      this.$store.commit('setUserNone');
-      this.$router.push('/latestThreads');
+      this.$socket.emit("signedOut", this.$store.getters.getUsername);
+      this.$store.commit(
+        "SOCKET_SET_MEMBER_NOT_ACTIVE",
+        this.$store.getters.getUsername
+      );
+      this.$store.commit("setUserNone");
+      this.$router.push("/latestThreads");
     },
     sm_login(e) {
-      if(this.username === '' || this.password === '') {
+      if (this.username === "" || this.password === "") {
         return;
-      }/*
-      this.$http.post('http://localhost:5000/login', { username: this.username, password: this.password }).then(function(response) {
-        if(!response) {
-          this.msg = 'Login details not found';
-          this.$store.commit('setUserNone');
-          console.log('No Data');
-        }
-        else {
-          const user = {
-            username: response.body.username,
-            email: response.body.email,
-            userId: response.body.userId
-          }
-          sessionStorage.setItem("accessToken", response.body.token);
-          this.$store.commit('setUser', response.body);
-          this.$socket.emit('signedIn', user.username);
-          $('#Modal').modal('hide');
-        }
-      }).catch(function(err) {
-        console.log(err)
-      }) */
-
+      }
     }
   },
   sockets: {
-      joined(members) {
-        if(members){
-          //this.$store.commit('SOCKET_SET_MEMBER_ACTIVE', user);
-        }
-        this.$socket.emit('membersList');
-      },
-      userLeft(members) {
-        if(members) {
-          //this.$store.commit('SOCKET_SET_MEMBER_NOT_ACTIVE', user);
-        }
+    joined(members) {
+      if (members) {
+        //this.$store.commit('SOCKET_SET_MEMBER_ACTIVE', user);
       }
+      this.$socket.emit("membersList");
+    },
+    userLeft(members) {
+      if (members) {
+        //this.$store.commit('SOCKET_SET_MEMBER_NOT_ACTIVE', user);
+      }
+    }
   }
-}
-
+};
 </script>
 
 <style scoped>
 @media screen and (max-width: 768px) {
   .container-fluid {
-    margin:0;
-    padding:0;
+    margin: 0;
+    padding: 0;
   }
 
   .navbar {
-    margin-bottom:0;
-    padding-bottom:0;
+    margin-bottom: 0;
+    padding-bottom: 0;
   }
 
   .navbar-brand {
-    margin-left:0;
-    font-size:0.8rem;
+    margin-left: 0;
+    font-size: 0.8rem;
   }
 
   #span1 {
-    font-size:1rem;
-    color:orange;
-    font-style:italic;
-    margin-left:10px;
+    font-size: 1rem;
+    color: orange;
+    font-style: italic;
+    margin-left: 10px;
   }
 
   #span2 {
-    font-size:1.3rem;
-    color:red;
+    font-size: 1.3rem;
+    color: red;
   }
 
   #span3 {
-    font-size:1.3rem;
+    font-size: 1.3rem;
     color: green;
   }
 
   .navbar-collapse {
-    margin-top:20px;
+    margin-top: 20px;
   }
 
   .navbar-toggler {
-    margin-right:20px;
+    margin-right: 20px;
   }
 
   #logout-Btn {
-    color:red;
+    color: red;
     background-color: transparent;
-    border:none;
-    margin-bottom:15px;
+    border: none;
+    margin-bottom: 15px;
   }
 
   .registration-form > input {
-    width:100% !important;
-    margin:auto auto;
-
+    width: 100% !important;
+    margin: auto auto;
   }
-
-
 }
 /************************************************************/
 .navbar {
-  margin:0;
-  width:100%;
+  margin: 0;
+  width: 100%;
   background-color: transparent;
-  display:flex;
+  display: flex;
   margin-bottom: 30px;
-  color:green;
+  color: green;
 }
 
 .navbar-toggler {
-  float:right;
+  float: right;
 }
 
-h1, h2 {
+h1,
+h2 {
   font-weight: normal;
 }
 
@@ -342,8 +312,8 @@ a {
 }
 
 .modal-dialog {
-  margin:auto auto;
-  border-radius:15px !important;
+  margin: auto auto;
+  border-radius: 15px !important;
   background-color: lightblue;
 }
 
@@ -354,46 +324,46 @@ a {
   transform: translate(-50%, -50%);
 }
 
-.modal-header, .modal-body {
+.modal-header,
+.modal-body {
   background-color: lightblue;
   color: black;
 }
 
 .modal-title {
-  margin:auto;
+  margin: auto;
 }
 
 .form-group > input {
-  width:80%;
-  border-radius:5px;
+  width: 80%;
+  border-radius: 5px;
   margin: auto;
-  margin-bottom:5px;
-  padding:5px;
-
+  margin-bottom: 5px;
+  padding: 5px;
 }
 
 .registration-form > input {
-    width:100% !important;
-    margin:auto auto;
-    margin-bottom:5px;
+  width: 100% !important;
+  margin: auto auto;
+  margin-bottom: 5px;
 }
 
 #registrationDiv loginDiv {
-  background-color:#F5F5F5;
-  width:100%;
-  margin:5px;
+  background-color: #f5f5f5;
+  width: 100%;
+  margin: 5px;
 }
 
 .fa fa-users .fa fa-user-circle {
-  background-color:red;
+  background-color: red;
 }
 
 .searchForm {
-  margin-right:50px;
+  margin-right: 50px;
 }
 
 .navbar-brand {
-  font-size:2rem;
+  font-size: 2rem;
   color: red;
   text-shadow: 2px 2px navy;
 }
@@ -401,38 +371,35 @@ a {
 #btn-register {
   color: navy;
   font-weight: bold;
-  margin-top:10px;
+  margin-top: 10px;
 }
 
-#searchOptions, #searchBox {
-  margin-right:10px;
+#searchOptions,
+#searchBox {
+  margin-right: 10px;
   background-color: white;
   color: green;
 }
 
 #selectText {
   font-style: italic;
-  color:grey;
-  font-size:1rem;
+  color: grey;
+  font-size: 1rem;
 }
 
 #span1 {
-  font-size:1.2rem;
-  color:orange;
-  font-style:italic
+  font-size: 1.2rem;
+  color: orange;
+  font-style: italic;
 }
 
 #span2 {
-  font-size:1.8rem;
-  color:red;
+  font-size: 1.8rem;
+  color: red;
 }
 
 #span3 {
-  font-size:1.8rem;
+  font-size: 1.8rem;
   color: green;
 }
-
-
-
-
 </style>
