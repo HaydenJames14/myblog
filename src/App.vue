@@ -1,20 +1,20 @@
 <template>
   <div class="container-fluid" id="app">
     <navbar></navbar>
-    <p v-if="$store.getters.getUsername" id="welcomeMessage" style="text-align: right; color:orange;">Welcome back {{ $store.getters.getUsername }}</p>
+    <p v-if="$store.getters.getUsername" id="welcomeMessage" style="text-align: right; color:orange;">Welcome {{ $store.getters.getUsername }}</p>
     <div class="row d-flex flex-sm-column flex-md-row justify-content-sm-center justify-content-md-end">
       <search></search>
     </div>
     <div>
-        <h5 id="errorMsg">{{ $store.getters.getMsg }}</h5>
-        <div class="row">
-          <div class="col-sm-12 col-md-7 col-lg-9">
-            <router-view></router-view>
-          </div>
-          <div class="col-sm-12 col-md-5 col-lg-3" id="membersList">
-            <members></members>
-          </div>
+      <h5 id="errorMsg">{{ $store.getters.getMsg }}</h5>
+      <div class="row">
+        <div class="col-sm-12 col-md-7 col-lg-9">
+          <router-view></router-view>
         </div>
+        <div class="col-sm-12 col-md-5 col-lg-3" id="membersList">
+          <members></members>
+        </div>
+      </div>
     </div>
   </div>
 </template>

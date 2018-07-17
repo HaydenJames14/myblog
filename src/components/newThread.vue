@@ -99,4 +99,26 @@ export default {
   color: blue;
   background-color: red;
 }
+
+/***************MOBILE VIEW*******************/
+@media screen and (max-width: 769px) {
+  #newThreadForm {
+    width: 100%;
+    padding: 10px;
+    font-size: 1rem;
+    border-radius: 5px;
+  }
+
+  #newTitle {
+    width: 100%;
+    font-size: 0.9rem;
+    padding: 10px;
+    height: 40px;
+    margin-bottom: 10px;
+  }
+
+  #firstPost {
+    width: 100%;
+  }
+}
 </style>

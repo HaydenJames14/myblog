@@ -10,38 +10,47 @@ let cors = require('cors');
 let Routes = require('./src/Routes/routes');
 let User = require('./schemas/users');
 
-const { SHA256 } = require('crypto-js');
+const {
+    SHA256
+} = require('crypto-js');
 
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
 app.use(bodyParser.json());
 app.use(cors());
-
+/*
 mongoose.connect('mongodb://localhost:27017/myBlogs', function(err) {
     if (err) {
         console.log(err)
     } else {
         console.log("Database Connected")
     }
-});
-/* mLab mongo connection
+}); */
+
+/* mLab mongo connection */
 
 mongoose.connect("mongodb://nigel:scorpionJKD14@ds235711.mlab.com:35711/rightvoice", function(err) {
-  if (err) {
+    if (err) {
         console.log(err)
     } else {
         console.log("Database Connected")
     }
 })
 
-*/
-
 app.use(Routes);
 
 io.on('connection', function(socket) {
     // Tell clients someone signed in
     socket.on('signedIn', (name) => {
-        User.findOneAndUpdate({ username: name }, { $set: { active: true } }, function(err, res) {
+        User.findOneAndUpdate({
+            username: name
+        }, {
+            $set: {
+                active: true
+            }
+        }, function(err, res) {
             if (res) {
                 socket.join(name);
                 User.find({}, function(err, members) {
@@ -53,9 +62,14 @@ io.on('connection', function(socket) {
 
     // Tell clients someone signed out
     socket.on('signedOut', (name) => {
-        User.findOneAndUpdate({ username: name }, { $set: { active: false } }, function(err, res) {
+        User.findOneAndUpdate({
+            username: name
+        }, {
+            $set: {
+                active: false
+            }
+        }, function(err, res) {
             if (err) {
-                console.log(err);
                 socket.leave(name);
                 res.send(err);
             }
@@ -70,7 +84,10 @@ io.on('connection', function(socket) {
 
     // Send message to logged in user
     socket.on('message', (data) => {
-        socket.broadcast.to(data.recipient).emit('messageReceived', { message: data.message, sender: data.sender });
+        socket.broadcast.to(data.recipient).emit('messageReceived', {
+            message: data.message,
+            sender: data.sender
+        });
     });
 
     socket.on('membersList', () => {
@@ -83,7 +100,13 @@ io.on('connection', function(socket) {
     });
 
     io.on('disconnnnected', function(username) {
-        User.findOneAndUpdate({ username: username }, { $set: { active: false } }, function(err, res) {
+        User.findOneAndUpdate({
+            username: username
+        }, {
+            $set: {
+                active: false
+            }
+        }, function(err, res) {
             if (err) {
                 socket.leave(username)
             }

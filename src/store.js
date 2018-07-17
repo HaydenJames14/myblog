@@ -139,17 +139,26 @@ export const store = new Vuex.Store({
             if (!payload.text) {
                 return;
             } else {
-                if (payload.type === 'threads') {
-                    // Filter by search thread title
-                    state.filteredData = store.getters.getThreads.filter(thread => { return thread.title.match(payload.text) });
-                }
+                console.log('In setFiltered 2')
                 if (payload.type === 'posts') {
                     // Filter thread by selected post
-                    state.filteredData = store.getters.getPosts.filter(post => { return post.title.match(payload.text) })
+                    state.filteredData = store.getters.getPosts.filter(post => {
+                        return post.title.match(payload.text)
+                    });
+                    return;
                 }
                 if (payload.type === 'member') {
-                    // Find all posts belonging to selected member
-                    state.filteredData = store.getters.getPosts.filter(post => { return post.postedBy.match(payload.text) })
+                    console.log('In setFiltered 3')
+                        // Find all posts belonging to selected member
+                    state.filteredData = store.getters.getPosts.filter(post => {
+                        return post.postedBy.match(payload.text)
+                    })
+                } else {
+                    // Filter by search thread title
+                    console.log('In setFiltered 4')
+                    state.filteredData = store.getters.getThreads.filter(thread => {
+                        return thread.title.match(payload.text)
+                    })
                 }
             }
             return state.filteredData;
@@ -162,7 +171,9 @@ export const store = new Vuex.Store({
         },
         SOCKET_SET_MEMBER_ACTIVE(state, payload) {
             let members = state.allMembers.map(function(m) {
-                if (m.username === payload) { return m.active = true }
+                if (m.username === payload) {
+                    return m.active = true
+                }
             });
             store.commit('setAllMembers', state.allMembers);
         },

@@ -21,139 +21,149 @@
   </div>
 </template>
 <script>
-    import moment from 'moment'
-    export default {
-      name: 'latestPosts',
-      data() {
-        return {
-          contentType: ''
-        }
-      },
-      methods: {
-        view(id,threadname) {
-          this.$store.commit('setThreadId', id );
-          this.$store.commit('setThreadName', threadname );
-          this.$router.push('/thread/'+id);
-        }
-      },
-      filters: {
-        moment: date => {
-          return moment(date).format('MMMM Do YYYY');
-        },
-        toUpperCase: title => {
-          return title.toUpperCase();
-        }
-      },
-      mounted() {
-        this.$http.get("http://localhost:5000/latestPosts").then(posts => {
-          this.$store.dispatch('setPosts', posts.data);
-          //this.contentType = posts.data.image.content-type;
-          }).catch(err => {
-            console.log('Error retrieving data: '+ err);
-          });
-      },
-      computed: {
-        orderedPosts: function() {
-          if(this.$store.getters.getPosts.length > 0) {
-            return this.$lodash.orderBy(this.$store.getters.getPosts,['postedOn'], ['desc']);
-          }
-        }
+import moment from "moment";
+export default {
+  name: "latestPosts",
+  data() {
+    return {
+      contentType: ""
+    };
+  },
+  methods: {
+    view(id, threadname) {
+      this.$store.commit("setThreadId", id);
+      this.$store.commit("setThreadName", threadname);
+      this.$router.push("/thread/" + id);
+    }
+  },
+  filters: {
+    moment: date => {
+      return moment(date).format("MMMM Do YYYY");
+    },
+    toUpperCase: title => {
+      return title.toUpperCase();
+    }
+  },
+  mounted() {
+    this.$http
+      .get("http://localhost:5000/latestPosts")
+      .then(posts => {
+        this.$store.dispatch("setPosts", posts.data);
+        //this.contentType = posts.data.image.content-type;
+      })
+      .catch(err => {
+        console.log("Error retrieving data: " + err);
+      });
+  },
+  computed: {
+    orderedPosts: function() {
+      if (this.$store.getters.getPosts.length > 0) {
+        return this.$lodash.orderBy(
+          this.$store.getters.getPosts,
+          ["postedOn"],
+          ["desc"]
+        );
       }
     }
+  }
+};
 </script>
 
 <style scoped>
 ul {
-  margin:0;
-  padding:0;
-  overflow-y:scroll;
-  height:120vh;
+  margin: 0;
+  padding: 0;
+  overflow-y: scroll;
+  height: 120vh;
 }
 
 li {
   list-style: none;
-  margin-bottom:-5px;
-  margin-right:10px;
-  padding:5px;
-  margin-top:2px;
+  margin-bottom: -5px;
+  margin-right: 10px;
+  padding: 5px;
+  margin-top: 2px;
 }
 
 .title {
-  color:black;
-  padding:5px;
+  color: black;
+  padding: 5px;
 }
 
 #title {
-  padding:5px;
-  color:lightgreen;
-  text-align:left;
+  padding: 5px;
+  color: lightgreen;
+  text-align: left;
   font-size: 1rem;
 }
 
 .latestPostsList {
-  margin-bottom:-10px;
-  margin:auto;
+  margin-bottom: -10px;
+  margin: auto;
 }
 
 .enhance {
   color: rgb(197, 45, 45);
-  font-size:0.9rem;
+  font-size: 0.9rem;
   font-style: italic;
-  font-family: 'Times New Roman', Times, serif;
-  padding-bottom:2px;
+  font-family: "Times New Roman", Times, serif;
+  padding-bottom: 2px;
 }
 
 .view-btn {
-  padding:5px;
-  font-size:12px;
+  padding: 5px;
+  font-size: 12px;
 }
 
 .card-footer {
-  justify-content:flex-end;
-  margin-bottom:-3px;
+  justify-content: flex-end;
+  margin-bottom: -3px;
 }
 
 .content {
-  display:flex;
+  display: flex;
   flex-direction: column;
   justify-content: flex-start;
 }
 
 .content:hover {
-  cursor:pointer;
+  cursor: pointer;
 }
 
 router-link:hover {
   text-decoration-style: none;
 }
 
-
 /********************************************************************/
-@media screen and (max-width:768px) {
+@media screen and (max-width: 768px) {
   .card-footer > .single-thread-footer {
-    display:flex;
+    display: flex;
     justify-content: flex-start;
-    margin-left:2px;
-    padding:2px;
-    width:100%;
-    max-width:100%;
-    font-size:0.7rem;
+    margin-left: 2px;
+    padding: 2px;
+    width: 100%;
+    max-width: 100%;
+    font-size: 0.7rem;
   }
 
   .thread-footer {
-    display:flex;
+    display: flex;
     justify-content: flen-start;
-    margin:0;
-    padding:-2px 2px 0 2px;
-    text-align:left;
+    margin: 0;
+    padding: -2px 2px 0 2px;
+    text-align: left;
   }
 
   .latestPostsList {
-    margin:auto;
+    margin: auto;
   }
 
   .list-title {
-    margin:5px 0 3px 13px;
+    margin: 5px 0 3px 13px;
+  }
+
+  .postImage {
+    margin: auto;
   }
 }
 </style>

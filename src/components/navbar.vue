@@ -1,36 +1,70 @@
 <template>
 <div class="container-fluid">
   <nav class="navbar navbar-expand-md navbar-dark">
-  <div class="flex-item">
-    <a class="navbar-brand" href="#"><span id="span1">the</span><span id="span2">Right</span><span id="span3">Voice</span></a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-  </div>
-  <div class="collapse navbar-collapse flex-item" id="navbarSupportedContent">
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
-        <router-link to="/latestThreads" class="nav-link"><i class="fa fa-home" aria-hidden="true"></i> Home</router-link>
-      </li>
-      <li class="nav-item">
-        <router-link to="/latestPosts" class="nav-link"><i class="fa fa-calendar" aria-hidden="true"></i> Latest Posts</router-link>
-      </li>
-      <li class="nav-item" v-if='this.$store.getters.getLoggedStatus'>
-        <router-link to="/myPosts" class="nav-link"><i class="fa fa-envelope-square" aria-hidden="true"></i> My Posts</router-link>
-      </li>
-      <li class="nav-item" v-if='this.$store.getters.getLoggedStatus'>
-        <router-link to="/myThreads" class="nav-link"><i class="fa fa-folder-open" aria-hidden="true"></i> My Threads</router-link>
-      </li>
-      <li class="nav-item d-block d-sm-block d-md-none d-lg-none d-xl-none" v-if='this.$store.getters.getLoggedStatus'>
-        <i class="fa fa-sign-out" aria-hidden="true"></i>
-        <button type="button" id="logout-Btn" @click.prevent="logOut">Sign Out</button>
-      </li>
-      <li v-else class="nav-item d-block d-sm-block d-md-none d-lg-none d-xl-none">
-        <i class="fa fa-sign-in" aria-hidden="true"></i>
-        <button type="button" id="logout-Btn" @click.prevent="sm_login">Log in/Register</button>
-      </li>
-    </ul>
-  </div>
+    <div class="flex-item">
+      <a class="navbar-brand" href="#"><span id="span1">the</span><span id="span2">Right</span><span id="span3">Voice</span></a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+    </div>
+    <div class="collapse navbar-collapse flex-item" id="navbarSupportedContent" ref="mobileForm">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <router-link to="/latestThreads" class="nav-link"><i class="fa fa-home" aria-hidden="true"></i> Home</router-link>
+        </li>
+        <li class="nav-item">
+          <router-link to="/latestPosts" class="nav-link"><i class="fa fa-calendar" aria-hidden="true"></i> Latest Posts</router-link>
+        </li>
+        <li class="nav-item" v-if='this.$store.getters.getLoggedStatus'>
+          <router-link to="/myPosts" class="nav-link"><i class="fa fa-envelope-square" aria-hidden="true"></i> My Posts</router-link>
+        </li>
+        <li class="nav-item" v-if='this.$store.getters.getLoggedStatus'>
+          <router-link to="/myThreads" class="nav-link"><i class="fa fa-folder-open" aria-hidden="true"></i> My Threads</router-link>
+        </li>
+        <li class="nav-item d-block d-sm-block d-md-none d-lg-none d-xl-none" v-if='this.$store.getters.getLoggedStatus'>
+          <i class="fa fa-sign-out" aria-hidden="true"></i>
+          <button type="button" id="logout-Btn" @click.prevent="logOut">Log Out</button>
+        </li>
+        <!--
+        <li v-else class="nav-item d-none d-md-none d-lg-none d-xl-none">
+          <i class="fa fa-sign-in" aria-hidden="true"></i>
+          <button type="button" id="logout-Btn">Log in/Register</button>
+        </li>
+        -->
+        <!-- Mobile login/register form section -->
+        <div id="mobileLogin-form" v-if="this.$store.getters.getLoggedStatus === false">
+          <form id="loginForm" class="text-center">
+              <div class="form-group">
+                <p class="lead"><span class="text-success">Log In</span></p>
+                <input type="text" class="form-control" id="username" name="username" placeholder="user name" v-model="username" required autofocus autocomplete="off">
+              </div>
+              <div class="form-group">
+                <input type="password" class="form-control" id="password" name="password" required="Password required" autocomplete="off" v-model="password" placeholder="password">
+              </div>
+              <button type="submit" class="btn btn-success btn-block" @click.prevent="login">Login</button>
+              <div style="margin-top:5px;" class="text-center"><p>{{ msg }}</p></div>
+          </form>
+          <div class="col-sm-12 col-md-6 text-center" id="registrationDiv" style="margin-top:30px;">
+              <p class="lead"><span class="text-success">Register</span></p>
+              <p class="lead">Register for <span class="text-success">FREE</span></p>
+              <ul class="list-unstyled" style="line-height: 2">
+                <li><span class="fa fa-check text-success"></span> Start new blogs</li>
+                <li><span class="fa fa-check text-success"></span> Add new posts</li>
+                <li><span class="fa fa-check text-success"></span> View all your blogs and posts</li>
+                <li><span class="fa fa-check text-success"></span> Contact other members</li>
+              </ul>
+              <hr>
+              <form class="form-group registration-form">
+                <input type="text" placeholder="user name" name="username" v-model="new_username">
+                <input type="text" placeholder="email" name="email" v-model="email">
+                <input type="password" placeholder="password (min 6)" name="password" v-model="new_password" min="6" ref="passwordfield">
+                <input type="password" placeholder="confirm password" name="confirmPassword" v-model="confirmPassword">
+                <p><a href="*" class="btn btn-info btn-block" id="btn-register" @click="register">Register now!</a></p>
+              </form>
+          </div>
+        </div>  <!-- End of mobile form section -->
+      </ul>
+    </div>
     <ul class="nav navbar-nav navbar-right d-none d-sm-none d-md-block d-lg-block">
       <!-- Login & registration controls -->
       <li v-if="!this.$store.getters.getLoggedStatus" style="width:140px;"><a href="#Modal" data-toggle="modal"><i class="fa fa-sign-in" aria-hidden="true"></i> Sign In/Register</a></li>
@@ -103,6 +137,7 @@ export default {
       alert: false,
       searchType: "threads",
       searchText: ""
+      /*mobileLogin: false*/
     };
   },
   computed: {},
@@ -145,27 +180,26 @@ export default {
               data === "Email already registered. Already have an acccount?"
             ) {
               this.msg = "Email already registered. Already have an account?";
-              console.log(this.msg);
               this.alert = true;
               return;
             }
             if (data) {
-              console.log("registered");
               $("#Modal").modal("hide");
+              this.mobileLogin = false;
             }
           }
         },
         error: function(err) {
-          console.log(err);
           this.msg = "No Server Response. Please try again later";
         }
       });
     },
     // LOGIN
-    login(e) {
+    login() {
       if (this.username === "" || this.password === "") {
         return;
       }
+
       this.$http
         .post("http://localhost:5000/login", {
           username: this.username,
@@ -174,8 +208,6 @@ export default {
         .then(function(response) {
           if (!response) {
             this.msg = "Login details not found";
-            this.$store.commit("setUserNone");
-            console.log("No Data");
           } else {
             const user = {
               username: response.body.username,
@@ -186,6 +218,7 @@ export default {
             this.$store.commit("setUser", response.body);
             this.$socket.emit("signedIn", user.username);
             $("#Modal").modal("hide");
+            //this.$refs.mobileForm.style.display = "none";
           }
         })
         .catch(function(err) {
@@ -201,23 +234,17 @@ export default {
       );
       this.$store.commit("setUserNone");
       this.$router.push("/latestThreads");
-    },
-    sm_login(e) {
-      if (this.username === "" || this.password === "") {
-        return;
-      }
+      //this.$refs.mobileForm.style.display = "none";
     }
   },
   sockets: {
     joined(members) {
       if (members) {
-        //this.$store.commit('SOCKET_SET_MEMBER_ACTIVE', user);
       }
       this.$socket.emit("membersList");
     },
     userLeft(members) {
       if (members) {
-        //this.$store.commit('SOCKET_SET_MEMBER_NOT_ACTIVE', user);
       }
     }
   }
@@ -225,60 +252,7 @@ export default {
 </script>
 
 <style scoped>
-@media screen and (max-width: 768px) {
-  .container-fluid {
-    margin: 0;
-    padding: 0;
-  }
-
-  .navbar {
-    margin-bottom: 0;
-    padding-bottom: 0;
-  }
-
-  .navbar-brand {
-    margin-left: 0;
-    font-size: 0.8rem;
-  }
-
-  #span1 {
-    font-size: 1rem;
-    color: orange;
-    font-style: italic;
-    margin-left: 10px;
-  }
-
-  #span2 {
-    font-size: 1.3rem;
-    color: red;
-  }
-
-  #span3 {
-    font-size: 1.3rem;
-    color: green;
-  }
-
-  .navbar-collapse {
-    margin-top: 20px;
-  }
-
-  .navbar-toggler {
-    margin-right: 20px;
-  }
-
-  #logout-Btn {
-    color: red;
-    background-color: transparent;
-    border: none;
-    margin-bottom: 15px;
-  }
-
-  .registration-form > input {
-    width: 100% !important;
-    margin: auto auto;
-  }
-}
-/************************************************************/
+/******************DEFAULT MEDIUM to LARGE******************************************/
 .navbar {
   margin: 0;
   width: 100%;
@@ -391,15 +365,93 @@ a {
   font-size: 1.2rem;
   color: orange;
   font-style: italic;
+  margin: 0;
 }
 
 #span2 {
   font-size: 1.8rem;
   color: red;
+  margin: 0;
 }
 
 #span3 {
   font-size: 1.8rem;
   color: green;
+}
+
+#mobileLogin-form {
+  display: none;
+}
+/*************MOBILE VIEW**************************/
+@media screen and (max-width: 768px) {
+  .container-fluid {
+    margin: 0;
+    padding: 0;
+  }
+
+  .navbar {
+    margin-bottom: 0;
+    padding-bottom: 0;
+  }
+
+  .navbar-brand {
+    margin-left: 0;
+    padding: 0;
+    margin-bottom: 20px;
+  }
+
+  .navbar-toggler {
+    float: right;
+    margin: 0;
+    padding-right: 0;
+    margin-bottom: 5px;
+    width: 60px;
+  }
+
+  #span1 {
+    font-size: 1rem;
+    color: orange;
+    font-style: italic;
+    margin-left: 8px;
+  }
+
+  #span2 {
+    font-size: 1.7rem;
+    color: red;
+  }
+
+  #span3 {
+    font-size: 1.7rem;
+    color: green;
+  }
+
+  .navbar-collapse {
+    margin-top: 20px;
+  }
+
+  .navbar-toggler {
+    margin-right: 20px;
+  }
+
+  #logout-Btn {
+    color: red;
+    background-color: transparent;
+    border: none;
+    margin-bottom: 15px;
+  }
+
+  .registration-form > input {
+    width: 100% !important;
+    margin: auto auto;
+  }
+
+  #mobileLogin-form {
+    display: block;
+    background-color: rgba(36, 64, 109, 0.6);
+    border-radius: 8px;
+    padding: 5px;
+    width: 280px;
+    margin: auto;
+  }
 }
 </style>

@@ -22,48 +22,50 @@
 </template>
 
 <script>
-  export default {
-    name: 'contact',
-    /* name stores initial clicked members name for placeholder text, receivedMessage stores received message text and sender,
+export default {
+  name: "contact",
+  /* name stores initial clicked members name for placeholder text, receivedMessage stores received message text and sender,
       contacting true or false to show/hide contact window, set to true on clicking members name, false on closing contact window */
-    props: ['receivedMessage', 'name', 'contacting'],
-    data() {
-      return {
-        message: '',
-        placeholderText: this.setPlaceholderText()
+  props: ["receivedMessage", "name", "contacting"],
+  data() {
+    return {
+      message: "",
+      placeholderText: this.setPlaceholderText()
+    };
+  },
+  methods: {
+    submitMessage() {
+      if (this.message) {
+        this.$socket.emit("message", {
+          message: this.message,
+          recipient: this.$store.getters.getMessageRecipient,
+          sender: this.$store.getters.getUsername
+        });
+        this.$emit("messageSent");
+        this.message = "";
       }
     },
-    methods: {
-      submitMessage() {
-        if(this.message) {
-          this.$socket.emit('message', { message: this.message, recipient: this.$store.getters.getMessageRecipient, sender: this.$store.getters.getUsername });
-          this.$emit('messageSent');
-          this.message = '';
-        }
-      },
-      setPlaceholderText() {
-        if(this.name) {
-          return 'type message to '+ this.name
-        } else {
-          return 'type message to '+ this.receivedMessage.sender
-        }
-      },
-      cancelMessage() {
-        $('#contactBox').css('display', 'none');
+    setPlaceholderText() {
+      if (this.name) {
+        return "type message to " + this.name;
+      } else {
+        return "type message to " + this.receivedMessage.sender;
       }
-
+    },
+    cancelMessage() {
+      $("#contactBox").css("display", "none");
     }
-
   }
+};
 </script>
 
 <style scoped>
 #contactBox {
-  margin:auto;
-  width:95%;
-  border:2px solid rgb(57, 90, 57);
-  padding:2px;
-  margin-top:5px;
+  margin: auto;
+  width: 95%;
+  border: 2px solid rgb(57, 90, 57);
+  padding: 2px;
+  margin-top: 5px;
 }
 
 #receivedMessageBox {
@@ -72,31 +74,25 @@
 }
 
 #messageText {
-  width:100%;
-  padding:2px;
+  width: 100%;
+  padding: 2px;
   margin: auto;
-  display:block;
-  margin-bottom:8px;
+  display: block;
+  margin-bottom: 8px;
 }
 
 #receivedMessageText {
-  color:red;
-  margin:5px;
+  color: red;
+  margin: 5px;
   text-align: center;
   word-wrap: break-word;
 }
 
 #receivedTextNotice {
-  color:rgb(112, 31, 31);
-  font-size:0.8rem;
-  text-align:center;
-  margin:5px;
-  text-decoration: underline;
+  color: rgb(112, 31, 31);
+  font-size: 0.8rem;
+  text-align: center;
+  margin: 5px;
+  text-decoration: none;
 }
-
-#cancelMessage, #submitMessage {
-
-}
-
-
 </style>
