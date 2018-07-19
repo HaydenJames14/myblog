@@ -1,5 +1,6 @@
 <template>
-  <form class="form-inline searchForm" @click.prevent="search">
+  <div>
+    <form class="form-inline searchForm" @click.prevent="search">
       <select class="form-control" id="searchOptions" v-model="searchType">
         <option value="threads">search threads</option>
         <option value="posts">search posts</option>
@@ -8,6 +9,7 @@
       <input class="form-control mr-sm-2" type="text" aria-label="Search"  id="searchBox" v-model="searchText" placeholder="search.. (case sensitive)">
       <button class="btn btn-success" id="searchBtn" type="submit">Search</button>
     </form>
+  </div>
 </template>
 
 <script>
@@ -80,8 +82,16 @@ form > button {
     padding: 5px;
   }
 
+  #searchCommand {
+    display: block;
+  }
+
   .searchForm {
     margin-right: 40px;
+  }
+
+  .searchForm:hover {
+    height: auto;
   }
 
   #searchOptions {

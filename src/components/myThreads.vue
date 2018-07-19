@@ -13,7 +13,7 @@
           <transition-group tag='li' name='slide-up'>
             <li v-for="thread in threads" :key="thread._id">
               <div class="card card-body" @click="view(thread._id, thread.title)">
-                <router-link v-bind:to="'/thread/'+ thread._id">
+                <router-link :to="'/thread/'+ thread._id">
                   <h6 class="title flex-item"><strong>{{ thread.title }}</strong></h6>
                 </router-link>
               </div>

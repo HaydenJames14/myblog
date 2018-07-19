@@ -83,12 +83,11 @@ Router.post('/register', function(req, res) {
 
 // LOGIN
 Router.post('/login', function(req, res) {
-    console.log('logged In 1');
     if (!req.body.username || !req.body.password) {
         res.end();
         return;
     }
-    console.log('logged In 2');
+
     User.findOne({
         username: req.body.username
     }, function(err, user) {

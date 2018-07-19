@@ -49,7 +49,6 @@ export default {
       .get("http://localhost:5000/latestPosts")
       .then(posts => {
         this.$store.dispatch("setPosts", posts.data);
-        //this.contentType = posts.data.image.content-type;
       })
       .catch(err => {
         console.log("Error retrieving data: " + err);
@@ -88,6 +87,7 @@ li {
 .title {
   color: black;
   padding: 5px;
+  text-decoration: none;
 }
 
 #title {

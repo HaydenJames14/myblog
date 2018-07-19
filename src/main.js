@@ -1,7 +1,9 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
-import { store } from './store'
+import {
+    store
+} from './store'
 import vueResource from 'vue-resource'
 import moment from "moment"
 import VueMomentJS from "vue-momentjs"
@@ -9,8 +11,11 @@ import socket from 'vue-socket.io'
 import lodash from 'lodash'
 import VueLodash from 'vue-lodash'
 
-Object.defineProperty(Vue.prototype, '$lodash', { value: lodash });
+Object.defineProperty(Vue.prototype, '$lodash', {
+    value: lodash
+});
 
+Vue.use(router);
 Vue.use(store)
 Vue.use(vueResource)
 Vue.use(VueMomentJS, moment)
@@ -25,5 +30,7 @@ new Vue({
     router,
     store,
     template: '<App/>',
-    components: { App }
+    components: {
+        App
+    }
 })

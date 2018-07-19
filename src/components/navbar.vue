@@ -9,39 +9,34 @@
     </div>
     <div class="collapse navbar-collapse flex-item" id="navbarSupportedContent" ref="mobileForm">
       <ul class="navbar-nav mr-auto">
-        <li class="nav-item active">
+        <li class="nav-item active" data-toggle="collapse" data-target="#navbarSupportedContent">
           <router-link to="/latestThreads" class="nav-link"><i class="fa fa-home" aria-hidden="true"></i> Home</router-link>
         </li>
-        <li class="nav-item">
+        <li class="nav-item" data-toggle="collapse" data-target="#navbarSupportedContent">
           <router-link to="/latestPosts" class="nav-link"><i class="fa fa-calendar" aria-hidden="true"></i> Latest Posts</router-link>
         </li>
-        <li class="nav-item" v-if='this.$store.getters.getLoggedStatus'>
+        <li class="nav-item" data-toggle="collapse" data-target="#navbarSupportedContent" v-if='this.$store.getters.getLoggedStatus'>
           <router-link to="/myPosts" class="nav-link"><i class="fa fa-envelope-square" aria-hidden="true"></i> My Posts</router-link>
         </li>
-        <li class="nav-item" v-if='this.$store.getters.getLoggedStatus'>
+        <li class="nav-item" data-toggle="collapse" data-target="#navbarSupportedContent" v-if='this.$store.getters.getLoggedStatus'>
           <router-link to="/myThreads" class="nav-link"><i class="fa fa-folder-open" aria-hidden="true"></i> My Threads</router-link>
         </li>
-        <li class="nav-item d-block d-sm-block d-md-none d-lg-none d-xl-none" v-if='this.$store.getters.getLoggedStatus'>
+        <li class="nav-item d-block d-sm-block d-md-none d-lg-none d-xl-none" data-toggle="collapse" data-target="#navbarSupportedContent" v-if='this.$store.getters.getLoggedStatus'>
           <i class="fa fa-sign-out" aria-hidden="true"></i>
           <button type="button" id="logout-Btn" @click.prevent="logOut">Log Out</button>
         </li>
-        <!--
-        <li v-else class="nav-item d-none d-md-none d-lg-none d-xl-none">
-          <i class="fa fa-sign-in" aria-hidden="true"></i>
-          <button type="button" id="logout-Btn">Log in/Register</button>
-        </li>
-        -->
+
         <!-- Mobile login/register form section -->
         <div id="mobileLogin-form" v-if="this.$store.getters.getLoggedStatus === false">
-          <form id="loginForm" class="text-center">
+          <form class="loginForm text-center">
               <div class="form-group">
                 <p class="lead"><span class="text-success">Log In</span></p>
-                <input type="text" class="form-control" id="username" name="username" placeholder="user name" v-model="username" required autofocus autocomplete="off">
+                <input type="text" class="form-control username" name="username" placeholder="user name" v-model="username" required autofocus autocomplete="off">
               </div>
               <div class="form-group">
-                <input type="password" class="form-control" id="password" name="password" required="Password required" autocomplete="off" v-model="password" placeholder="password">
+                <input type="password" class="form-control password" name="password" required="Password required" autocomplete="off" v-model="password" placeholder="password">
               </div>
-              <button type="submit" class="btn btn-success btn-block" @click.prevent="login">Login</button>
+              <button type="submit" id="mobileLoginBtn" class="btn btn-success btn-block" data-toggle="collapse" data-target="#navbarSupportedContent" @click.prevent="login">Login</button>
               <div style="margin-top:5px;" class="text-center"><p>{{ msg }}</p></div>
           </form>
           <div class="col-sm-12 col-md-6 text-center" id="registrationDiv" style="margin-top:30px;">
@@ -83,15 +78,15 @@
         <div class="row">
           <div class="col-sm-12 col-md-6" id="loginDiv">
             <div class="well">
-              <form id="loginForm" class="text-center">
+              <form class="loginForm text-center">
                   <div class="form-group">
                     <p class="lead"><span class="text-success">Log In</span></p>
                     <label for="username" class="control-label">Username</label>
-                    <input type="text" class="form-control" id="username" name="username" title="Please enter you username" v-model="username" required autofocus autocomplete="off">
+                    <input type="text" class="form-control username" name="username" title="Please enter you username" v-model="username" required autofocus autocomplete="off">
                   </div>
                   <div class="form-group">
                     <label for="password" class="control-label">Password</label>
-                    <input type="password" class="form-control" id="password" name="password" required="Password required" autocomplete="off" v-model="password" title="Please enter your password">
+                    <input type="password" class="form-control password" name="password" required="Password required" autocomplete="off" v-model="password" title="Please enter your password">
                   </div>
                   <button type="submit" class="btn btn-success btn-block" @click.prevent="login">Login</button>
                   <div style="margin-top:10px;"><p>{{ msg }}</p></div>
@@ -124,7 +119,7 @@
 
 <script>
 export default {
-  name: "nav",
+  name: "navbar",
   data() {
     return {
       username: "",
@@ -137,7 +132,6 @@ export default {
       alert: false,
       searchType: "threads",
       searchText: ""
-      /*mobileLogin: false*/
     };
   },
   computed: {},
@@ -218,7 +212,6 @@ export default {
             this.$store.commit("setUser", response.body);
             this.$socket.emit("signedIn", user.username);
             $("#Modal").modal("hide");
-            //this.$refs.mobileForm.style.display = "none";
           }
         })
         .catch(function(err) {
@@ -234,7 +227,6 @@ export default {
       );
       this.$store.commit("setUserNone");
       this.$router.push("/latestThreads");
-      //this.$refs.mobileForm.style.display = "none";
     }
   },
   sockets: {
@@ -382,6 +374,7 @@ a {
 #mobileLogin-form {
   display: none;
 }
+
 /*************MOBILE VIEW**************************/
 @media screen and (max-width: 768px) {
   .container-fluid {
@@ -452,6 +445,10 @@ a {
     padding: 5px;
     width: 280px;
     margin: auto;
+  }
+
+  #mobileLoginBtn:hover {
+    cursor: pointer;
   }
 }
 </style>

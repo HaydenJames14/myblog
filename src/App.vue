@@ -77,7 +77,8 @@ html {
 .title {
   color: black;
   padding: 5px;
-  font-size: 0.9rem;
+  font-size: 1.1rem;
+  font-style: none;
 }
 
 ul {
@@ -211,7 +212,7 @@ span {
   }
 
   #welcomeMessage {
-    margin-right: 20px !important;
+    margin-right: 18px !important;
   }
 
   .strong {
@@ -226,6 +227,10 @@ span {
     font-size: 0.8rem;
     margin-bottom: 6px;
     margin-left: 10px;
+  }
+
+  .title {
+    font-size: 1rem;
   }
 }
 </style>

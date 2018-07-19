@@ -8,7 +8,7 @@
           <transition-group tag='li' name='slide-up'>
             <li v-for="post in orderedPosts" :key="post._id">
               <div class="card card-body" @click="view(post.threadID, post.threadName)">
-                <router-link v-bind:to="'/thread/'+ post.threadID">
+                <router-link :to="'/thread/'+ post.threadID">
                   <h6 class="title flex-item"><strong>{{ post.title }}</strong></h6>
                   <img class="postImage img-fluid" v-if="post.image" :src="'data:image/*;base64,'+ post.image" alt="No Image" />
                 </router-link>

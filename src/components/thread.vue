@@ -98,28 +98,22 @@ export default {
         );
         formData.append("threadId", this.$store.getters.getThreadId);
         formData.append("threadName", this.$store.getters.getThreadName);
-        if (postImage) {
-          formData.append("image", postImage);
-        } else {
+
+        if (!postImage) {
           formData.append("image", null);
+        } else {
+          formData.append("image", postImage);
         }
         formData.append("token", sessionStorage.getItem("accessToken"));
-        $.ajax({
-          url: "http://localhost:5000/newPost/",
-          type: "POST",
-          data: formData,
-          contentType: false,
-          cache: false,
-          enctype: "multipart/form-data",
-          processData: false,
-          success: response => {
+        this.$http
+          .post("http://localhost:5000/newPost", formData)
+          .then(response => {
             this.$store.commit("setNewPost", response);
             this.$router.push("/latestPosts");
-          },
-          error: function(err) {
+          })
+          .catch(err => {
             console.log(err);
-          }
-        });
+          });
       }
     },
     voteUp(id) {
@@ -133,8 +127,7 @@ export default {
         .post("http://localhost:5000/downvote/", { id })
         .then(res => {})
         .catch(err => {});
-    },
-    sockets: {}
+    }
   },
   computed: {
     orderedPosts: function() {
@@ -176,7 +169,7 @@ ul {
   margin: 0;
   padding: 0;
   overflow-y: scroll;
-  height: 120vh;
+  /*height: 120vh;*/
 }
 
 li {
@@ -315,8 +308,12 @@ li {
   }
 
   #title {
+    font-size: 1rem;
+    text-align: center;
+    padding: 10px;
     margin-bottom: 10px;
   }
+
   #submit-btn {
     display: block;
     margin: auto;

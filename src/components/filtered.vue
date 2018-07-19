@@ -11,7 +11,7 @@
           <transition-group tag='li' name='slide-up'>
               <li v-for="item in filteredData" :key="item._id">
                   <div class="card card-body" @click="view(item._id, item.title)">
-                  <router-link v-bind:to="'/thread/'+ item._id">
+                  <router-link to="'/thread/'+ item._id">
                       <h6 class="title flex-item"><strong>{{ item.title }}</strong></h6>
                   </router-link>
                   </div>
@@ -32,7 +32,7 @@
             <transition-group tag='li' name='slide-up'>
                 <li v-for="item in filteredData" :key="item._id">
                     <div class="card card-body" @click="view(item.threadID, item.threadName)">
-                      <router-link v-bind:to="'/thread/'+ item.threadID">
+                      <router-link :to="'/thread/'+ item.threadID">
                         <h6 class="title flex-item"><strong>{{ item.title }}</strong></h6>
                       </router-link>
                     </div>
@@ -53,7 +53,7 @@
             <transition-group tag='li' name='slide-up'>
                 <li v-for="item in membersPosts" :key="item._id">
                     <div class="card card-body" @click="view(item.threadID, item.threadName)">
-                      <router-link v-bind:to="'/thread/'+ item.threadID">
+                      <router-link :to="'/thread/'+ item.threadID">
                         <h6 class="title flex-item"><strong>{{ item.title }}</strong></h6>
                       </router-link>
                     </div>
