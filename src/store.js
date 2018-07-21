@@ -139,29 +139,27 @@ export const store = new Vuex.Store({
             if (!payload.text) {
                 return;
             } else {
-                console.log('In setFiltered 2')
                 if (payload.type === 'posts') {
                     // Filter thread by selected post
                     state.filteredData = store.getters.getPosts.filter(post => {
                         return post.title.match(payload.text)
                     });
-                    return;
+                    /*return;*/
                 }
                 if (payload.type === 'member') {
-                    console.log('In setFiltered 3')
-                        // Find all posts belonging to selected member
+                    // Find all posts belonging to selected member
                     state.filteredData = store.getters.getPosts.filter(post => {
                         return post.postedBy.match(payload.text)
                     })
                 } else {
                     // Filter by search thread title
-                    console.log('In setFiltered 4')
                     state.filteredData = store.getters.getThreads.filter(thread => {
                         return thread.title.match(payload.text)
                     })
                 }
+                return state.filteredData;
             }
-            return state.filteredData;
+
         },
         setLoggedStatus(state, payload) {
             state.loggedStatus = payload;

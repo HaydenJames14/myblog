@@ -5,7 +5,7 @@
         <h5 class="list-title">My Posts</h5>
         <h5 v-if="this.$store.getters.getMyPosts.length < 1" id="noPostsMsg" class="text-center">You have not posted anything yet</h5>
         <ul v-else>
-          <transition-group tag='li' name='slide-up'>
+          <transition-group tag='li' name='slide-top' class="slide-top">
             <li v-for="post in orderedPosts" :key="post._id">
               <div class="card card-body" @click="view(post.threadID, post.threadName)">
                 <router-link :to="'/thread/'+ post.threadID">
@@ -129,20 +129,44 @@ export default {
   margin-bottom: -4px;
 }
 
-.slide-up-enter-active,
-.fade-leave-active {
-  transition: opacity 2s;
-}
-
-.slide-up-enter,
-.fade-leave-to {
-  opacity: 0;
-}
-
 #noPostsMsg {
   color: red;
   margin-top: 15%;
 }
+
+.slide-top {
+  -webkit-animation: slide-top 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  animation: slide-top 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+/**
+ * ----------------------------------------
+ * animation slide-top
+ * ----------------------------------------
+ */
+/*
+@-webkit-keyframes slide-top {
+  0% {
+    -webkit-transform: translateY(0);
+    transform: translateY(0);
+  }
+  100% {
+    -webkit-transform: translateY(-100px);
+    transform: translateY(-100px);
+  }
+}
+*/
+@keyframes slide-top {
+  0% {
+    -webkit-transform: translateY(600px);
+    transform: translateY(600px);
+  }
+  100% {
+    -webkit-transform: translateY(0);
+    transform: translateY(0);
+  }
+}
+
 /******************************************************************** */
 @media screen and (min-width: 768px) {
   .postImage {

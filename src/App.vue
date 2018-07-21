@@ -1,8 +1,8 @@
 <template>
   <div class="container-fluid" id="app">
-    <navbar></navbar>
+    <navbar v-once></navbar>
     <p v-if="$store.getters.getUsername" id="welcomeMessage" style="text-align: right; color:orange;">Welcome {{ $store.getters.getUsername }}</p>
-    <div class="row d-flex flex-sm-column flex-md-row justify-content-sm-center justify-content-md-end">
+    <div>
       <search></search>
     </div>
     <div>
@@ -47,6 +47,10 @@ export default {
 </script>
 
 <style scoped>
+.search-container {
+  width: 100%;
+}
+
 #errorMsg {
   color: red;
   font-weight: bold;
@@ -183,20 +187,9 @@ span {
   font-weight: bold;
 }
 
-.slide-up-enter-active,
-.fade-leave-active {
-  transition: opacity 2.5s;
-}
-
-.slide-up-enter,
-.fade-leave-to {
-  opacity: 0;
-}
-
 /************************************************************/
 @media screen and (max-width: 768px) {
   .container-fluid {
-    margin: auto auto;
     width: 100%;
     padding: 0 5px;
   }

@@ -1,14 +1,14 @@
 <template>
 <div class="container-fluid">
-  <nav class="navbar navbar-expand-md navbar-dark">
-    <div class="flex-item">
+  <nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="flex-item d-flex brand-section">
       <a class="navbar-brand" href="#"><span id="span1">the</span><span id="span2">Right</span><span id="span3">Voice</span></a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
+        <span class="navbar-toggler-icon m-auto"></span>
       </button>
     </div>
     <div class="collapse navbar-collapse flex-item" id="navbarSupportedContent" ref="mobileForm">
-      <ul class="navbar-nav mr-auto">
+      <ul class="navbar-nav">
         <li class="nav-item active" data-toggle="collapse" data-target="#navbarSupportedContent">
           <router-link to="/latestThreads" class="nav-link"><i class="fa fa-home" aria-hidden="true"></i> Home</router-link>
         </li>
@@ -60,7 +60,7 @@
         </div>  <!-- End of mobile form section -->
       </ul>
     </div>
-    <ul class="nav navbar-nav navbar-right d-none d-sm-none d-md-block d-lg-block">
+    <ul class="nav navbar-nav navbar-right d-none d-sm-none d-md-none d-lg-block">
       <!-- Login & registration controls -->
       <li v-if="!this.$store.getters.getLoggedStatus" style="width:140px;"><a href="#Modal" data-toggle="modal"><i class="fa fa-sign-in" aria-hidden="true"></i> Sign In/Register</a></li>
       <li v-else style="width:140px;"><i class="fa fa-sign-out" aria-hidden="true"></i><a href="#" @click.prevent="logOut"> Sign Out</a></li>
@@ -89,7 +89,7 @@
                     <input type="password" class="form-control password" name="password" required="Password required" autocomplete="off" v-model="password" title="Please enter your password">
                   </div>
                   <button type="submit" class="btn btn-success btn-block" @click.prevent="login">Login</button>
-                  <div style="margin-top:10px;"><p>{{ msg }}</p></div>
+                  <div style="margin-top:10px;"><p class="error-message" v-if="msg">{{ msg }}</p></div>
               </form>
             </div>
           </div>
@@ -154,20 +154,17 @@ export default {
         return;
       }
 
-      $.ajax({
-        type: "POST",
-        url: "http://localhost:5000/register",
-        data: {
+      this.$http
+        .post("http://localhost:5000/register", {
           username: this.new_username,
           password: this.new_password,
           email: this.email
-        },
-        success: function(data) {
+        })
+        .then(function(data) {
           if (data) {
             if (data === "Username not available") {
               this.msg = "Username already in use";
               this.alert = true;
-              console.log("Duplicate username data: " + data);
               return;
             }
             if (
@@ -180,20 +177,19 @@ export default {
             if (data) {
               $("#Modal").modal("hide");
               this.mobileLogin = false;
+              this.$socket.emit("joined", data.username);
             }
           }
-        },
-        error: function(err) {
+        })
+        .catch(function(err) {
           this.msg = "No Server Response. Please try again later";
-        }
-      });
+        });
     },
     // LOGIN
     login() {
       if (this.username === "" || this.password === "") {
         return;
       }
-
       this.$http
         .post("http://localhost:5000/login", {
           username: this.username,
@@ -218,6 +214,7 @@ export default {
           console.log(err);
         });
     },
+    // LOGOUT
     logOut() {
       sessionStorage.removeItem("accessToken");
       this.$socket.emit("signedOut", this.$store.getters.getUsername);
@@ -244,18 +241,46 @@ export default {
 </script>
 
 <style scoped>
-/******************DEFAULT MEDIUM to LARGE******************************************/
+/******************DEFAULT LARGE******************************************/
 .navbar {
-  margin: 0;
+  margin-top: 30px;
   width: 100%;
+  padding: 0;
   background-color: transparent;
-  display: flex;
   margin-bottom: 30px;
   color: green;
+  align-items: baseline;
 }
 
-.navbar-toggler {
-  float: right;
+.navbar-brand {
+  padding: 0;
+  margin-left: 30px;
+}
+
+.brand-section {
+  justify-content: flex-start;
+}
+
+.nav-item {
+  margin-right: 0;
+}
+
+#span1 {
+  font-size: 1rem;
+  color: orange;
+  margin: 0;
+}
+
+#span2 {
+  font-size: 2.4rem;
+  color: red;
+  margin: 0;
+}
+
+#span3 {
+  font-size: 2.4rem;
+  color: green;
+  margin: 0;
 }
 
 h1,
@@ -328,23 +353,10 @@ a {
   margin-right: 50px;
 }
 
-.navbar-brand {
-  font-size: 2rem;
-  color: red;
-  text-shadow: 2px 2px navy;
-}
-
 #btn-register {
   color: navy;
   font-weight: bold;
   margin-top: 10px;
-}
-
-#searchOptions,
-#searchBox {
-  margin-right: 10px;
-  background-color: white;
-  color: green;
 }
 
 #selectText {
@@ -353,28 +365,18 @@ a {
   font-size: 1rem;
 }
 
-#span1 {
-  font-size: 1.2rem;
-  color: orange;
-  font-style: italic;
-  margin: 0;
-}
-
-#span2 {
-  font-size: 1.8rem;
-  color: red;
-  margin: 0;
-}
-
-#span3 {
-  font-size: 1.8rem;
-  color: green;
-}
-
 #mobileLogin-form {
   display: none;
+  margin: auto;
 }
 
+/****************MEDIUM VIEW***********************/
+@media screen and (min-width: 769px) and (max-width: 1000px) {
+  .brand-section {
+    width: 100%;
+    justify-content: space-between;
+  }
+}
 /*************MOBILE VIEW**************************/
 @media screen and (max-width: 768px) {
   .container-fluid {
@@ -383,49 +385,47 @@ a {
   }
 
   .navbar {
-    margin-bottom: 0;
-    padding-bottom: 0;
+    margin: 10px 10px;
+    padding: 0;
+    width: 100%;
   }
 
   .navbar-brand {
-    margin-left: 0;
+    margin: auto;
+  }
+
+  .brand-section {
     padding: 0;
-    margin-bottom: 20px;
+    width: 100%;
   }
 
   .navbar-toggler {
-    float: right;
-    margin: 0;
-    padding-right: 0;
-    margin-bottom: 5px;
-    width: 60px;
+    margin-right: 30px;
+    border: none;
+    padding: 0;
   }
 
   #span1 {
-    font-size: 1rem;
+    font-size: 1.1rem;
     color: orange;
     font-style: italic;
-    margin-left: 8px;
+    padding-left: 30px;
   }
 
   #span2 {
-    font-size: 1.7rem;
+    font-size: 1.9rem;
     color: red;
   }
 
   #span3 {
-    font-size: 1.7rem;
+    font-size: 1.9rem;
     color: green;
   }
-
+  /*
   .navbar-collapse {
     margin-top: 20px;
   }
-
-  .navbar-toggler {
-    margin-right: 20px;
-  }
-
+*/
   #logout-Btn {
     color: red;
     background-color: transparent;

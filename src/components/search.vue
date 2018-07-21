@@ -1,12 +1,13 @@
 <template>
   <div>
     <form class="form-inline searchForm" @click.prevent="search">
+      <input class="form-control" type="text" aria-label="Search"  id="searchBox" v-model="searchText" placeholder="search.. (case sensitive)">
       <select class="form-control" id="searchOptions" v-model="searchType">
+        <option value="" selected disabled hidden>options..</option>
         <option value="threads">search threads</option>
         <option value="posts">search posts</option>
         <option value="member">search members</option>
       </select>
-      <input class="form-control mr-sm-2" type="text" aria-label="Search"  id="searchBox" v-model="searchText" placeholder="search.. (case sensitive)">
       <button class="btn btn-success" id="searchBtn" type="submit">Search</button>
     </form>
   </div>
@@ -45,49 +46,85 @@ export default {
 </script>
 
 <style scoped>
-#searchOptions {
-  margin-bottom: 5px;
-  height: 35px;
-  width: 80%;
-}
-
+/****************Default Mobile*******************/
 .searchForm {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin: auto;
   justify-content: center;
   align-content: center;
 }
 
 form > button {
   height: 35px;
-  width: 80%;
-  margin-bottom: 2px;
+  width: 100%;
+  margin: 5px auto;
+  max-width: 400px;
+}
+
+#searchOptions {
+  height: 35px;
+  width: 100%;
+  margin-bottom: 5px;
+  max-width: 400px;
 }
 
 #searchBox {
   height: 35px;
-  width: 80%;
+  width: 100%;
   margin-bottom: 5px;
+  max-width: 400px;
 }
 
-/***************************************************************/
-@media screen and (min-width: 768px) {
-  #searchTerm {
-    margin-bottom: 10px;
+/***************MEDIUM VIEW********************************/
+@media screen and (min-width: 768px) and (max-width: 991px) {
+  /*   */
+  .searchForm {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: baseline;
+    width: 100%;
+  }
+
+  #searchBox {
+    height: 40px;
+    width: 30%;
+    margin: auto;
+    margin-right: 4px;
+    max-width: 250px;
+  }
+
+  #searchOptions {
+    height: 40px;
+    width: 30%;
+    margin-bottom: 0;
+    margin-left: 4px;
+    max-width: 250px;
   }
 
   form > button {
-    height: 33px;
+    height: 40px;
+    width: 30%;
+    max-width: 250px;
+  }
+}
+
+/***************************************************************/
+
+@media screen and (min-width: 991px) {
+  .searchForm {
+    flex-direction: row;
+    align-items: baseline;
+    justify-content: flex-end;
+  }
+
+  form > button {
+    height: 40px;
     margin-left: 10px;
-    margin-top: -4px;
     width: 80px;
     padding: 5px;
-  }
-
-  #searchCommand {
-    display: block;
-  }
-
-  .searchForm {
-    margin-right: 40px;
   }
 
   .searchForm:hover {
@@ -96,13 +133,14 @@ form > button {
 
   #searchOptions {
     width: 200px;
-    height: 35px;
-    margin-right: 15px;
+    height: 40px;
   }
 
   #searchBox {
     width: 200px;
-    height: 35px;
+    height: 40px;
+    margin-left: auto;
+    margin-right: 10px;
   }
 }
 </style>

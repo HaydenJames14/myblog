@@ -10,7 +10,7 @@
         <h5 class="list-title">My Threads</h5>
         <h5 v-if="this.$store.getters.getMyThreads.length < 1" id="noThreadsMsg" class="text-center">You have not started any threads</h5>
         <ul>
-          <transition-group tag='li' name='slide-up'>
+          <transition-group tag='li' name='slide-up' class="slide-up">
             <li v-for="thread in threads" :key="thread._id">
               <div class="card card-body" @click="view(thread._id, thread.title)">
                 <router-link :to="'/thread/'+ thread._id">
@@ -110,5 +110,32 @@ export default {
 #noThreadsMsg {
   color: red;
   margin-top: 30px;
+}
+
+.slide-up {
+  -webkit-animation: slide-top 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  animation: slide-top 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+@-webkit-keyframes slide-up {
+  0% {
+    -webkit-transform: translateY(0);
+    transform: translateY(0);
+  }
+  100% {
+    -webkit-transform: translateY(-100px);
+    transform: translateY(-100px);
+  }
+}
+
+@keyframes slide-up {
+  0% {
+    -webkit-transform: translateY(600px);
+    transform: translateY(600px);
+  }
+  100% {
+    -webkit-transform: translateY(0);
+    transform: translateY(0);
+  }
 }
 </style>

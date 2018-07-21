@@ -1,6 +1,6 @@
 <template>
   <div style="margin-bottom:20px;">
-    <form class='form-group' id="newThreadForm" @click.prevent="submit">
+    <form class='form-group slide-in-blurred-top' id="newThreadForm" @click.prevent="submit">
         <div class="col-md-12">
             <p class="text-center newThreadHeader">Create New Thread:</p>
             <input type="text" placeholder="New Thread Title" class="form-control flex-item" id="newTitle" v-model="newTitle" required>
@@ -53,6 +53,7 @@ export default {
 <style scoped>
 #newThreadForm {
   margin: auto auto;
+  margin-top: 20px;
   border: 2px solid navy;
   background-color: lightblue;
   display: flex;
@@ -63,6 +64,7 @@ export default {
   padding: 10px;
   font-size: 1rem;
   border-radius: 8px;
+  width: 80%;
 }
 
 .newThreadHeader {
@@ -98,6 +100,57 @@ export default {
   cursor: pointer;
   color: blue;
   background-color: red;
+}
+
+.slide-in-blurred-top {
+  -webkit-animation: slide-in-blurred-top 0.8s cubic-bezier(0.23, 1, 0.32, 1)
+    both;
+  animation: slide-in-blurred-top 0.8s cubic-bezier(0.23, 1, 0.32, 1) both;
+}
+/*
+ * ----------------------------------------
+ * animation slide-in-blurred-top
+ * ----------------------------------------
+ */
+@-webkit-keyframes slide-in-blurred-top {
+  0% {
+    -webkit-transform: translateY(-1000px) scaleY(2.5) scaleX(0.2);
+    transform: translateY(-1000px) scaleY(2.5) scaleX(0.2);
+    -webkit-transform-origin: 50% 0%;
+    transform-origin: 50% 0%;
+    -webkit-filter: blur(40px);
+    filter: blur(40px);
+    opacity: 0;
+  }
+  100% {
+    -webkit-transform: translateY(0) scaleY(1) scaleX(1);
+    transform: translateY(0) scaleY(1) scaleX(1);
+    -webkit-transform-origin: 50% 50%;
+    transform-origin: 50% 50%;
+    -webkit-filter: blur(0);
+    filter: blur(0);
+    opacity: 1;
+  }
+}
+@keyframes slide-in-blurred-top {
+  0% {
+    -webkit-transform: translateY(-1000px) scaleY(2.5) scaleX(0.2);
+    transform: translateY(-1000px) scaleY(2.5) scaleX(0.2);
+    -webkit-transform-origin: 50% 0%;
+    transform-origin: 50% 0%;
+    -webkit-filter: blur(40px);
+    filter: blur(40px);
+    opacity: 0;
+  }
+  100% {
+    -webkit-transform: translateY(0) scaleY(1) scaleX(1);
+    transform: translateY(0) scaleY(1) scaleX(1);
+    -webkit-transform-origin: 50% 50%;
+    transform-origin: 50% 50%;
+    -webkit-filter: blur(0);
+    filter: blur(0);
+    opacity: 1;
+  }
 }
 
 /***************MOBILE VIEW*******************/
