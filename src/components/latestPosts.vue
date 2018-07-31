@@ -26,7 +26,13 @@ export default {
   name: "latestPosts",
   data() {
     return {
-      contentType: ""
+      contentType: "",
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Headers":
+          "Origin, X-Requested-With, Content-Type, Accept",
+        "Access-Control-Allow-Methods": "GET,POST,DELETE"
+      }
     };
   },
   methods: {
@@ -46,7 +52,7 @@ export default {
   },
   mounted() {
     this.$http
-      .get("http://localhost:5000/latestPosts")
+      .get("http://localhost:5000/latestPosts", this.headers)
       .then(posts => {
         this.$store.dispatch("setPosts", posts.data);
       })

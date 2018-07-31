@@ -1,6 +1,6 @@
 <template>
   <div class="container-fluid" id="app">
-    <navbar v-once></navbar>
+    <navbar></navbar>
     <p v-if="$store.getters.getUsername" id="welcomeMessage" style="text-align: right; color:orange;">Welcome {{ $store.getters.getUsername }}</p>
     <div>
       <search></search>
@@ -185,6 +185,45 @@ span {
   color: black;
   margin-right: 10px;
   font-weight: bold;
+}
+
+.scale-in-ver-top {
+  -webkit-animation: scale-in-ver-top 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)
+    both;
+  animation: scale-in-ver-top 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+}
+
+@-webkit-keyframes scale-in-ver-top {
+  0% {
+    -webkit-transform: scaleY(0);
+    transform: scaleY(0);
+    -webkit-transform-origin: 100% 0%;
+    transform-origin: 100% 0%;
+    opacity: 1;
+  }
+  100% {
+    -webkit-transform: scaleY(1);
+    transform: scaleY(1);
+    -webkit-transform-origin: 100% 0%;
+    transform-origin: 100% 0%;
+    opacity: 1;
+  }
+}
+@keyframes scale-in-ver-top {
+  0% {
+    -webkit-transform: scaleY(0);
+    transform: scaleY(0);
+    -webkit-transform-origin: 100% 0%;
+    transform-origin: 100% 0%;
+    opacity: 1;
+  }
+  100% {
+    -webkit-transform: scaleY(1);
+    transform: scaleY(1);
+    -webkit-transform-origin: 100% 0%;
+    transform-origin: 100% 0%;
+    opacity: 1;
+  }
 }
 
 /************************************************************/

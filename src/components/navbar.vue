@@ -377,6 +377,7 @@ a {
     justify-content: space-between;
   }
 }
+
 /*************MOBILE VIEW**************************/
 @media screen and (max-width: 768px) {
   .container-fluid {
@@ -421,11 +422,7 @@ a {
     font-size: 1.9rem;
     color: green;
   }
-  /*
-  .navbar-collapse {
-    margin-top: 20px;
-  }
-*/
+
   #logout-Btn {
     color: red;
     background-color: transparent;

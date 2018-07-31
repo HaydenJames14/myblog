@@ -14,9 +14,12 @@ let fs = require('fs');
 let path = require('path');
 let multer = require('multer');
 let btoa = require('btoa');
+let pi = require('pipe-iterators');
+//let cors = require('cors');
 const postImagePath = 'public/images/postImages/';
 const avatarImagePath = 'public/images/avatars/';
 
+//app.use(cors());
 app.use(multer);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
@@ -196,8 +199,16 @@ Router.get('/latestThreads', function(req, res) {
 // GET ALL POSTS
 Router.get('/latestPosts', function(req, response) {
     var posts = [];
+    var postStream = null;
+
+    response.set({
+        'content-type': 'application/json'
+    });
 
     Posts.find({}, function(err, res) {
+        //let temp = Buffer;
+        let p = undefined;
+        let imageFile = undefined;
         if (err) {
             res.status(401).send(err);
         } else {
@@ -207,7 +218,7 @@ Router.get('/latestPosts', function(req, response) {
                     var image = fs.readFileSync('./public/images/postImages/' + res[i].image);
                     var imageData = new Buffer(image).toString('base64');
                     if (err || !image) {
-                        console.log(err)
+                        console.log(err);
                         posts[i] = res[i];
                     } else {
                         posts[i] = res[i];
@@ -216,12 +227,16 @@ Router.get('/latestPosts', function(req, response) {
                 } else {
                     posts[i] = res[i];
                 }
+
             }
+            //let temp = Buffer.from(posts);
+            /*console.log('temp: ' + temp);
+            p = fs.createReadStream(posts);
+            p.end();
+            response.pipe(p);
+            p.pipe(response); */
+            response.send(posts);
         }
-        response.set({
-            'content-type': 'application/json'
-        });
-        response.send(posts);
     })
 
 });
